@@ -1,0 +1,30 @@
+trigger: 
+  branches:
+    include:
+      - master
+      - develop
+pr:
+  branches:
+    include:
+      - master
+
+jobs:
+
+  - job: Test
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+      displayName: 'Install Node.js'
+    - script: |
+        yarn
+        yarn build
+      displayName: 'Install and build packages'
+
+  - job: Deploy
+    dependsOn: Test
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master')) # Assert master
+    steps:
+    - script: echo "To implement"
