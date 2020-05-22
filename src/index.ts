@@ -1,10 +1,11 @@
 import * as Koa from "koa";
+
 import config from "@config";
+import router from "./routes";
 
 const app = new Koa();
 
-app.use(async (ctx) => {
-  ctx.body = "Hello World";
-});
-
-app.listen(config.SERVER.PORT);
+app
+  .use(router.routes())
+  .use(router.allowedMethods())
+  .listen(config.SERVER.PORT);

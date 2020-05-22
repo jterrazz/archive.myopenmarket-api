@@ -20,7 +20,6 @@ jobs:
       displayName: 'Install Node.js'
     - script: |
         yarn
-        yarn build
       displayName: 'Install and build packages'
 
   - job: Deploy
