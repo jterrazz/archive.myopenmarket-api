@@ -6,7 +6,7 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: ['src/**/*.{ts,js}'],
     transform: {
-        '\\.ts$': '<rootDir>/node_modules/ts-jest/preprocessor.js',
+        '\\.ts$': 'ts-jest',
     },
     coverageThreshold: {
         global: {
