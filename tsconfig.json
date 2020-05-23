@@ -3,11 +3,11 @@
     "lib": ["es2020"],
     "module": "commonjs",
     "target": "es2020",
-    "types" : ["node"],
-    "baseUrl": "./src",
+    "types" : ["node", "jest"],
+    "baseUrl": ".",
     "paths": {
-      "~/*": ["./"],
-      "@config": ["./config"]
-    },
+      "~/*": ["./src"],
+      "@config": ["./src/config"]
+    }
   }
 }

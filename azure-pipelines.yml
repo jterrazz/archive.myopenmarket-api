@@ -20,7 +20,10 @@ jobs:
       displayName: 'Install Node.js'
     - script: |
         yarn
-      displayName: 'Install and build packages'
+      displayName: 'Install packages'
+    - script: |
+        yarn test
+      displayName: 'Run unit tests'
 
   - job: Deploy
     dependsOn: Test
