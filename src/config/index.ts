@@ -11,6 +11,7 @@ const envSchema = Joi.object({
 
     // DATABASE
     DATABASE_HOST: Joi.string().default('127.0.0.1'),
+    DATABASE_PORT: Joi.number().default(4242),
 })
     .unknown()
     .required();
