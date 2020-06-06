@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "postinstall": "cd libs/tom-classes && yarn",
+    "postinstall": "cd libs/tom-classes && yarn install --ignore-scripts",
     "dev": "nodemon",
     "start": "TCLASS_TYPE=server node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "test": "jest",
