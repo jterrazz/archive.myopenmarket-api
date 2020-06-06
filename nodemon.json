@@ -1,0 +1,6 @@
+{
+    "watch": ["src", "libs"],
+    "ext": "ts",
+    "ignore": ["src/**/*.spec.ts"],
+    "exec": "yarn start"
+}

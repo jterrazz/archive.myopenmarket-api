@@ -1,9 +1,9 @@
 import app from './app';
 import config from '@config';
-import { TomConsole, ConsoleLevel } from '@tom';
+import { TLogger } from '@tom';
 
-const tomConsole = new TomConsole('CONFIG');
+const logger = new TLogger(__filename);
 
 app.listen(config.SERVER_PORT, () => {
-    tomConsole.print(`Server is running on port ${config.SERVER_PORT}`, ConsoleLevel.INFO);
+    logger.info(`Server is running on port ${config.SERVER_PORT}`);
 });

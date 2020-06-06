@@ -5,10 +5,14 @@
     "target": "es2020",
     "types" : ["node", "jest"],
     "baseUrl": ".",
+    "esModuleInterop": true,
     "paths": {
       "~/*": ["./src"],
-      "@tom": ["./libs/tom-classes"],
+      "@tom": ["./libs/tom-classes/server"],
       "@config": ["./src/config"]
     }
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ],
 }
