@@ -8,7 +8,7 @@ const envSchema = Joi.object({
     API_VERSION: Joi.string().default('0.0.1'),
 
     // SERVER
-    SERVER_PORT: Joi.number().default(3000),
+    PORT: Joi.number().default(3000),
 
     // DATABASE
     DATABASE_HOST: Joi.string().default('127.0.0.1'),
