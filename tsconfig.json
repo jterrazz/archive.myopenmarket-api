@@ -7,8 +7,10 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "paths": {
-      "~/*": ["./src"],
+      "~/*": ["./src/*"],
       "@tom": ["./libs/tom-classes/server"],
+      "@tom/*": ["./libs/tom-classes/src/*"],
+      "@controllers/*": ["./src/controllers/*"],
       "@config": ["./src/config"]
     }
   },

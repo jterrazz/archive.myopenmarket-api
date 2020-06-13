@@ -5,6 +5,7 @@ const logger = new TLogger(__filename);
 
 const envSchema = Joi.object({
     ENV: Joi.string().default('development'),
+    API_VERSION: Joi.string().default('0.0.1'),
 
     // SERVER
     SERVER_PORT: Joi.number().default(3000),
