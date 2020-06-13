@@ -2,7 +2,7 @@
   "name": "tom-api",
   "version": "1.0.0",
   "engines": {
-    "node": "12.x"
+    "node": "14.x"
   },
   "repository": "git@github.com:theopenmarket/tom-api.git",
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
