@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "postinstall": "cd libs/tom-classes && yarn install --ignore-scripts",
+    "preinstall": "cd libs/tom-classes && yarn install --ignore-scripts",
     "dev": "nodemon",
-    "start": "TCLASS_TYPE=server node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
+    "build": "webpack",
+    "start": "TCLASS_TYPE=server node .build/server.js",
     "test": "jest",
     "coverage": "jest --coverage"
   },
@@ -26,10 +27,14 @@
     "@types/node": "^14.0.5",
     "koa": "^2.12.0",
     "koa-router": "^8.0.8",
+    "ts-loader": "^7.0.5",
     "ts-node": "^8.10.1",
     "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typeorm": "^0.2.25",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   },
   "name": "tom-api",
   "version": "1.0.0",

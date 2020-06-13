@@ -6,3 +6,5 @@
 
 # NodeJS
 node_modules
+
+.build/
