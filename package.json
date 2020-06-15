@@ -28,7 +28,7 @@
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
     "supertest": "^4.0.2",
-    "ts-jest": "^26.0.0"
+    "ts-jest": "^26.1.0"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
