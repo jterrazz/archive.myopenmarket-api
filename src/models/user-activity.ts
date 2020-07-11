@@ -1,3 +1,0 @@
-// Authentication - IP
-// Withdrawal - Deposits
-//

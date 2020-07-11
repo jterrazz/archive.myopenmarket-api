@@ -13,7 +13,14 @@
     "build": "webpack",
     "start": "TCLASS_TYPE=server node .build/server.js",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "typeorm:cli": "node --require ts-node/register ./node_modules/typeorm/cli --config ./src/config/typeorm.ts",
+    "migration:create": "yarn typeorm:cli migration:create -n ",
+    "migration:generate": "yarn typeorm:cli migration:generate -n ",
+    "migration:run": "yarn typeorm:cli migration:run",
+    "migration:revert": "yarn typeorm:cli migration:revert",
+    "migration:show": "yarn typeorm:cli migration:show",
+    "entity:create": "yarn typeorm:cli entity:create -n "
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
@@ -35,6 +42,8 @@
     "@types/node": "^14.0.5",
     "koa": "^2.12.0",
     "koa-router": "^8.0.8",
+    "pg": "^8.3.0",
+    "reflect-metadata": "^0.1.13",
     "ts-loader": "^7.0.5",
     "ts-node": "^8.10.1",
     "tsconfig-paths": "^3.9.0",

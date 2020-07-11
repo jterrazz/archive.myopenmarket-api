@@ -11,9 +11,11 @@
       "~/*": ["./src/*"],
       "@tom": ["./libs/tom-classes/server"],
       "@tom/*": ["./libs/tom-classes/src/*"],
-      "@controllers/*": ["./src/controllers/*"],
+      "@controllers/*": ["src/controller/*"],
       "@config": ["./src/config"]
-    }
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"

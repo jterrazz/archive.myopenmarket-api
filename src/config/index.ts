@@ -10,9 +10,12 @@ const envSchema = Joi.object({
     // SERVER
     PORT: Joi.number().default(3000),
 
-    // DATABASE
-    DATABASE_HOST: Joi.string().default('127.0.0.1'),
-    DATABASE_PORT: Joi.number().default(4242),
+    // DATABASE - Default values in ormconfig.ts
+    POSTGRES_HOST: Joi.string(),
+    POSTGRES_PORT: Joi.number(),
+    POSTGRES_USER: Joi.string(),
+    POSTGRES_PASSWORD: Joi.string(),
+    POSTGRES_DB: Joi.string(),
 })
     .unknown()
     .required();

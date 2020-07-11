@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 
-import { getStateController } from '~/controllers/api';
-import { getUsernameController } from '~/controllers/user';
+import { getStateController } from '~/controller/api';
+import { getUsernameController } from '~/controller/user';
 
 const router = new Router();
 

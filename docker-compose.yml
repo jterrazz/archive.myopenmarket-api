@@ -1,11 +1,19 @@
 version: "3.8"
 services:
-  db_mongo:
-    build: ./db
-    restart: always
+  database:
+    image: "postgres:12-alpine"
     ports:
-      - "27017:27017"
+      - 5432:5432
+    # volumes:
+    #   - db-data:/var/lib/postgresql/data
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: dev_password
-      MONGO_INITDB_DATABASE: hypertube
+      POSTGRES_DB: tom-db
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+# api:
+#   build: ./api
+#   depends_on:
+#     - database
+#   environment:
+#     PORT: 3000
+#     POSTGRES_URL: mongodb://db_mongo/hypertube
