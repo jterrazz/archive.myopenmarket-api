@@ -23,7 +23,7 @@
     "entity:create": "yarn typeorm:cli entity:create -n "
   },
   "devDependencies": {
-    "@types/jest": "^25.2.3",
+    "@types/jest": "^26.0.4",
     "@types/koa": "^2.11.3",
     "@types/koa-router": "^7.4.1",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
