@@ -6,7 +6,7 @@ export const getStateController: Middleware = async (ctx, next) => {
     ctx.body = {
         version: config.API_VERSION,
         state: 'OK',
-        time: new Date().toISOString(),
+        time: new Date(),
     };
 
     await next();

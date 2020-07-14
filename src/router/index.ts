@@ -1,14 +1,10 @@
 import Router from 'koa-router';
 
-import { getStateController } from '~/controller/api';
-import { getUsernameController } from '~/controller/user';
+import { getStateController } from '@controller/state';
 
 const router = new Router();
 
 // General
 router.get('/', getStateController);
-
-// Users
-router.get('/users/:username', getUsernameController);
 
 export default router;
