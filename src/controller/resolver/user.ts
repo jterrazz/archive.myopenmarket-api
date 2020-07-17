@@ -1,28 +1,23 @@
 import { Resolver, Mutation, Query, Arg, Ctx } from 'type-graphql';
+import { getRepository } from 'typeorm';
 
 import { User } from '@model';
-import { getRepository } from 'typeorm';
 
 @Resolver()
 export class UserResolver {
     @Query(() => User, { nullable: true })
-    async users(@Ctx() ctx: any) {
-        ctx.tracker.track(ctx.trackerEvents.GET_USER);
+    async users(@Ctx() context: any) {
+        context.assertIsLoggedIn();
 
-        const userRepository = getRepository(User);
+        context.tracker.track(context.tracker.EVENTS.GET_USER);
 
-        return await userRepository.findOne();
+        return await getRepository(User).findOne();
     }
 
-    // @Mutation(() => Boolean)
-    // async deleteUser(@Arg('id') id: string) {
-    //     const user = await userRepository.findOne({ where: { id } });
+    @Mutation(() => Boolean)
+    async createUser(@Arg('firstName') firstName: string) {
+        console.log(firstName);
 
-    //     if (!user) {
-    //         throw new Error(`The user with id: ${id} does not exist!`);
-    //     }
-
-    //     // await user.remove();
-    //     return true;
-    // }
+        return true;
+    }
 }

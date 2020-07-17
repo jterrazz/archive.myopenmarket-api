@@ -16,6 +16,8 @@ const envSchema = Joi.object({
     POSTGRES_USER: Joi.string(),
     POSTGRES_PASSWORD: Joi.string(),
     POSTGRES_DB: Joi.string(),
+
+    JWT_SIGNATURE: Joi.string().default('wow'),
 })
     .unknown()
     .required();

@@ -1,10 +1,14 @@
 import { ApolloServer } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 
-import TTracker, { EVENTS } from '@tom/server/tom_tracker';
-
 // Graphql resolvers
 import { UserResolver } from './resolver/user';
+
+// Graphql middlewares
+import { gqlAuthenticationMiddleware } from '~/middleware/gql-authentication';
+import { gqlTrackerMiddleware } from '~/middleware/gql-tracker';
+
+const GQL_MIDDLEWARES = [gqlAuthenticationMiddleware, gqlTrackerMiddleware];
 
 export const buildGraphQlServer = async () => {
     const schema = await buildSchema({
@@ -13,10 +17,10 @@ export const buildGraphQlServer = async () => {
 
     return new ApolloServer({
         schema,
-        context: ({ ctx }) => ({
-            ...ctx,
-            tracker: new TTracker(),
-            trackerEvents: EVENTS,
-        }),
+        context: (ctx) => {
+            return GQL_MIDDLEWARES.reduce((accumulator: object, middleware: Function) => {
+                return middleware(accumulator);
+            }, ctx);
+        },
     });
 };
