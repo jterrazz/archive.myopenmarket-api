@@ -3,14 +3,14 @@ import * as jwt from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
 
 import { User } from '@model';
-import config from '@config';
+import { apiConfig } from '../config';
 
 class AuthService {
-    private static generateJWT(user) {
+    private static generateJWT(userRecord: User) {
         const data = {
-            userId: user.id,
+            userId: userRecord.id,
         };
-        const signature = config.JWT_SIGNATURE;
+        const signature = apiConfig.auth['jwt-signature'];
         const expiresIn = '24h';
 
         return jwt.sign({ data }, signature, { expiresIn });
@@ -19,7 +19,7 @@ class AuthService {
     /**
      * Creates a new user and returns the related jwt
      */
-    async signUp(email: string, password: string, firstName: string, lastName: string) {
+    async signUp(email: string, username: string, password: string, firstName: string, lastName: string) {
         const passwordHashed = await argon2.hash(password);
 
         const userRepo = await getRepository(User);
@@ -28,15 +28,19 @@ class AuthService {
             passwordHashed,
             firstName,
             lastName,
+            username,
         });
         const userRecord = await userRepo.save(user);
 
         return {
-            user: userRecord.publicData,
+            user: userRecord.privateData,
             token: AuthService.generateJWT(userRecord),
         };
     }
 
+    /**
+     * Authenticate a pair of credentials and returns the JWT / User data
+     */
     async signIn(email: string, password: string): Promise<any> {
         const userRecord = await getRepository(User).findOne({ email });
         if (!userRecord) {
@@ -49,9 +53,28 @@ class AuthService {
         }
 
         return {
-            user: userRecord.publicData,
+            user: userRecord.privateData,
             token: AuthService.generateJWT(userRecord),
         };
+    }
+
+    /**
+     * Delete a user
+     */
+    async deleteUser(id: number, password: string): Promise<any> {
+        const userRecord = await getRepository(User).findOne({ id });
+        if (!userRecord) {
+            throw new Error('User not found');
+        }
+
+        const correctPassword = await argon2.verify(userRecord.passwordHashed, password);
+        if (!correctPassword) {
+            throw new Error('Incorrect password');
+        }
+
+        await getRepository(User).delete(userRecord);
+
+        return true;
     }
 }
 

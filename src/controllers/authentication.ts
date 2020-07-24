@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 import * as Joi from '@hapi/joi';
 
-import AuthService from '../service/authentication';
+import AuthService from '../services/authentication';
 import { TLogger } from '@tom';
 
 const authService = new AuthService();
@@ -29,13 +29,14 @@ export const signInController: Middleware = async (ctx, next) => {
 export const signUpController: Middleware = async (ctx, next) => {
     const bodySchema = Joi.object({
         email: Joi.string().required(),
+        username: Joi.string().alphanum().min(3).max(20).required(),
         password: Joi.string().min(8).required(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
     }).required();
 
-    const { email, password, firstName, lastName } = await bodySchema.validateAsync(ctx.request.body);
-    ctx.body = await authService.signUp(email, password, firstName, lastName);
+    const { email, username, password, firstName, lastName } = await bodySchema.validateAsync(ctx.request.body);
+    ctx.body = await authService.signUp(email, username, password, firstName, lastName);
 
     await next();
 };

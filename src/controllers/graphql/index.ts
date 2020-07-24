@@ -1,19 +1,20 @@
-import { ApolloServer } from 'apollo-server-koa';
+import { ApolloServer, addSchemaLevelResolveFunction } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 
 // Graphql resolvers
-import { UserResolver } from './resolver/user';
+import { UserResolver } from './resolvers/user';
+import rootLevelResolver from './resolvers/root';
 
 // Graphql middlewares
-import { gqlAuthenticationMiddleware } from '~/middleware/gql-authentication';
-import { gqlTrackerMiddleware } from '~/middleware/gql-tracker';
-
-const GQL_MIDDLEWARES = [gqlAuthenticationMiddleware, gqlTrackerMiddleware];
+import { gqlAuthenticationMiddleware } from '@controllers/graphql/middlewares/authentication';
+const GQL_MIDDLEWARES = [gqlAuthenticationMiddleware];
 
 export const buildGraphQlServer = async () => {
     const schema = await buildSchema({
         resolvers: [UserResolver],
     });
+
+    addSchemaLevelResolveFunction(schema, rootLevelResolver);
 
     return new ApolloServer({
         schema,
@@ -21,6 +22,9 @@ export const buildGraphQlServer = async () => {
             return GQL_MIDDLEWARES.reduce((accumulator: object, middleware: Function) => {
                 return middleware(accumulator);
             }, ctx);
+        },
+        engine: {
+            reportSchema: true,
         },
     });
 };

@@ -1,6 +1,6 @@
 {
-    "watch": ["src", "libs"],
+    "watch": ["src", "libs", "config"],
     "ext": "ts",
-    "ignore": ["src/**/*.spec.ts"],
+    "ignore": ["**/*.spec.ts"],
     "exec": "TCLASS_TYPE=server node -r tsconfig-paths/register -r ts-node/register ./src/server.ts"
 }

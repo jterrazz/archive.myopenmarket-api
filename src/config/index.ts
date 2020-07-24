@@ -1,32 +1,52 @@
+require('dotenv').config(); // loads environment variables from a .env file
+import config from 'config'; // gets data from the root config folder https://github.com/lorenwest/node-config/wiki
 import * as Joi from '@hapi/joi';
-import { TLogger } from '@tom';
 
-const logger = new TLogger(__filename);
+const _buildAndVerifyConfigFromYml = (ymlSection, joiSchema) => {
+    const configFromYml = config.get(ymlSection);
+    const { error, value: envValues } = joiSchema.validate(configFromYml);
+    if (error) {
+        console.error(`[config] Environment variable error: ${error.message}`);
+        process.exit(1);
+    }
+    return envValues;
+};
 
-const envSchema = Joi.object({
-    ENV: Joi.string().default('development'),
-    API_VERSION: Joi.string().default('0.0.1'),
+// Config objects
 
-    // SERVER
-    PORT: Joi.number().default(3000),
+export const databaseConfig = _buildAndVerifyConfigFromYml(
+    'database',
+    Joi.object({
+        postgres: Joi.object({
+            host: Joi.string().required(),
+            port: Joi.number().required(),
+            username: Joi.string().required(),
+            password: Joi.string().required(),
+            database: Joi.string().required(),
+        }),
+    }).required(),
+);
 
-    // DATABASE - Default values in ormconfig.ts
-    POSTGRES_HOST: Joi.string(),
-    POSTGRES_PORT: Joi.number(),
-    POSTGRES_USER: Joi.string(),
-    POSTGRES_PASSWORD: Joi.string(),
-    POSTGRES_DB: Joi.string(),
+export const apiConfig = _buildAndVerifyConfigFromYml(
+    'api',
+    Joi.object({
+        env: Joi.string().required(),
+        version: Joi.string().required(),
+        http: Joi.object({
+            port: Joi.number().required(),
+        }).required(),
+        auth: Joi.object({
+            'jwt-signature': Joi.string().required(),
+        }).required(),
+    }).required(),
+);
 
-    JWT_SIGNATURE: Joi.string().default('wow'),
-})
-    .unknown()
-    .required();
-
-const { error, value: envValues } = envSchema.validate(process.env);
-
-if (error) {
-    logger.error(`Environment variable error: ${error.message}`);
-    process.exit(1);
-}
-
-export default envValues;
+export const servicesConfig = _buildAndVerifyConfigFromYml(
+    'services',
+    Joi.object({
+        elastic: Joi.object({
+            'apm-url': Joi.string(),
+            'apm-secret': Joi.string(),
+        }).allow(null),
+    }).required(),
+);

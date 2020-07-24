@@ -1,0 +1,16 @@
+api:
+  http:
+    port: PORT
+  auth:
+    jwt-signature: JWT_SIGNATURE
+database:
+  postgres:
+    host: POSTGRES_HOST
+    port: POSTGRES_PORT
+    username: POSTGRES_USER
+    password: POSTGRES_PASSWORD
+    database: POSTGRES_DB
+services:
+  elastic:
+    apm-url: APM_URL
+    apm-secret: APM_SECRET

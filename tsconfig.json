@@ -11,8 +11,8 @@
       "~/*": ["./src/*"],
       "@tom": ["./libs/tom-classes/server"],
       "@tom/*": ["./libs/tom-classes/src/*"],
-      "@controller/*": ["./src/controller/*"],
-      "@model": ["./src/model"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@model": ["./src/models"],
       "@config": ["./src/config"]
     },
     "emitDecoratorMetadata": true,

@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 
-import { getStateController } from '@controller/state';
-import { signInController, signUpController } from '@controller/authentication';
+import { getStateController } from '@controllers/state';
+import { signInController, signUpController } from '@controllers/authentication';
 
 const router = new Router();
 

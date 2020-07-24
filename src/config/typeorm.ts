@@ -1,23 +1,22 @@
+// Called by typeorm-cli and node
+
 import { ConnectionOptions } from 'typeorm';
-import { User } from '../model';
+import { User } from '../models';
+import { databaseConfig } from './index';
 
 const config: ConnectionOptions = {
     type: 'postgres',
 
     // Connexion
-    host: process.env.POSTGRES_HOST || '127.0.0.1',
-    port: Number(process.env.POSTGRES_PORT) || 5432,
-    username: process.env.POSTGRES_USER || 'dev_user',
-    password: process.env.POSTGRES_PASSWORD || 'dev_password',
-    database: process.env.POSTGRES_DB || 'tom-db',
+    ...databaseConfig.postgres,
 
     // Files
     entities: [User],
-    migrations: [__dirname + '/../migration/**/*.{js,ts}'],
+    migrations: [__dirname + '/../migrations/**/*.{js,ts}'],
     subscribers: [__dirname + '/../subscriber/**/*.{js,ts}'],
     cli: {
-        entitiesDir: 'src/model',
-        migrationsDir: 'src/migration',
+        entitiesDir: 'src/models',
+        migrationsDir: 'src/migrations',
         subscribersDir: 'src/subscriber',
     },
 

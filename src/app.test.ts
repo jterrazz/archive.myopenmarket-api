@@ -1,8 +1,22 @@
 import request from 'supertest';
-import app from './app';
+import setupApp from './app';
 
-test('Route / returns 404', async () => {
-    const { status, text } = await request(app.callback()).get('/');
+let app;
+let connection;
+
+test('Initiate app (+ database)', async () => {
+    const { app: koaApp, connection: appConnection } = await setupApp();
+    app = koaApp;
+    connection = appConnection;
+    expect(app).toBeDefined();
+    expect(connection).toBeDefined();
+});
+
+test('/bad-url returns 404', async () => {
+    const { status } = await request(app.callback()).get('/bad-url');
     expect(status).toBe(404);
-    // expect(text).toBe('Hello World');
+});
+
+afterAll(async () => {
+    await connection.close();
 });

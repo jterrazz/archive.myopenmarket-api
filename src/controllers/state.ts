@@ -1,13 +1,12 @@
 import { Middleware } from 'koa';
 
-import config from '@config';
+import { apiConfig } from '../config';
 
 export const getStateController: Middleware = async (ctx, next) => {
     ctx.body = {
-        version: config.API_VERSION,
+        version: apiConfig.version,
         state: 'OK',
         time: new Date(),
     };
-
     await next();
 };

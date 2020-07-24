@@ -4,3 +4,5 @@
 
 ## Requirements
 
+TODO
+- Remove env from tclass and test script + run script
