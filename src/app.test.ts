@@ -28,5 +28,5 @@ test('POST /graphql returns 500', async () => {
 });
 
 afterAll(async () => {
-    await connection.close();
+    if (connection) await connection.close();
 });
