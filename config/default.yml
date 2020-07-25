@@ -4,3 +4,5 @@ api:
   logs:
     local: 2
     distant: 5
+database:
+services:
