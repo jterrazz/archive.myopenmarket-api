@@ -5,11 +5,12 @@ api:
     jwt-signature: 'dev_jwt'
 database:
   postgres:
-    host: '127.0.0.1'
-    port: 5432
-    username: 'dev_user'
-    password: 'dev_password'
-    database: 'tom-db'
+    details:
+      host: '127.0.0.1'
+      port: 5432
+      username: 'dev_user'
+      password: 'dev_password'
+      database: 'tom-db'
 services:
   elastic:
   mixpanel:

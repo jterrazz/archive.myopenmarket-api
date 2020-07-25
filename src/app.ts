@@ -13,12 +13,13 @@ import { endTrackerMiddleware, startTrackerMiddleware } from '~/middlewares/trac
 const logger = new Logger(__filename);
 
 const setupApp = async (): Promise<any> => {
+    logger.info(`Starting app with environment ${process.env.NODE_ENV}`);
+
     const app = new Koa();
 
     // Database
     const connection = await createConnection(ormconfig);
     logger.info('API is connected to the database');
-    logger.info({});
 
     // App setup
     app.use(bodyParser());

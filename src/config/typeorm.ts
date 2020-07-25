@@ -4,11 +4,13 @@ import { ConnectionOptions } from 'typeorm';
 import { User } from '../models';
 import { databaseConfig } from './index';
 
+const connectionData = databaseConfig.postgres.url
+    ? { url: databaseConfig.postgres.url }
+    : databaseConfig.postgres.details;
+
 const config: ConnectionOptions = {
     type: 'postgres',
-
-    // Connexion
-    ...databaseConfig.postgres,
+    ...connectionData,
 
     // Files
     entities: [User],

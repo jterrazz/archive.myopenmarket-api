@@ -8,11 +8,13 @@ api:
     distant: LOGS_DISTANT
 database:
   postgres:
-    host: POSTGRES_HOST
-    port: POSTGRES_PORT
-    username: POSTGRES_USER
-    password: POSTGRES_PASSWORD
-    database: POSTGRES_DB
+    details:
+      host: POSTGRES_HOST
+      port: POSTGRES_PORT
+      username: POSTGRES_USER
+      password: POSTGRES_PASSWORD
+      database: POSTGRES_DB
+    url: DATABASE_URL
 services:
   elastic:
     apm-url: APM_URL
