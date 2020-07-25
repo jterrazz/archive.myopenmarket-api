@@ -3,8 +3,8 @@ import Mixpanel from 'mixpanel';
 import Logger from './logger';
 import { servicesConfig } from '@config';
 
-const mixpanel = Mixpanel.init(servicesConfig.mixpanel.secret);
-const logger = new Logger(__filename);
+// const mixpanel = Mixpanel.init(servicesConfig.mixpanel.secret);
+// const logger = new Logger(__filename);
 
 enum EVENTS {
     GET_STATE = 'GET state',
@@ -15,7 +15,7 @@ enum EVENTS {
 }
 
 export default class TTracker {
-    private _tracker = mixpanel;
+    // private _tracker = mixpanel;
     EVENTS = EVENTS;
 
     constructor(user: any = {}) {
@@ -24,14 +24,13 @@ export default class TTracker {
          * - $email: Needs $
          * - <date>: in ISO timestamp format (e.g. "2020-01-02T21:07:03Z")
          */
-
-        this._tracker.people.set(user ? user.id : 'all', {
-            ...user,
-        });
+        // this._tracker.people.set(user ? user.id : 'all', {
+        //     ...user,
+        // });
     }
 
     track(name: EVENTS, data?: object): void {
-        mixpanel.track(name, data);
-        logger.info(`New event ${name} - ${JSON.stringify(data)}`);
+        // mixpanel.track(name, data);
+        // logger.info(`New event ${name} - ${JSON.stringify(data)}`);
     }
 }
