@@ -2,5 +2,5 @@
     "watch": ["src", "libs", "config"],
     "ext": "ts",
     "ignore": ["**/*.spec.ts"],
-    "exec": "TCLASS_TYPE=server node -r tsconfig-paths/register -r ts-node/register ./src/server.ts"
+    "exec": "yarn dev:nodemon"
 }

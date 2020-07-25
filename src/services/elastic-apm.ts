@@ -7,13 +7,14 @@ if (servicesConfig.elastic) {
     apm.start({
         // Override service name from package.json
         // Allowed characters: a-z, A-Z, 0-9, -, _, and space
-        serviceName: null,
+        // serviceName: null,
 
         secretToken: servicesConfig.elastic['apm-secret'],
         serverUrl: servicesConfig.elastic['apm-url'],
 
-        captureBody: 'all',
-        // logLevel: 'trace',
+        // captureBody: 'all',
+        // logLevel: 'info',
+        logUncaughtExceptions: true,
     });
 }
 

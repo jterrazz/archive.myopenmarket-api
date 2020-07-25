@@ -4,6 +4,7 @@ import { getRepository } from 'typeorm';
 
 import { User } from '@model';
 import { apiConfig } from '../config';
+import { UserLanguage } from '~/models/User';
 
 class AuthService {
     private static generateJWT(userRecord: User) {
@@ -19,16 +20,23 @@ class AuthService {
     /**
      * Creates a new user and returns the related jwt
      */
-    async signUp(email: string, username: string, password: string, firstName: string, lastName: string) {
+    async signUp(
+        email: string,
+        password: string,
+        firstName: string,
+        lastName: string,
+        language: UserLanguage = UserLanguage.en,
+    ) {
         const passwordHashed = await argon2.hash(password);
+        // TODO Get language from req
 
         const userRepo = await getRepository(User);
         const user = userRepo.create({
-            email,
             passwordHashed,
             firstName,
             lastName,
-            username,
+            email,
+            language,
         });
         const userRecord = await userRepo.save(user);
 

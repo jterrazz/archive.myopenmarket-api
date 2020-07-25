@@ -1,5 +1,5 @@
-class TomError {
-    constructor(error: Error | TomError | string) {
+class Error {
+    constructor(error: Error | Error | string) {
         // If string or ...
     }
 
@@ -9,4 +9,4 @@ class TomError {
     }
 }
 
-export default TomError;
+export default Error;

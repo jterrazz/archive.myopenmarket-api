@@ -1,9 +1,9 @@
 import Koa from 'koa';
 
-import { getStatusText } from '@tom/tom_status';
-import { TLogger } from '@tom';
+import { getStatusText } from '../../libs/the-open-market/status';
+import { Logger } from '@tom';
 
-const logger = new TLogger(__filename);
+const logger = new Logger(__filename);
 
 export const errorHandlerMiddleware: Koa.Middleware = async (ctx, next) => {
     try {

@@ -1,8 +1,9 @@
 import '~/services/elastic-apm'; // Must be first to monitor supported packages
 import setupApp from './app';
 import { apiConfig } from './config';
-import { TLogger } from '@tom';
-const logger = new TLogger(__filename);
+import { Logger } from '@tom';
+
+const logger = new Logger(__filename);
 
 (async (): Promise<void> => {
     const { app } = await setupApp();

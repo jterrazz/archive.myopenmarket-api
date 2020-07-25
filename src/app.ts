@@ -7,10 +7,10 @@ import { buildGraphQlServer } from '@controllers/graphql';
 import { errorHandlerMiddleware } from './middlewares/error-handler';
 import router from './router';
 import ormconfig from './config/typeorm';
-import { TLogger } from '@tom';
+import { Logger } from '@tom';
 import { endTrackerMiddleware, startTrackerMiddleware } from '~/middlewares/tracker';
 
-const logger = new TLogger(__filename);
+const logger = new Logger(__filename);
 
 const setupApp = async (): Promise<any> => {
     const app = new Koa();

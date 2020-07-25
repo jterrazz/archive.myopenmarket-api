@@ -3,6 +3,9 @@ api:
     port: PORT
   auth:
     jwt-signature: JWT_SIGNATURE
+  logs:
+    local: LOGS
+    distant: LOGS_DISTANT
 database:
   postgres:
     host: POSTGRES_HOST
@@ -14,3 +17,5 @@ services:
   elastic:
     apm-url: APM_URL
     apm-secret: APM_SECRET
+  mixpanel:
+    secret: MIXPANEL_SECRET

@@ -2,6 +2,11 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
 import _ from 'lodash';
 
+export enum UserLanguage {
+    fr = 'fr-FR',
+    en = 'en-EN',
+}
+
 @Entity()
 @ObjectType()
 export class User {
@@ -9,12 +14,8 @@ export class User {
     id: number;
 
     @Column({ unique: true })
-    @Field(() => String, { nullable: true })
-    email?: string;
-
-    @Column({ unique: true })
     @Field(() => String)
-    username: string;
+    email: string;
 
     @Column()
     passwordHashed: string;
@@ -27,11 +28,15 @@ export class User {
     @Field(() => String)
     lastName: string;
 
+    @Column({ default: UserLanguage.en })
+    @Field(() => String)
+    language: UserLanguage;
+
     /**
      * JS Getters
      */
 
-    PUBLIC_DATA_KEYS = ['firstName', 'lastName', 'username'];
+    PUBLIC_DATA_KEYS = ['firstName', 'lastName', 'username', 'language'];
     get publicData() {
         return _.pick(this, this.PUBLIC_DATA_KEYS);
     }

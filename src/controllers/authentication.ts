@@ -2,10 +2,10 @@ import { Middleware } from 'koa';
 import * as Joi from '@hapi/joi';
 
 import AuthService from '../services/authentication';
-import { TLogger } from '@tom';
+import { Logger } from '@tom';
 
 const authService = new AuthService();
-const logger = new TLogger(__filename);
+const logger = new Logger(__filename);
 
 export const signInController: Middleware = async (ctx, next) => {
     try {
@@ -36,7 +36,7 @@ export const signUpController: Middleware = async (ctx, next) => {
     }).required();
 
     const { email, username, password, firstName, lastName } = await bodySchema.validateAsync(ctx.request.body);
-    ctx.body = await authService.signUp(email, username, password, firstName, lastName);
+    ctx.body = await authService.signUp(email, password, firstName, lastName);
 
     await next();
 };

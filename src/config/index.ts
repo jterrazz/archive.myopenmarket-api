@@ -32,6 +32,10 @@ export const apiConfig = _buildAndVerifyConfigFromYml(
     Joi.object({
         env: Joi.string().required(),
         version: Joi.string().required(),
+        logs: Joi.object({
+            local: Joi.number().required(),
+            distant: Joi.number().required(),
+        }).required(),
         http: Joi.object({
             port: Joi.number().required(),
         }).required(),
@@ -40,6 +44,7 @@ export const apiConfig = _buildAndVerifyConfigFromYml(
         }).required(),
     }).required(),
 );
+apiConfig.isProd = apiConfig.env == 'production';
 
 export const servicesConfig = _buildAndVerifyConfigFromYml(
     'services',
@@ -47,6 +52,9 @@ export const servicesConfig = _buildAndVerifyConfigFromYml(
         elastic: Joi.object({
             'apm-url': Joi.string(),
             'apm-secret': Joi.string(),
+        }).allow(null),
+        mixpanel: Joi.object({
+            secret: Joi.string(),
         }).allow(null),
     }).required(),
 );

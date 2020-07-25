@@ -12,3 +12,4 @@ database:
     database: 'tom-db'
 services:
   elastic:
+  mixpanel:

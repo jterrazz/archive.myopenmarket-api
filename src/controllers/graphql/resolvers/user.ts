@@ -7,8 +7,8 @@ import { UpdateUserInput } from '@controllers/graphql/inputs/UpdateUserInput';
 @Resolver()
 export class UserResolver {
     @Query(() => User, { nullable: true })
-    async user(@Ctx() context: any, @Arg('username') username: string) {
-        const userRecord = await getRepository(User).findOne({ username });
+    async user(@Ctx() context: any, @Arg('id') id: number) {
+        const userRecord = await getRepository(User).findOne({ id });
 
         return userRecord ? userRecord.publicData : null;
     }
