@@ -2,5 +2,5 @@
     "watch": ["src", "libs", "config"],
     "ext": "ts",
     "ignore": ["**/*.spec.ts"],
-    "exec": "yarn dev:nodemon"
+    "exec": "NODE_ENV=development yarn start"
 }
