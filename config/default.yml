@@ -2,5 +2,5 @@ api:
   env: "development"
   version: "0.0.1"
   logs:
-    local: 0
-    distant: 2
+    local: 2
+    distant: 5

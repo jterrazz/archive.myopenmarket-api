@@ -12,7 +12,7 @@
     "dev:nodemon": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "build": "webpack",
     "start": "node .build/server.js",
-    "test": "LOGS_LOCAL_LEVEL=3 jest",
+    "test": "LOGS=0 NODE_ENV=development jest",
     "coverage": "jest --coverage",
     "typeorm:cli": "node --require ts-node/register ./node_modules/typeorm/cli --config src/config/typeorm.ts",
     "migration:create": "yarn typeorm:cli migration:create -n ",
@@ -63,6 +63,8 @@
     "typeorm": "^0.2.25",
     "typescript": "^3.9.3",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "winston": "^3.3.3",
+    "winston-elasticsearch": "^0.9.0"
   }
 }

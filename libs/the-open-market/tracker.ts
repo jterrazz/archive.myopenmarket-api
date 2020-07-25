@@ -32,6 +32,6 @@ export default class TTracker {
 
     track(name: EVENTS, data?: object): void {
         mixpanel.track(name, data);
-        logger.info(`New event ${name}`, data);
+        logger.info(`New event ${name} - ${JSON.stringify(data)}`);
     }
 }

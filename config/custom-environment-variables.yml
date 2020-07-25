@@ -17,5 +17,8 @@ services:
   elastic:
     apm-url: APM_URL
     apm-secret: APM_SECRET
+    cloud-id: ELASTIC_CLOUD_ID
+    log-api-id: ELASTIC_LOG_API_ID
+    log-api-key: ELASTIC_LOG_API_KEY
   mixpanel:
     secret: MIXPANEL_SECRET

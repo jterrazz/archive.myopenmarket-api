@@ -18,6 +18,7 @@ const setupApp = async (): Promise<any> => {
     // Database
     const connection = await createConnection(ormconfig);
     logger.info('API is connected to the database');
+    logger.info({});
 
     // App setup
     app.use(bodyParser());

@@ -7,8 +7,8 @@ const logger = new Logger(__filename);
 
 export const errorHandlerMiddleware: Koa.Middleware = async (ctx, next) => {
     try {
-        // logger.debug(`HTTP Request: ${JSON.stringify(ctx.request, null, 4)}`);
-        // logger.debug(`Body: ${JSON.stringify(ctx.request.body, null, 4)}`);
+        logger.http(`HTTP Request: ${JSON.stringify(ctx.request, null, 4)}`);
+        logger.http(`Body: ${JSON.stringify(ctx.request.body, null, 4)}`);
         await next();
     } catch (err) {
         if (!err.status && err.isJoi) {

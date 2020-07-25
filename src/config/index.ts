@@ -52,6 +52,9 @@ export const servicesConfig = _buildAndVerifyConfigFromYml(
         elastic: Joi.object({
             'apm-url': Joi.string(),
             'apm-secret': Joi.string(),
+            'cloud-id': Joi.string(),
+            'log-api-id': Joi.string(),
+            'log-api-key': Joi.string(),
         }).allow(null),
         mixpanel: Joi.object({
             secret: Joi.string(),

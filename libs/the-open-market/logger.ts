@@ -1,94 +1,95 @@
-// This file is imported by a lot of files, avoir importing other TClasses here
+// This is imported by a lot of files, avoid importing other code
+import winston from 'winston';
+import { ElasticsearchTransport } from 'winston-elasticsearch';
+import { apiConfig, servicesConfig } from '@config';
+import apmClient from '~/services/elastic-apm';
 
-import { Context } from 'vm';
+const WinstonLevels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'];
 
-import { apiConfig } from '@config';
-
-enum TLoggerLevel {
-    DEBUG = 0,
-    INFO = 1,
-    WARN = 2,
-    ERROR = 3,
+enum LevelColors {
+    error = '\x1b[31m',
+    warn = '\x1b[35m',
+    info = '\x1b[34m',
+    http = '',
+    verbose = '',
+    debug = '\x1b[37m',
+    silly = '\x1b[37m',
 }
 
-export default class TLogger {
-    LEVEL = TLoggerLevel;
+// Logger
+const winstonLogger = winston.createLogger({
+    level: WinstonLevels[apiConfig.logs.local],
+});
 
-    _logger;
-    _identifier: string;
-    _localThreshold: TLoggerLevel = apiConfig.logs.local;
-    _distantThreshold: TLoggerLevel = apiConfig.logs.distant;
+// Formats
 
-    constructor(identifier?: string, user?: object) {
-        this._identifier = identifier.split(/[\\/]/).pop();
+const localFormat = winston.format.printf((info) => {
+    return LevelColors[info.level] + `[${info.category}] ${info.message} \x1b[0m`;
+});
 
-        // this._logger = config.isServerBuild
-        //     ? new Node(config.TIMBER_API_KEY, config.TIMBER_SOURCE_ID)
-        //     : new Browser(config.TIMBER_API_KEY, config.TIMBER_SOURCE_ID);
+winstonLogger.add(
+    new winston.transports.Console({
+        format: localFormat,
+    }),
+);
 
-        // if (user) this._logger.use(TLogger._buildLoggerUserMiddleware(user));
+if (servicesConfig.elastic) {
+    winstonLogger.add(
+        new ElasticsearchTransport({
+            format: winston.format.json(),
+            level: WinstonLevels[apiConfig.logs.distant],
+            indexPrefix: 'filebeat',
+            // @ts-ignore
+            apm: apmClient,
+            clientOpts: {
+                cloud: {
+                    id: servicesConfig.elastic['cloud-id'],
+                },
+                auth: {
+                    apiKey: {
+                        id: servicesConfig.elastic['log-api-id'],
+                        api_key: servicesConfig.elastic['log-api-key'],
+                    },
+                },
+            },
+        }),
+    );
+}
+
+class Logger {
+    _prefix;
+
+    constructor(prefix) {
+        this._prefix = prefix.split(/[\\/]/).pop();
     }
 
-    // static _buildLoggerUserMiddleware(user: Context): Function {
-    //     const loggerMiddleware = async (log: ITimberLog): Promise<ITimberLog> => {
-    //         return {
-    //             ...log,
-    //             user,
-    //         };
-    //     };
-    //     return loggerMiddleware;
-    // }
-
-    /**
-     * Display messages on the console
-     */
-
-    _log(level: TLoggerLevel, message: string | Error, data?: any): void {
-        const logDistantIsActive = this._distantThreshold <= level;
-        const logLocalIsActive = this._localThreshold <= level;
-        console.log(message);
-
-        // if (message instanceof Error) {
-        //     data = message.stack;
-        //     message = message.message;
-        // }
-        //
-        // if (logDistantIsActive) {
-        //     const loggerLevelName = TLoggerLevel[level].toLowerCase();
-        //     this._logger[loggerLevelName](message, data as Context)
-        //         .then()
-        //         .catch(console.error);
-        // }
-        //
-        // const colors = ['\x1b[37m', '\x1b[34m', '\x1b[35m', '\x1b[31m'];
-        //
-        // if (logLocalIsActive) {
-        //     message = colors[level] + message + '\x1b[0m';
-        //     if (this._identifier) message = `\x1b[2m\x1b[37m[${this._identifier}]\x1b[0m ${message}`;
-        //     console.log(message);
-        //     if (data) {
-        //         console.log(data);
-        //     }
-        // }
+    _buildMessage(message) {
+        return {
+            message: typeof message == 'string' ? message : JSON.stringify(message),
+            category: this._prefix,
+        };
     }
 
-    /**
-     * Shortcuts
-     */
+    // Logger methods
 
-    debug(message: string | Error, data?: object): void {
-        this._log(this.LEVEL.DEBUG, message, data);
+    error(message) {
+        winstonLogger.error(this._buildMessage(message));
     }
-
-    info(message: string | Error, data?: object): void {
-        this._log(this.LEVEL.INFO, message, data);
+    warn(message) {
+        winstonLogger.warn(this._buildMessage(message));
     }
-
-    warn(message: string | Error, data?: object): void {
-        this._log(this.LEVEL.WARN, message, data);
+    info(message) {
+        winstonLogger.info(this._buildMessage(message));
     }
-
-    error(message: string | Error, data?: object): void {
-        this._log(this.LEVEL.ERROR, message, data);
+    http(message) {
+        winstonLogger.http(this._buildMessage(message));
+    }
+    verbose(message) {
+        winstonLogger.verbose(this._buildMessage(message));
+    }
+    debug(message) {
+        winstonLogger.debug(this._buildMessage(message));
     }
 }
+
+export default Logger;
