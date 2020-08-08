@@ -1,19 +1,26 @@
 version: "3.8"
 services:
+
   database:
+    container_name: service-database
     image: "postgres:12-alpine"
     ports:
       - 5432:5432
-    # volumes:
-    #   - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: tom-db
       POSTGRES_USER: dev_user
       POSTGRES_PASSWORD: dev_password
-# api:
-#   build: ./api
-#   depends_on:
-#     - database
-#   environment:
-#     PORT: 3000
-#     POSTGRES_URL: mongodb://db_mongo/hypertube
+
+  api:
+    container_name: service-api
+    image: library/node:14-alpine
+    links:
+      - database
+    volumes:
+      - .:/home/service-api
+    working_dir: /home/service-api
+    command: sh -c "yarn && yarn dev"
+    ports:
+      - "3000:3000"
+    environment:
+      POSTGRES_HOST: database

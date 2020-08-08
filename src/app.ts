@@ -19,7 +19,7 @@ const setupApp = async (): Promise<any> => {
 
     // Database
     const connection = await createConnection(ormconfig);
-    logger.info('API is connected to the database');
+    logger.info('App is connected to the database');
 
     // App setup
     app.use(bodyParser());
@@ -31,6 +31,8 @@ const setupApp = async (): Promise<any> => {
     const graphQLServer = await buildGraphQlServer();
     graphQLServer.applyMiddleware({ app });
 
+    logger.info(`App setup is done`);
     return { app, connection };
 };
+
 export default setupApp;
