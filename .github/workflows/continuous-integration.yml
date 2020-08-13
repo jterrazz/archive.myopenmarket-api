@@ -19,13 +19,6 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - name: start deployment
-      uses: bobheadxi/deployments@master
-      id: deployment
-      with:
-        step: start
-        token: ${{ secrets.GITHUB_TOKEN }}
-        env: release
 
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -45,11 +38,10 @@ jobs:
         deployment_id: 1 # ${{ steps.deployment.outputs.deployment_id }}
         description: production # Change
 
-    - name: update deployment status
-      uses: bobheadxi/deployments@master
+    - name: update deploy status
       if: always()
+      uses: unacast/actions-github-deployment-status@[version]
       with:
-        step: finish
-        token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         status: ${{ job.status }}
-        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+        description: "The description to create. Restricted to 140 chars"
