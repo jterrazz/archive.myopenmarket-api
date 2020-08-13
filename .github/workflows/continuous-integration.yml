@@ -28,16 +28,6 @@ jobs:
     - run: yarn
     - run: yarn test
 
-    - name: Update deployment status (success)
-      if: success()
-      uses: chrnorm/deployment-status@releases/v1
-      with:
-        token: "${{ github.token }}"
-        target_url: http://api.thenopen.market
-        state: "success"
-        deployment_id: 1 # ${{ steps.deployment.outputs.deployment_id }}
-        description: production # Change
-
     - name: update deploy status
       if: always()
       uses: unacast/actions-github-deployment-status@v0.3.0
