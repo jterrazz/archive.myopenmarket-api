@@ -20,6 +20,14 @@ jobs:
 
     steps:
 
+    - name: start deployment
+      uses: bobheadxi/deployments@master
+      id: deployment
+      with:
+        step: start
+        token: ${{ secrets.GITHUB_TOKEN }}
+        env: release
+
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -35,5 +43,4 @@ jobs:
         step: finish
         token: ${{ secrets.GITHUB_TOKEN }}
         status: ${{ job.status }}
-        deployment_id: 12 # ${{ steps.deployment.outputs.deployment_id }}
-        env: release
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
