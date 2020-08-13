@@ -34,6 +34,6 @@ jobs:
       with:
         step: finish
         token: ${{ secrets.GITHUB_TOKEN }}
-        desc: ${{ job.status }}
+        status: ${{ job.status }}
         deployment_id: 12 # ${{ steps.deployment.outputs.deployment_id }}
         env: release
