@@ -1,6 +1,6 @@
 import Koa from 'koa';
 
-import { getStatusText } from '../../libs/the-open-market/status';
+import { getStatusText } from '@tom/status';
 import { Logger } from '@tom';
 
 const logger = new Logger(__filename);

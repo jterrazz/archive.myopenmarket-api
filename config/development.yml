@@ -4,13 +4,8 @@ api:
   auth:
     jwt-signature: 'dev_jwt'
 database:
-  postgres:
-    details:
-      host: '127.0.0.1'
-      port: 5432
-      username: 'dev_user'
-      password: 'dev_password'
-      database: 'tom-db'
+  mongo:
+    url: 'mongodb://dev_user:dev_password@localhost/tom'
 services:
   elastic:
   mixpanel:

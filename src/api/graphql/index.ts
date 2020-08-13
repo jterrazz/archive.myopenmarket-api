@@ -6,7 +6,8 @@ import { UserResolver } from './resolvers/user';
 import rootLevelResolver from './resolvers/root';
 
 // Graphql middlewares
-import { gqlAuthenticationMiddleware } from '@controllers/graphql/middlewares/authentication';
+import { gqlAuthenticationMiddleware } from './middlewares/authentication';
+
 const GQL_MIDDLEWARES = [gqlAuthenticationMiddleware];
 
 export const buildGraphQlServer = async () => {

@@ -3,13 +3,14 @@ services:
 
   database:
     container_name: service-database
-    image: "postgres:12-alpine"
+    image: library/mongo:4.2-bionic
     ports:
-      - 5432:5432
+      - 27017:27017
     environment:
-      POSTGRES_DB: tom-db
-      POSTGRES_USER: dev_user
-      POSTGRES_PASSWORD: dev_password
+      MONGO_INITDB_ROOT_USERNAME: admin_user
+      MONGO_INITDB_ROOT_PASSWORD: admin_password
+    volumes:
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
   api:
     container_name: service-api
@@ -21,6 +22,6 @@ services:
     working_dir: /home/service-api
     command: sh -c "yarn && yarn dev"
     ports:
-      - "3000:3000"
+      - 3000:3000
     environment:
-      POSTGRES_HOST: database
+      DATABASE_URL: mongodb://dev_user:dev_password@database/tom

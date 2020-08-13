@@ -1,27 +1,39 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-import { createConnection } from 'typeorm';
-import 'reflect-metadata'; // Required by typeorm
+import mongoose from 'mongoose';
+import 'reflect-metadata'; // Needed by type-graphql
 
-import { buildGraphQlServer } from '@controllers/graphql';
-import { errorHandlerMiddleware } from './middlewares/error-handler';
-import router from './router';
-import ormconfig from './config/typeorm';
 import { Logger } from '@tom';
-import { endTrackerMiddleware, startTrackerMiddleware } from '~/middlewares/tracker';
+import { databaseConfig } from '@config';
+import { buildGraphQlServer } from './api/graphql';
+import { errorHandlerMiddleware } from '~/api/rest/middlewares/error-handler';
+import { endTrackerMiddleware, startTrackerMiddleware } from '~/api/rest/middlewares/tracker';
+import router from './api/rest/router';
 
 const logger = new Logger(__filename);
+
+const connectToDatabase = async () => {
+    const db = mongoose.connection;
+    db.on('error', (err) => {
+        logger.error('App failed to connect to the database');
+        logger.error(err);
+    });
+    db.once('open', () => {
+        logger.info('App is connected to the database');
+    });
+    await mongoose.connect(databaseConfig.mongo.url, {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+};
 
 const setupApp = async (): Promise<any> => {
     logger.info(`Starting app with environment ${process.env.NODE_ENV}`);
 
+    await connectToDatabase();
+
     const app = new Koa();
-
-    // Database
-    const connection = await createConnection(ormconfig);
-    logger.info('App is connected to the database');
-
-    // App setup
     app.use(bodyParser());
     app.use(errorHandlerMiddleware);
     app.use(startTrackerMiddleware);
@@ -32,7 +44,7 @@ const setupApp = async (): Promise<any> => {
     graphQLServer.applyMiddleware({ app });
 
     logger.info(`App setup is done`);
-    return { app, connection };
+    return { app };
 };
 
 export default setupApp;

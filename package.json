@@ -9,17 +9,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
-    "start": "yarn migration:run && yarn start:app",
-    "start:app": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
+    "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "test": "LOGS=0 NODE_ENV=development jest",
-    "coverage": "jest --coverage",
-    "typeorm:cli": "node --require ts-node/register ./node_modules/typeorm/cli --config src/config/typeorm.ts",
-    "migration:create": "yarn typeorm:cli migration:create -n ",
-    "migration:generate": "yarn typeorm:cli migration:generate -n ",
-    "migration:run": "yarn typeorm:cli migration:run",
-    "migration:revert": "yarn typeorm:cli migration:revert",
-    "migration:show": "yarn typeorm:cli migration:show",
-    "entity:create": "yarn typeorm:cli entity:create -n "
+    "coverage": "jest --coverage"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
@@ -38,6 +30,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@types/mongoose": "^5.7.36",
     "@types/node": "^14.0.5",
     "apollo-server-koa": "^2.15.1",
     "argon2": "^0.26.2",
@@ -52,17 +45,13 @@
     "koa-router": "^8.0.8",
     "lodash": "^4.17.19",
     "mixpanel": "^0.11.0",
-    "pg": "^8.3.0",
+    "mongoose": "^5.9.28",
     "reflect-metadata": "^0.1.13",
     "ts-loader": "^7.0.5",
     "ts-node": "^8.10.1",
     "tsconfig-paths": "^3.9.0",
-    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "type-graphql": "^1.0.0-rc.3",
-    "typeorm": "^0.2.25",
     "typescript": "^3.9.3",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
     "winston": "^3.3.3",
     "winston-elasticsearch": "^0.9.0"
   }

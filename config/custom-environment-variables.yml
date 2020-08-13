@@ -7,13 +7,7 @@ api:
     local: LOGS
     distant: LOGS_DISTANT
 database:
-  postgres:
-    details:
-      host: POSTGRES_HOST
-      port: POSTGRES_PORT
-      username: POSTGRES_USER
-      password: POSTGRES_PASSWORD
-      database: POSTGRES_DB
+  mongo:
     url: DATABASE_URL
 services:
   elastic:

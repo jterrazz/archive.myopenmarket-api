@@ -1,15 +1,18 @@
 import * as argon2 from 'argon2';
 import * as jwt from 'jsonwebtoken';
-import { getRepository } from 'typeorm';
 
-import { User } from '@model';
-import { apiConfig } from '../config';
-import { UserLanguage } from '~/models/User';
+import { User, UserInterface, UserLanguage } from '@model';
+import { apiConfig } from '@config';
 
-class AuthService {
-    private static generateJWT(userRecord: User) {
+interface AuthenticationResult {
+    user: UserInterface;
+    token: string;
+}
+
+class AuthenticationService {
+    private static generateJWT(userRecord: UserInterface) {
         const data = {
-            userId: userRecord.id,
+            userId: userRecord._id,
         };
         const signature = apiConfig.auth['jwt-signature'];
         const expiresIn = '24h';
@@ -26,31 +29,29 @@ class AuthService {
         firstName: string,
         lastName: string,
         language: UserLanguage = UserLanguage.en,
-    ) {
+    ): Promise<AuthenticationResult> {
         const passwordHashed = await argon2.hash(password);
-        // TODO Get language from req
 
-        const userRepo = await getRepository(User);
-        const user = userRepo.create({
+        const user = new User({
+            email,
             passwordHashed,
             firstName,
             lastName,
-            email,
             language,
         });
-        const userRecord = await userRepo.save(user);
+        await user.save();
 
         return {
-            user: userRecord.privateData,
-            token: AuthService.generateJWT(userRecord),
+            user: user.toPrivateProps(),
+            token: AuthenticationService.generateJWT(user),
         };
     }
 
     /**
      * Authenticate a pair of credentials and returns the JWT / User data
      */
-    async signIn(email: string, password: string): Promise<any> {
-        const userRecord = await getRepository(User).findOne({ email });
+    async signIn(email: string, password: string): Promise<AuthenticationResult> {
+        const userRecord = await User.findOne({ email: email });
         if (!userRecord) {
             throw new Error('User not found');
         }
@@ -61,16 +62,16 @@ class AuthService {
         }
 
         return {
-            user: userRecord.privateData,
-            token: AuthService.generateJWT(userRecord),
+            user: userRecord.toPrivateProps(),
+            token: AuthenticationService.generateJWT(userRecord),
         };
     }
 
     /**
      * Delete a user
      */
-    async deleteUser(id: number, password: string): Promise<any> {
-        const userRecord = await getRepository(User).findOne({ id });
+    async deleteUser(id: string, password: string): Promise<boolean> {
+        const userRecord = await User.findOne({ id });
         if (!userRecord) {
             throw new Error('User not found');
         }
@@ -80,10 +81,9 @@ class AuthService {
             throw new Error('Incorrect password');
         }
 
-        await getRepository(User).delete(userRecord);
-
+        await userRecord.deleteOne();
         return true;
     }
 }
 
-export default AuthService;
+export default AuthenticationService;

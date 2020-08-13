@@ -17,18 +17,9 @@ const _buildAndVerifyConfigFromYml = (ymlSection, joiSchema) => {
 export const databaseConfig = _buildAndVerifyConfigFromYml(
     'database',
     Joi.object({
-        postgres: Joi.object({
-            details: Joi.object({
-                host: Joi.string().required(),
-                port: Joi.number().required(),
-                username: Joi.string().required(),
-                password: Joi.string().required(),
-                database: Joi.string().required(),
-            }),
+        mongo: Joi.object({
             url: Joi.string(),
-        })
-            .or('details', 'url')
-            .required(),
+        }).required(),
     }).required(),
 );
 

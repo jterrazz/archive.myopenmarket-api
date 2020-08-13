@@ -5,7 +5,7 @@ api:
     local: 2
     distant: 5
 database:
-  postgres:
+  mongo:
 services:
   elastic:
   mixpanel:
