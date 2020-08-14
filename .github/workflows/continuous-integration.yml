@@ -20,35 +20,32 @@ jobs:
 
     steps:
 
-#    - name: start deployment
-#      uses: bobheadxi/deployments@master
-#      id: deployment
-#      with:
-#        step: start
-#        token: ${{ secrets.GITHUB_TOKEN }}
-#        env: release
-#
-#    - uses: actions/checkout@v2
-#    - name: Use Node.js ${{ matrix.node-version }}
-#      uses: actions/setup-node@v1
-#      with:
-#        node-version: ${{ matrix.node-version }}
-#    - run: yarn
-#    - run: yarn test
-#
-#    - name: update deployment status
-#      uses: bobheadxi/deployments@master
-#      if: always()
-#      with:
-#        step: finish
-#        token: ${{ secrets.GITHUB_TOKEN }}
-#        status: ${{ job.status }}
-#        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+    # Start deployment
+    - name: start deployment
+      uses: bobheadxi/deployments@master
+      id: deployment
+      with:
+        step: start
+        token: ${{ secrets.GITHUB_TOKEN }}
+        env: production
 
+    # Checkout
+    - uses: actions/checkout@v2
+
+    # Test project
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: yarn
+    - run: yarn test
+
+    # End deployment
     - name: update deployment status
       uses: bobheadxi/deployments@master
       if: always()
       with:
-        step: deactivate-env
+        step: finish
         token: ${{ secrets.GITHUB_TOKEN }}
-        env: release
+        status: ${{ job.status }}
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
