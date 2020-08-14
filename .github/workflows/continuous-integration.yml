@@ -49,7 +49,7 @@ jobs:
       uses: bobheadxi/deployments@master
       if: always()
       with:
-        step: finish
+        step: deactivate-env
         token: ${{ secrets.GITHUB_TOKEN }}
         status: ${{ job.status }}
         deployment_id: ${{ steps.deployment.outputs.deployment_id }}
