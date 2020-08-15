@@ -52,7 +52,7 @@ class AuthenticationService {
                 token: null, // AuthenticationService.generateJWT(user),
             };
         } catch (err) {
-            if (err.code == 11000 && err.keyPattern && err.keyPattern.hasOwnProperty('email')) {
+            if (err.code == 11000 && err.keyPattern?.hasOwnProperty('email')) {
                 throw new HttpError(422, 'This email is already used');
             }
             throw err;

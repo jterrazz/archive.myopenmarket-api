@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { UserInterface, ProductInterface } from '@model';
 
-export interface StoreInterface extends Document {
+export interface ShopInterface extends Document {
     alias: string;
     name: string;
     description: string;
@@ -10,7 +10,7 @@ export interface StoreInterface extends Document {
     products: ProductInterface;
 }
 
-const StoreSchema: Schema = new Schema({
+const ShopSchema: Schema = new Schema({
     alias: { type: String, unique: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
@@ -19,4 +19,4 @@ const StoreSchema: Schema = new Schema({
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 });
 
-export const Store = mongoose.model<StoreInterface>('Store', StoreSchema);
+export const Shop = mongoose.model<ShopInterface>('Shop', ShopSchema);

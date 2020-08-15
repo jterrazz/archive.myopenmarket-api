@@ -9,7 +9,10 @@ const logger = new Logger(__filename);
 
 export const getUserController: Middleware = async (ctx) => {
     const userRecord = await User.findOne({ _id: ctx.params.userId });
-    return userRecord ? userRecord.toPublicProps() : null; // TODO Tranform to es2020 syntax
+    if (!userRecord) {
+        throw new HttpError(404, 'User not found');
+    }
+    ctx.body = userRecord.toPublicProps();
 };
 
 export const deleteMeController: Middleware = async (ctx) => {
@@ -31,7 +34,7 @@ export const updateMeController: Middleware = async (ctx) => {
         await userRecord.save();
         ctx.body = userRecord.toPrivateProps();
     } catch (e) {
-        if (e.code == 11000 && e.keyPattern && e.keyPattern.hasOwnProperty('email')) {
+        if (e.code == 11000 && e.keyPattern?.hasOwnProperty('email')) {
             throw new HttpError(422, 'This email is already used');
         }
     }

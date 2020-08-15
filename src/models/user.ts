@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import _ from 'lodash';
 
-import { ActivityInterface, OrderInterface, StoreInterface } from '@model';
+import { ActivityInterface, OrderInterface, ShopInterface } from '@model';
 
 export enum UserLanguage {
     fr = 'fr-FR',
@@ -16,7 +16,7 @@ export interface UserInterface extends Document {
     language: UserLanguage;
     activity: [ActivityInterface];
     orders: [OrderInterface];
-    stores: [StoreInterface];
+    stores: [ShopInterface];
 
     toPublicProps(): UserInterface;
     toPrivateProps(): UserInterface;
@@ -30,7 +30,7 @@ const UserSchema: Schema = new Schema({
     language: { type: UserLanguage, required: true },
     activity: [{ type: Schema.Types.ObjectId, ref: 'Activity' }],
     orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
-    stores: [{ type: Schema.Types.ObjectId, ref: 'Store' }],
+    shops: [{ type: Schema.Types.ObjectId, ref: 'Shop' }],
 });
 
 /**
