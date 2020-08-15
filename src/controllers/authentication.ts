@@ -39,6 +39,7 @@ export const signUpController: Middleware = async (ctx, next) => {
         lastName: Joi.string().required(),
     }).required();
 
+    // @ts-ignore // TODO Replace this
     const { email, password, firstName, lastName } = await bodySchema.validateAsync(ctx.request.body);
     ctx.body = await authenticationService.signUp(email, password, firstName, lastName);
 

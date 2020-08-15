@@ -7,5 +7,4 @@ api:
 database:
   mongo:
 services:
-  elastic:
   mixpanel:
