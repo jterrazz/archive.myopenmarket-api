@@ -2,9 +2,7 @@ import passport from 'koa-passport';
 import * as Joi from '@hapi/joi';
 import { Strategy as LocalStrategy } from 'passport-local';
 
-import { User } from '@model';
 import AuthenticationService from '@services/authentication/index';
-import { HttpError } from '@tom';
 
 passport.serializeUser(async (user, done) => {
     try {
@@ -16,9 +14,7 @@ passport.serializeUser(async (user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await User.findOne({ _id: id });
-        if (!user) done(new HttpError(401, "Authenticated token doesn't match any user"));
-        await done(null, user);
+        await done(null, { _id: id });
     } catch (err) {
         done(err);
     }

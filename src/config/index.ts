@@ -36,7 +36,8 @@ export const apiConfig = _buildAndVerifyConfigFromYml(
             port: Joi.number().required(),
         }).required(),
         auth: Joi.object({
-            'jwt-signature': Joi.string().required(),
+            jwtSecret: Joi.string().required(),
+            sessionSecret: Joi.string().required(),
         }).required(),
     }).required(),
 );

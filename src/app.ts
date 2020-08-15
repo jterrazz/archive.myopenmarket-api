@@ -5,7 +5,7 @@ import session from 'koa-session';
 import passport from 'koa-passport';
 
 import { Logger } from '@tom';
-import { databaseConfig } from '@config';
+import { apiConfig, databaseConfig } from '@config';
 import { requestHandlerMiddleware } from '~/middlewares/request-handler';
 import router from './router';
 import { setupSentry } from '@services/sentry';
@@ -37,7 +37,7 @@ const setupApp = async (): Promise<any> => {
     setupSentry(app);
 
     app.use(bodyParser());
-    app.keys = ['REPLACE+THIS'];
+    app.keys = [apiConfig.auth.sessionSecret];
     app.use(session({}, app));
     app.use(passport.initialize());
     app.use(passport.session());

@@ -53,7 +53,7 @@ class AuthenticationService {
             };
         } catch (err) {
             if (err.code == 11000 && err.keyPattern && err.keyPattern.hasOwnProperty('email')) {
-                throw new HttpError(422, 'This email is already used'); // TODO Maybe add details for clientSide detection
+                throw new HttpError(422, 'This email is already used');
             }
             throw err;
         }
@@ -65,12 +65,12 @@ class AuthenticationService {
     async signIn(email: string, password: string): Promise<AuthenticationResult> {
         const userRecord = await User.findOne({ email: email });
         if (!userRecord) {
-            throw new Error('User not found');
+            throw new HttpError(401, 'Authentication failed');
         }
 
         const correctPassword = await argon2.verify(userRecord.passwordHashed, password);
         if (!correctPassword) {
-            throw new Error('Incorrect password');
+            throw new HttpError(401, 'Authentication failed');
         }
 
         return {

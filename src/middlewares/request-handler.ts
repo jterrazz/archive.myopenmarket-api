@@ -17,6 +17,7 @@ export const requestHandlerMiddleware: Koa.Middleware = async (ctx, next) => {
         } else {
             ctx.status = 500;
             ctx.body = 'Internal Server Error';
+            logger.error(err);
         }
         logger.error(`${ctx.request.method} ${ctx.request.url} - ${ctx.status} ${ctx.body}`);
         ctx.app.emit('error', err, ctx);

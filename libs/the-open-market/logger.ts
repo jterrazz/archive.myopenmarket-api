@@ -40,7 +40,7 @@ class Logger {
 
     _buildMessage(message) {
         if (message instanceof Error) {
-            message = 'Error: ' + message.message;
+            message = message.stack;
         }
         return {
             message: typeof message == 'string' ? message : JSON.stringify(message),

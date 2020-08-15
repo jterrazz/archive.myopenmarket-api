@@ -2,7 +2,8 @@ api:
   http:
     port: 3000
   auth:
-    jwt-signature: 'dev_jwt'
+    jwtSecret: 'dev_secret'
+    sessionSecret: 'dev_secret'
   logs:
     local: 6
     distant: 6

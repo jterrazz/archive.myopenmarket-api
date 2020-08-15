@@ -1,5 +1,4 @@
 import { Middleware } from 'koa';
-
 import { apiConfig } from '@config';
 
 export const getStateController: Middleware = async (ctx, next) => {
