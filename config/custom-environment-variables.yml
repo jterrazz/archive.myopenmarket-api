@@ -12,3 +12,5 @@ database:
 services:
   mixpanel:
     secret: MIXPANEL_SECRET
+  sentry:
+    dsn: SENTRY_DSN

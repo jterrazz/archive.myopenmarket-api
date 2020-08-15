@@ -1,37 +1,33 @@
-// import { Resolver, Mutation, Query, Arg, Ctx } from 'type-graphql';
-//
-// import { User, UserInterface, Activity } from '@model';
-// import { GqlContext, UpdateUserInput, PublicUserSchema } from '@types';
-// import AuthenticationService from '@services/authentication';
-//
-// @Resolver()
-// export class UserResolver {
-//     @Query(() => PublicUserSchema, { nullable: true })
-//     async user(@Ctx() context: GqlContext, @Arg('id') id: string): Promise<UserInterface> {
-//         const userRecord = await User.findOne({ _id: id });
-//         return userRecord ? userRecord.toPublicProps() : null;
-//     }
-//
-//     @Mutation(() => PublicUserSchema)
-//     async updateUser(@Ctx() context: GqlContext, @Arg('data') input: UpdateUserInput): Promise<UserInterface> {
-//         context.user.assertIsLoggedIn();
-//         const userRecord = await User.findOne({ _id: context.user._id });
-//         if (!userRecord) {
-//             throw new Error('User not found!');
-//         }
-//
-//         Object.assign(userRecord, input);
-//         const activity = new Activity({ ipAddress: 'test', type: 'test' });
-//         await activity.save();
-//         userRecord.activity.push(activity);
-//         await userRecord.save();
-//         return userRecord.toPrivateProps();
-//     }
-//
-//     @Mutation(() => Boolean)
-//     async deleteUser(@Ctx() context: GqlContext, @Arg('password') password: string): Promise<boolean> {
-//         context.user.assertIsLoggedIn();
-//         await new AuthenticationService().deleteUser(context.user._id, password);
-//         return true;
-//     }
-// }
+import { Middleware } from 'koa';
+import * as Joi from '@hapi/joi';
+
+import { User, Activity } from '@model';
+import { Logger } from '@tom';
+import AuthenticationService from '@services/authentication';
+
+const logger = new Logger(__filename);
+
+export const getUserController: Middleware = async (ctx, next) => {
+    const userRecord = await User.findOne({ _id: ctx.params.userId });
+    return userRecord ? userRecord.toPublicProps() : null; // TODO Tranform to es2020 syntax
+};
+
+export const deleteMeController: Middleware = async (ctx, next) => {
+    await new AuthenticationService().deleteUser(ctx.user._id, ctx.body.password);
+};
+
+export const updateMeController: Middleware = async (ctx, next) => {
+    const userRecord = await User.findOne({ _id: ctx.user._id });
+    if (!userRecord) {
+        throw new Error('Logged user not found');
+    }
+
+    Object.assign(userRecord, ctx.body); // TODO Validate body with shared schema !!!!
+    const activity = new Activity({ ipAddress: 'test', type: 'test' });
+    await activity.save();
+    userRecord.activity.push(activity);
+    await userRecord.save();
+    ctx.body = userRecord.toPrivateProps();
+
+    await next();
+};

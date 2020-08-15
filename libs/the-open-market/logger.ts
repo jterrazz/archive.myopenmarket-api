@@ -39,6 +39,9 @@ class Logger {
     }
 
     _buildMessage(message) {
+        if (message instanceof Error) {
+            message = 'Error: ' + message.message;
+        }
         return {
             message: typeof message == 'string' ? message : JSON.stringify(message),
             category: this._prefix,

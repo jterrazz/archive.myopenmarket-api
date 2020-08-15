@@ -1,5 +1,5 @@
-import Tracker from './tracker';
 import Logger from './logger';
+import { HttpError } from './error';
 import './prototypes/object';
 
-export { Logger, Tracker };
+export { Logger, HttpError };

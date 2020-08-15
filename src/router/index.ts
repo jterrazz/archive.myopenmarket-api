@@ -1,15 +1,20 @@
 import Router from 'koa-router';
 
 import { getStateController } from '~/controllers/state';
-import { signInController, signUpController } from '~/controllers/authentication';
+import authRouter from './authentication';
+import userRouter from './user';
+import meRouter from './me';
 
 const router = new Router();
 
-// General
-router.get('/', getStateController);
+/*
+ * Division of routes happens here
+ */
 
-// Authentication
-router.post('/auth/signin', signInController);
-router.post('/auth/signup', signUpController);
+router.get('/', getStateController);
+router
+    .use('/auth', authRouter.routes(), authRouter.allowedMethods())
+    .use('/users', userRouter.routes(), userRouter.allowedMethods())
+    .use('/me', meRouter.routes(), meRouter.allowedMethods());
 
 export default router;

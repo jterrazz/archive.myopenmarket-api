@@ -1,8 +1,16 @@
 import * as Sentry from '@sentry/node';
-
-Sentry.init({ dsn: 'https://29afdd2d3e02471fb65a1b41871bb9ab@o198215.ingest.sentry.io/5391529' });
+import { servicesConfig } from '@config';
 
 export const setupSentry = (app) => {
+    if (!servicesConfig.sentry) {
+        return;
+    }
+
+    Sentry.init({
+        release: 'service-website@' + process.env.npm_package_version,
+        dsn: servicesConfig.sentry.dsn,
+    });
+
     app.on('error', (err, ctx) => {
         Sentry.withScope(function (scope) {
             scope.addEventProcessor(function (event) {

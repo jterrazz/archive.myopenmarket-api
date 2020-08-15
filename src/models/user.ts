@@ -40,12 +40,13 @@ const UserSchema: Schema = new Schema({
 const PUBLIC_DATA_KEYS = ['_id', 'firstName', 'lastName', 'language'];
 const PRIVATE_DATA_KEYS = ['email', ...PUBLIC_DATA_KEYS];
 
-UserSchema.methods.toPublicProps = function () {
-    return _.pick(this, PUBLIC_DATA_KEYS);
-};
-
-UserSchema.methods.toPrivateProps = function () {
-    return _.pick(this, PRIVATE_DATA_KEYS);
+UserSchema.methods = {
+    toPublicProps: function (): UserInterface {
+        return _.pick(this, PUBLIC_DATA_KEYS);
+    },
+    toPrivateProps: function () {
+        return _.pick(this, PRIVATE_DATA_KEYS);
+    },
 };
 
 export const User = mongoose.model<UserInterface>('User', UserSchema);

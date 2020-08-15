@@ -1,12 +1,14 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
+import session from 'koa-session';
+import passport from 'koa-passport';
 
 import { Logger } from '@tom';
 import { databaseConfig } from '@config';
-import { errorHandlerMiddleware } from '~/middlewares/error-handler';
-import { endTrackerMiddleware, startTrackerMiddleware } from '~/middlewares/tracker';
+import { requestHandlerMiddleware } from '~/middlewares/request-handler';
 import router from './router';
+import { setupSentry } from '@services/sentry';
 
 const logger = new Logger(__filename);
 
@@ -32,11 +34,15 @@ const setupApp = async (): Promise<any> => {
     await connectToDatabase();
 
     const app = new Koa();
+    setupSentry(app);
+
     app.use(bodyParser());
-    app.use(errorHandlerMiddleware);
-    app.use(startTrackerMiddleware);
+    app.keys = ['REPLACE+THIS'];
+    app.use(session({}, app));
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use(requestHandlerMiddleware);
     app.use(router.routes()).use(router.allowedMethods());
-    app.use(endTrackerMiddleware);
 
     logger.info(`App is ready`);
     return { app };
