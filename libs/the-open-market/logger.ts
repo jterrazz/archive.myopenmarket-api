@@ -1,8 +1,6 @@
 // This is imported by a lot of files, avoid importing other code
 import winston from 'winston';
-import { ElasticsearchTransport } from 'winston-elasticsearch';
 import { apiConfig, servicesConfig } from '@config';
-import apmClient from '~/services/elastic-apm';
 
 const WinstonLevels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'];
 
@@ -33,29 +31,6 @@ winstonLogger.add(
     }),
 );
 
-if (servicesConfig.elastic) {
-    winstonLogger.add(
-        new ElasticsearchTransport({
-            format: winston.format.json(),
-            level: WinstonLevels[apiConfig.logs.distant],
-            indexPrefix: 'filebeat',
-            // @ts-ignore
-            apm: apmClient,
-            clientOpts: {
-                cloud: {
-                    id: servicesConfig.elastic['cloud-id'],
-                },
-                auth: {
-                    apiKey: {
-                        id: servicesConfig.elastic['log-api-id'],
-                        api_key: servicesConfig.elastic['log-api-key'],
-                    },
-                },
-            },
-        }),
-    );
-}
-
 class Logger {
     _prefix;
 
@@ -64,6 +39,9 @@ class Logger {
     }
 
     _buildMessage(message) {
+        if (message instanceof Error) {
+            message = 'Error: ' + message.message;
+        }
         return {
             message: typeof message == 'string' ? message : JSON.stringify(message),
             category: this._prefix,

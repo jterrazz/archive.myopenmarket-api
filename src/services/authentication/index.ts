@@ -3,13 +3,18 @@ import * as jwt from 'jsonwebtoken';
 
 import { User, UserInterface, UserLanguage } from '@model';
 import { apiConfig } from '@config';
+import { HttpError } from '@tom';
 
 interface AuthenticationResult {
     user: UserInterface;
-    token: string;
+    token?: string;
 }
 
 class AuthenticationService {
+    /**
+     * @todo Maybe delete this as we could use sessions
+     * @param userRecord
+     */
     private static generateJWT(userRecord: UserInterface) {
         const data = {
             userId: userRecord._id,
@@ -30,21 +35,28 @@ class AuthenticationService {
         lastName: string,
         language: UserLanguage = UserLanguage.en,
     ): Promise<AuthenticationResult> {
-        const passwordHashed = await argon2.hash(password);
+        try {
+            const passwordHashed = await argon2.hash(password);
 
-        const user = new User({
-            email,
-            passwordHashed,
-            firstName,
-            lastName,
-            language,
-        });
-        await user.save();
+            const user = new User({
+                email,
+                passwordHashed,
+                firstName,
+                lastName,
+                language,
+            });
+            await user.save();
 
-        return {
-            user: user.toPrivateProps(),
-            token: AuthenticationService.generateJWT(user),
-        };
+            return {
+                user: user,
+                token: null, // AuthenticationService.generateJWT(user),
+            };
+        } catch (err) {
+            if (err.code == 11000 && err.keyPattern && err.keyPattern.hasOwnProperty('email')) {
+                throw new HttpError(422, 'This email is already used'); // TODO Maybe add details for clientSide detection
+            }
+            throw err;
+        }
     }
 
     /**
@@ -62,8 +74,8 @@ class AuthenticationService {
         }
 
         return {
-            user: userRecord.toPrivateProps(),
-            token: AuthenticationService.generateJWT(userRecord),
+            user: userRecord,
+            token: null, // AuthenticationService.generateJWT(user),
         };
     }
 

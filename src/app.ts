@@ -1,14 +1,14 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
-import 'reflect-metadata'; // Needed by type-graphql
+import session from 'koa-session';
+import passport from 'koa-passport';
 
 import { Logger } from '@tom';
 import { databaseConfig } from '@config';
-import { buildGraphQlServer } from './api/graphql';
-import { errorHandlerMiddleware } from '~/api/rest/middlewares/error-handler';
-import { endTrackerMiddleware, startTrackerMiddleware } from '~/api/rest/middlewares/tracker';
-import router from './api/rest/router';
+import { requestHandlerMiddleware } from '~/middlewares/request-handler';
+import router from './router';
+import { setupSentry } from '@services/sentry';
 
 const logger = new Logger(__filename);
 
@@ -29,21 +29,22 @@ const connectToDatabase = async () => {
 };
 
 const setupApp = async (): Promise<any> => {
-    logger.info(`Starting app with environment ${process.env.NODE_ENV}`);
+    logger.info(`App is starting with ${process.env.NODE_ENV} environment`);
 
     await connectToDatabase();
 
     const app = new Koa();
+    setupSentry(app);
+
     app.use(bodyParser());
-    app.use(errorHandlerMiddleware);
-    app.use(startTrackerMiddleware);
+    app.keys = ['REPLACE+THIS'];
+    app.use(session({}, app));
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use(requestHandlerMiddleware);
     app.use(router.routes()).use(router.allowedMethods());
-    app.use(endTrackerMiddleware);
 
-    const graphQLServer = await buildGraphQlServer();
-    graphQLServer.applyMiddleware({ app });
-
-    logger.info(`App setup is done`);
+    logger.info(`App is ready`);
     return { app };
 };
 

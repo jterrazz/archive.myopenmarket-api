@@ -11,11 +11,9 @@
       "~/*": ["./src/*"],
       "@tom": ["./libs/the-open-market"],
       "@tom/*": ["./libs/the-open-market/*"],
-      "@controllers/*": ["./src/api/rest/controllers/*"],
-      "@types": ["./src/api/graphql/types"],
-      "@schemas": ["./src/api/graphql/schemas"],
       "@model": ["./src/models"],
       "@config": ["./src/config"],
+      "@controllers/*": ["./src/controllers/*"],
       "@services/*": ["./src/services/*"]
     },
     "emitDecoratorMetadata": true,

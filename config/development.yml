@@ -3,9 +3,9 @@ api:
     port: 3000
   auth:
     jwt-signature: 'dev_jwt'
+  logs:
+    local: 6
+    distant: 6
 database:
   mongo:
-    url: 'mongodb://dev_user:dev_password@localhost/tom'
-services:
-  elastic:
-  mixpanel:
+    url: 'mongodb+srv://dev_user:dev_password@theopenmarket.winw4.azure.mongodb.net/tom?retryWrites=true&w=majority' # 'mongodb://dev_user:dev_password@localhost/tom'

@@ -1,12 +1,9 @@
-class Error {
-    constructor(error: Error | Error | string) {
-        // If string or ...
-    }
+export class HttpError extends Error {
+    status: number;
+    expose = true;
 
-    set statusText(text: string) {
-        this.statusText = text;
-        // and add code
+    constructor(status = 500, message) {
+        super(message);
+        this.status = status;
     }
 }
-
-export default Error;

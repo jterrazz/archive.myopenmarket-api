@@ -1,6 +1,5 @@
-import '~/services/elastic-apm'; // Must be first to monitor supported packages
 import setupApp from './app';
-import { apiConfig } from './config';
+import { apiConfig } from '@config';
 import { Logger } from '@tom';
 
 const logger = new Logger(__filename);
