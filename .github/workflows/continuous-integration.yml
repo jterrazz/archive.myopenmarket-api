@@ -20,15 +20,6 @@ jobs:
 
     steps:
 
-    # Start deployment
-    - name: start deployment
-      uses: bobheadxi/deployments@master
-      id: deployment
-      with:
-        step: start
-        token: ${{ secrets.GITHUB_TOKEN }}
-        env: production
-
     # Checkout
     - uses: actions/checkout@v2
 
@@ -39,13 +30,3 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn
     - run: yarn test
-
-    # End deployment
-    - name: update deployment status
-      uses: bobheadxi/deployments@master
-      if: always()
-      with:
-        step: finish
-        token: ${{ secrets.GITHUB_TOKEN }}
-        status: ${{ job.status }}
-        deployment_id: ${{ steps.deployment.outputs.deployment_id }}

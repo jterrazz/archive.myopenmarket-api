@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { startTestApp, stopTestApp } from '~/tests/scripts/setup-app';
+import { startTestApp, stopTestApp } from '~/__tests__/scripts/setup-app';
 
 let app;
 
@@ -7,18 +7,20 @@ beforeAll(async () => {
     app = await startTestApp();
 });
 
-test('Initiate app', async () => {
-    expect(app).toBeDefined();
-});
+describe('APPLICATION INITIATION', () => {
+    it('must be initiated', async () => {
+        expect(app).toBeDefined();
+    });
 
-test('GET /bad-url returns 404', async () => {
-    const { status } = await request(app.callback()).get('/bad-url');
-    expect(status).toBe(404);
-});
+    it('GET /bad-url must return 404', async () => {
+        const { status } = await request(app.callback()).get('/bad-url');
+        expect(status).toBe(404);
+    });
 
-test('GET / returns 200', async () => {
-    const { status } = await request(app.callback()).get('/');
-    expect(status).toBe(200);
+    it('GET / must return 200', async () => {
+        const { status } = await request(app.callback()).get('/');
+        expect(status).toBe(200);
+    });
 });
 
 afterAll(async () => {
