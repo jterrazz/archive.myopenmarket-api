@@ -28,12 +28,12 @@ const connectToDatabase = async () => {
     });
 };
 
-const setupApp = async (): Promise<any> => {
+export const createApp = async (): Promise<Koa> => {
     logger.info(`App is starting with ${process.env.NODE_ENV} environment`);
 
-    await connectToDatabase();
-
     const app = new Koa();
+
+    await connectToDatabase();
     setupSentry(app);
 
     app.use(bodyParser());
@@ -45,7 +45,9 @@ const setupApp = async (): Promise<any> => {
     app.use(router.routes()).use(router.allowedMethods());
 
     logger.info(`App is ready`);
-    return { app };
+    return app;
 };
 
-export default setupApp;
+export const destroyApp = async () => {
+    await mongoose.connection.close();
+};
