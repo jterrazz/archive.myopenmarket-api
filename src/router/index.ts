@@ -3,8 +3,8 @@ import Router from 'koa-router';
 import authRouter from './authentication';
 import userRouter from './users';
 import meRouter from './me';
-import shopRouter from '~/router/shop';
-import { getStateController } from '~/controllers/state';
+import shopRouter from './shop';
+import { getStateController } from '@controllers/state';
 
 const router = new Router();
 

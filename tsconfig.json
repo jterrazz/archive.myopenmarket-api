@@ -11,6 +11,7 @@
       "~/*": ["./src/*"],
       "@tom": ["./libs/the-open-market"],
       "@tom/*": ["./libs/the-open-market/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
       "@model": ["./src/models"],
       "@config": ["./src/config"],
       "@controllers/*": ["./src/controllers/*"],

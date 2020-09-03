@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import _ from 'lodash';
-
 import { ActivityInterface, OrderInterface, ShopInterface } from '@model';
 
 export enum UserLanguage {

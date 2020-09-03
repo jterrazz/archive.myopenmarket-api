@@ -1,5 +1,4 @@
 import Koa from 'koa';
-
 import { Logger } from '@tom';
 
 const logger = new Logger(__filename);

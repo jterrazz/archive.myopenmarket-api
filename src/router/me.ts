@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import { deleteMeController, updateMeController } from '@controllers/user';
-import { isAuthenticated } from '~/middlewares/authentication';
+import { isAuthenticated } from '@middlewares/authentication';
 
 export const meRouter = new Router();
 

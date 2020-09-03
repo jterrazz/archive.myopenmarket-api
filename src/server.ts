@@ -1,3 +1,4 @@
+import 'spm-agent-nodejs';
 import { createApp } from './app';
 import { apiConfig } from '@config';
 import { Logger } from '@tom';
