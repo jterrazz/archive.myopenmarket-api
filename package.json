@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@koa/cors": "^3.1.0",
     "@sentry/node": "^5.21.1",
     "@types/mongoose": "^5.7.36",
     "@types/node": "^14.0.5",

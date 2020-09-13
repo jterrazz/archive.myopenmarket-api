@@ -39,9 +39,12 @@ export const apiConfig = _buildAndVerifyConfigFromYml(
             jwtSecret: Joi.string().required(),
             sessionSecret: Joi.string().required(),
         }).required(),
+        security: Joi.object({
+            cors: Joi.array().items(Joi.string()),
+        }).required(),
     }).required(),
 );
-apiConfig.isProd = apiConfig.env == 'production';
+apiConfig.isProd = apiConfig.env === 'production';
 
 export const servicesConfig = _buildAndVerifyConfigFromYml(
     'services',

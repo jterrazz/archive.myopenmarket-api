@@ -2,7 +2,7 @@ api:
   http:
     port: PORT
   auth:
-    jwtSecret: JWT_SIGNATURE
+    jwtSecret: JWT_SECRET
     sessionSecret: SESSION_SECRET
   logs:
     local: LOGS

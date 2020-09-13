@@ -2,6 +2,7 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import session from 'koa-session';
+import cors from '@koa/cors';
 import passport from 'koa-passport';
 
 import { Logger } from '@tom';
@@ -36,6 +37,11 @@ export const createApp = async (): Promise<Koa> => {
     await connectToDatabase();
     setupSentry(app);
 
+    app.use(
+        cors({
+            origin: apiConfig.security.cors,
+        }),
+    );
     app.use(bodyParser());
     app.keys = [apiConfig.auth.sessionSecret];
     app.use(session({}, app));
