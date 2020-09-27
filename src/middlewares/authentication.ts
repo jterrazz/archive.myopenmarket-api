@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import { HttpError } from '@tom';
+import { HttpError } from '@services/error';
 
 export const isAuthenticated: Middleware = async (ctx, next) => {
     if (ctx.isAuthenticated()) {

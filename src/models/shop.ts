@@ -1,8 +1,13 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { UserInterface, ProductInterface } from '@model';
+import _ from 'lodash';
+import { UserInterface } from '@models/user';
+import { ProductInterface } from '@models/product';
+
+// Produit/store: Enseigne
+// Et disponible à distance
 
 export interface ShopInterface extends Document {
-    alias: string;
+    handle: string;
     name: string;
     description: string;
     address: string;
@@ -11,7 +16,7 @@ export interface ShopInterface extends Document {
 }
 
 const ShopSchema: Schema = new Schema({
-    alias: { type: String, unique: true },
+    handle: { type: String, unique: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
     address: { type: String, required: true }, // TODO Maybe use array
@@ -19,4 +24,22 @@ const ShopSchema: Schema = new Schema({
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 });
 
-export const Shop = mongoose.model<ShopInterface>('Shop', ShopSchema);
+/**
+ * JS Getters
+ */
+
+const PUBLIC_DATA_KEYS = ['_id', 'name', 'description', 'address', 'owner', 'product'];
+const PRIVATE_DATA_KEYS = [...PUBLIC_DATA_KEYS];
+
+ShopSchema.methods = {
+    toPublicProps: function (): UserInterface {
+        return _.pick(this, PUBLIC_DATA_KEYS);
+    },
+    toPrivateProps: function () {
+        return _.pick(this, PRIVATE_DATA_KEYS);
+    },
+};
+
+const Shop = mongoose.model<ShopInterface>('Shop', ShopSchema);
+
+export default Shop;

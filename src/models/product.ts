@@ -27,4 +27,6 @@ const ProductSchema: Schema = new Schema({
     tags: [{ type: String }],
 });
 
-export const Product = mongoose.model<ProductInterface>('Product', ProductSchema);
+const Product = mongoose.model<ProductInterface>('Product', ProductSchema);
+
+export default Product;

@@ -1,6 +1,6 @@
 // This is imported by a lot of files, avoid importing other code
 import winston from 'winston';
-import { apiConfig, servicesConfig } from '@config';
+import { apiConfig } from '@config';
 
 const WinstonLevels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'];
 

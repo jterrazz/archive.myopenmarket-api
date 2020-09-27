@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import { Logger } from '@tom';
+import Logger from '@services/logger';
 
 const logger = new Logger(__filename);
 

@@ -1,46 +1,37 @@
 import { Middleware } from 'koa';
-import { User, Activity } from '@model';
-import { HttpError, Logger } from '@tom';
+import Logger from '@services/logger';
 import AuthenticationService from '@services/authentication';
+import { EVENTS } from '@services/tracker';
+import { persistUser, retrieveUserSimple } from '@models/user';
 
 const logger = new Logger(__filename);
 
+// Controllers
+
 export const getUserController: Middleware = async (ctx) => {
-    const userRecord = await User.findOne({ _id: ctx.params.userId });
-    if (!userRecord) {
-        throw new HttpError(404, 'User not found');
-    }
+    ctx.tracker.track(EVENTS.routes.getUser);
+    const userRecord = await retrieveUserSimple(ctx.state.user._id);
     ctx.body = userRecord.toPublicProps();
 };
 
+export const getMeController: Middleware = async (ctx) => {
+    ctx.tracker.track(EVENTS.routes.getMe);
+    const userRecord = await retrieveUserSimple(ctx.state.user._id);
+    ctx.body = userRecord.toPrivateProps();
+};
+
 export const deleteMeController: Middleware = async (ctx) => {
-    // TODO Add schema check
-    await new AuthenticationService().deleteUser(ctx.state.user._id, ctx.body.password);
+    ctx.tracker.track(EVENTS.routes.deleteMe);
+    await new AuthenticationService().deleteUser(ctx.state.user._id, ctx.request.body.password);
+    ctx.status = 200;
 };
 
 export const updateMeController: Middleware = async (ctx) => {
-    try {
-        const userRecord = await User.findOne(
-            { _id: ctx.state.user._id },
-            {
-                activity: { $slice: [0, 3] },
-                orders: { $slice: [0, 3] },
-            },
-        ).select('-orders');
-        if (!userRecord) {
-            throw new HttpError(404, 'Authenticated user not found');
-        }
+    // TODO Validate body with shared schema !!!!
+    ctx.tracker.track(EVENTS.routes.patchMe);
+    const userRecord = await retrieveUserSimple(ctx.state.user._id);
 
-        Object.assign(userRecord, ctx.request.body); // TODO Validate body with shared schema !!!!
-        const activity = new Activity({ ipAddress: 'test', type: 'test' });
-        await activity.save();
-        userRecord.activity.push(activity);
-        await userRecord.save();
-        ctx.body = userRecord.toPrivateProps();
-    } catch (e) {
-        if (e.code == 11000 && e.keyPattern?.hasOwnProperty('email')) {
-            throw new HttpError(422, 'This email is already used');
-        }
-        throw e;
-    }
+    Object.assign(userRecord, ctx.request.body);
+    await persistUser(userRecord, ctx.request.ip);
+    ctx.body = userRecord.toPrivateProps();
 };

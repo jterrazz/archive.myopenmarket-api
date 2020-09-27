@@ -5,11 +5,12 @@ import session from 'koa-session';
 import cors from '@koa/cors';
 import passport from 'koa-passport';
 
-import { Logger } from '@tom';
+import Logger from '@services/logger';
 import { apiConfig, databaseConfig } from '@config';
 import { requestHandlerMiddleware } from '~/middlewares/request-handler';
 import router from './router';
-import { setupSentry } from '@services/sentry';
+import { setupSentry } from '@services/error/sentry';
+import { populateCtxTracker } from '@middlewares/tracker';
 
 const logger = new Logger(__filename);
 
@@ -42,11 +43,13 @@ export const createApp = async (): Promise<Koa> => {
             origin: apiConfig.security.cors,
         }),
     );
+    app.proxy = true;
     app.use(bodyParser());
     app.keys = [apiConfig.auth.sessionSecret];
     app.use(session({}, app));
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(populateCtxTracker);
     app.use(requestHandlerMiddleware);
     app.use(router.routes()).use(router.allowedMethods());
 

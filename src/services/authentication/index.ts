@@ -1,9 +1,9 @@
 import * as argon2 from 'argon2';
 import * as jwt from 'jsonwebtoken';
 
-import { User, UserInterface, UserLanguage } from '@model';
+import User, { UserInterface, UserLanguage } from '@models/user';
 import { apiConfig } from '@config';
-import { HttpError } from '@tom';
+import { HttpError } from '@services/error';
 
 interface AuthenticationResult {
     user: UserInterface;
@@ -82,19 +82,18 @@ class AuthenticationService {
     /**
      * Delete a user
      */
-    async deleteUser(id: string, password: string): Promise<boolean> {
-        const userRecord = await User.findOne({ id });
+    async deleteUser(id: string, password: string) {
+        const userRecord = await User.findOne({ _id: id });
         if (!userRecord) {
-            throw new Error('User not found');
+            throw new HttpError(404, 'User not found');
         }
 
-        const correctPassword = await argon2.verify(userRecord.passwordHashed, password);
-        if (!correctPassword) {
-            throw new Error('Incorrect password');
+        const isCorrectPassword = await argon2.verify(userRecord.passwordHashed, password);
+        if (!isCorrectPassword) {
+            throw new HttpError(402, 'Incorrect password');
         }
 
         await userRecord.deleteOne();
-        return true;
     }
 }
 

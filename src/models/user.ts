@@ -1,6 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import _ from 'lodash';
-import { ActivityInterface, OrderInterface, ShopInterface } from '@model';
+import Activity, { ActivityInterface } from './activity';
+import { OrderInterface } from './order';
+import { ShopInterface } from './shop';
+import { HttpError } from '@services/error';
 
 export enum UserLanguage {
     fr = 'fr-FR',
@@ -48,4 +51,41 @@ UserSchema.methods = {
     },
 };
 
-export const User = mongoose.model<UserInterface>('User', UserSchema);
+const User = mongoose.model<UserInterface>('User', UserSchema);
+
+// Database wrappers
+
+export const retrieveUserSimple = async (id: string): Promise<UserInterface> => {
+    const userRecord = await User.findOne(
+        { _id: id },
+        {
+            activity: { $slice: [0, 3] },
+            orders: { $slice: [0, 3] },
+        },
+    ).select('-orders');
+
+    if (!userRecord) {
+        throw new HttpError(404, 'User not found');
+    }
+    return userRecord;
+};
+
+export const persistUser = async (
+    userRecord: UserInterface,
+    ipAddress: string,
+): Promise<UserInterface> => {
+    try {
+        const activity = new Activity({ ipAddress, type: 'user-update' });
+        await activity.save();
+        userRecord.activity.push(activity);
+        await userRecord.save();
+        return userRecord;
+    } catch (e) {
+        if (e.code == 11000 && e.keyPattern?.hasOwnProperty('email')) {
+            throw new HttpError(422, 'This email is already used');
+        }
+        throw e;
+    }
+};
+
+export default User;

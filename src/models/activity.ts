@@ -10,4 +10,6 @@ const ActivitySchema: Schema = new Schema({
     type: { type: String, required: true },
 });
 
-export const Activity = mongoose.model<ActivityInterface>('Activity', ActivitySchema);
+const Activity = mongoose.model<ActivityInterface>('Activity', ActivitySchema);
+
+export default Activity;

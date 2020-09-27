@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { UserInterface } from '@model';
+import { UserInterface } from '@models/user';
 
 export enum OrderStatus {
     cancelled = 'cancelled',
@@ -24,4 +24,6 @@ const OrderSchema: Schema = new Schema({
     },
 });
 
-export const Order = mongoose.model<OrderInterface>('Order', OrderSchema);
+const Order = mongoose.model<OrderInterface>('Order', OrderSchema);
+
+export default Order;
