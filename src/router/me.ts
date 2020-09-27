@@ -1,10 +1,12 @@
 import Router from 'koa-router';
-import { deleteMeController, updateMeController } from '@controllers/user';
+import { deleteMeController, getMeController, updateMeController } from '@controllers/user';
+import { isAuthenticated } from '@middlewares/authentication';
 
 export const meRouter = new Router();
 
 meRouter
-    // .use(isLoggedIn)
+    .use(isAuthenticated)
+    .get('/', getMeController)
     .patch('/', updateMeController)
     .delete('/', deleteMeController);
 

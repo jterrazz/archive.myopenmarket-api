@@ -1,6 +1,5 @@
 import Koa from 'koa';
-
-import { Logger } from '@tom';
+import Logger from '@services/logger';
 
 const logger = new Logger(__filename);
 
@@ -17,8 +16,9 @@ export const requestHandlerMiddleware: Koa.Middleware = async (ctx, next) => {
         } else {
             ctx.status = 500;
             ctx.body = 'Internal Server Error';
+            logger.error(err);
+            ctx.app.emit('error', err, ctx);
         }
         logger.error(`${ctx.request.method} ${ctx.request.url} - ${ctx.status} ${ctx.body}`);
-        ctx.app.emit('error', err, ctx);
     }
 };

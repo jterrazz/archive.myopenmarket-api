@@ -2,3 +2,6 @@ api:
   logs:
     local: 2
     distant: 2
+  security:
+    cors:
+      - 'https://theopen.market'

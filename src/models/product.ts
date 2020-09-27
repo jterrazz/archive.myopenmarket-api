@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { StoreInterface } from '@model';
+import { ShopInterface } from './shop';
 
 export enum ProductCategory {
     food = 'food',
@@ -12,7 +12,7 @@ export enum ProductCondition {
 }
 
 export interface ProductInterface extends Document {
-    store: StoreInterface;
+    store: ShopInterface;
     price: number;
     category: ProductCategory;
     condition: ProductCondition;
@@ -20,11 +20,13 @@ export interface ProductInterface extends Document {
 }
 
 const ProductSchema: Schema = new Schema({
-    store: { type: Schema.Types.ObjectId, ref: 'Store', required: true },
+    shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
     price: { type: Number, required: true },
     category: { type: ProductCategory, required: true },
     condition: { type: ProductCondition, required: true },
     tags: [{ type: String }],
 });
 
-export const Product = mongoose.model<ProductInterface>('Product', ProductSchema);
+const Product = mongoose.model<ProductInterface>('Product', ProductSchema);
+
+export default Product;

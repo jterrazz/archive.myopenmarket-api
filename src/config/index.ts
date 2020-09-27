@@ -36,11 +36,15 @@ export const apiConfig = _buildAndVerifyConfigFromYml(
             port: Joi.number().required(),
         }).required(),
         auth: Joi.object({
-            'jwt-signature': Joi.string().required(),
+            jwtSecret: Joi.string().required(),
+            sessionSecret: Joi.string().required(),
+        }).required(),
+        security: Joi.object({
+            cors: Joi.array().items(Joi.string()),
         }).required(),
     }).required(),
 );
-apiConfig.isProd = apiConfig.env == 'production';
+apiConfig.isProd = apiConfig.env === 'production';
 
 export const servicesConfig = _buildAndVerifyConfigFromYml(
     'services',

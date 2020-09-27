@@ -3,11 +3,12 @@ import Router from 'koa-router';
 
 import '@services/authentication/strategies';
 import { logoutController, successAuthController } from '@controllers/authentication';
+import { isAuthenticated } from '@middlewares/authentication';
 
 const authRouter = new Router();
 
 authRouter
-    .get('/logout', logoutController)
+    .post('/logout', isAuthenticated, logoutController)
     // .post('/reset-password-email', resetPasswordEmailController)
     // .post('/reset-password', resetPasswordController)
 

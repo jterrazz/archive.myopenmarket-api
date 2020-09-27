@@ -2,10 +2,14 @@ api:
   http:
     port: 3000
   auth:
-    jwt-signature: 'dev_jwt'
+    jwtSecret: 'dev_secret'
+    sessionSecret: 'dev_secret'
   logs:
     local: 6
     distant: 6
+  security:
+    cors:
+      - 'http://localhost:8080'
 database:
   mongo:
-    url: 'mongodb+srv://dev_user:dev_password@theopenmarket.winw4.azure.mongodb.net/tom?retryWrites=true&w=majority' # 'mongodb://dev_user:dev_password@localhost/tom'
+    url: 'mongodb://dev_user:dev_password@localhost/tom'

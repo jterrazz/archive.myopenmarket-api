@@ -1,7 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import _ from 'lodash';
-
-import { ActivityInterface, OrderInterface, StoreInterface } from '@model';
+import Activity, { ActivityInterface } from './activity';
+import { OrderInterface } from './order';
+import { ShopInterface } from './shop';
+import { HttpError } from '@services/error';
 
 export enum UserLanguage {
     fr = 'fr-FR',
@@ -16,7 +18,7 @@ export interface UserInterface extends Document {
     language: UserLanguage;
     activity: [ActivityInterface];
     orders: [OrderInterface];
-    stores: [StoreInterface];
+    stores: [ShopInterface];
 
     toPublicProps(): UserInterface;
     toPrivateProps(): UserInterface;
@@ -30,7 +32,7 @@ const UserSchema: Schema = new Schema({
     language: { type: UserLanguage, required: true },
     activity: [{ type: Schema.Types.ObjectId, ref: 'Activity' }],
     orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
-    stores: [{ type: Schema.Types.ObjectId, ref: 'Store' }],
+    shops: [{ type: Schema.Types.ObjectId, ref: 'Shop' }],
 });
 
 /**
@@ -49,4 +51,41 @@ UserSchema.methods = {
     },
 };
 
-export const User = mongoose.model<UserInterface>('User', UserSchema);
+const User = mongoose.model<UserInterface>('User', UserSchema);
+
+// Database wrappers
+
+export const retrieveUserSimple = async (id: string): Promise<UserInterface> => {
+    const userRecord = await User.findOne(
+        { _id: id },
+        {
+            activity: { $slice: [0, 3] },
+            orders: { $slice: [0, 3] },
+        },
+    ).select('-orders');
+
+    if (!userRecord) {
+        throw new HttpError(404, 'User not found');
+    }
+    return userRecord;
+};
+
+export const persistUser = async (
+    userRecord: UserInterface,
+    ipAddress: string,
+): Promise<UserInterface> => {
+    try {
+        const activity = new Activity({ ipAddress, type: 'user-update' });
+        await activity.save();
+        userRecord.activity.push(activity);
+        await userRecord.save();
+        return userRecord;
+    } catch (e) {
+        if (e.code == 11000 && e.keyPattern?.hasOwnProperty('email')) {
+            throw new HttpError(422, 'This email is already used');
+        }
+        throw e;
+    }
+};
+
+export default User;

@@ -9,9 +9,9 @@
     "sourceMap": true,
     "paths": {
       "~/*": ["./src/*"],
-      "@tom": ["./libs/the-open-market"],
-      "@tom/*": ["./libs/the-open-market/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
       "@model": ["./src/models"],
+      "@models/*": ["./src/models/*"],
       "@config": ["./src/config"],
       "@controllers/*": ["./src/controllers/*"],
       "@services/*": ["./src/services/*"]

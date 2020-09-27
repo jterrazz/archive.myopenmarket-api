@@ -1,6 +1,6 @@
 // This is imported by a lot of files, avoid importing other code
 import winston from 'winston';
-import { apiConfig, servicesConfig } from '@config';
+import { apiConfig } from '@config';
 
 const WinstonLevels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'];
 
@@ -40,7 +40,7 @@ class Logger {
 
     _buildMessage(message) {
         if (message instanceof Error) {
-            message = 'Error: ' + message.message;
+            message = message.stack;
         }
         return {
             message: typeof message == 'string' ? message : JSON.stringify(message),

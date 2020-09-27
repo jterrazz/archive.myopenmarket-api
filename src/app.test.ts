@@ -1,36 +1,28 @@
 import request from 'supertest';
-import setupApp from './app';
+import { startTestApp, stopTestApp } from '~/__tests__/scripts/setup-app';
 
 let app;
-let connection;
 
-test('Initiate app (+ database)', async () => {
-    expect(true).toBe(true);
+beforeAll(async () => {
+    app = await startTestApp();
 });
 
-// test('Initiate app (+ database)', async () => {
-//     const { app: koaApp, connection: appConnection } = await setupApp();
-//     app = koaApp;
-//     connection = appConnection;
-//     expect(app).toBeDefined();
-//     expect(connection).toBeDefined();
-// });
-//
-// test('GET /bad-url returns 404', async () => {
-//     const { status } = await request(app.callback()).get('/bad-url');
-//     expect(status).toBe(404);
-// });
-//
-// test('GET / returns 200', async () => {
-//     const { status } = await request(app.callback()).get('/');
-//     expect(status).toBe(200);
-// });
-//
-// test('POST /graphql returns 500', async () => {
-//     const { status } = await request(app.callback()).post('/graphql');
-//     expect(status).toBe(500);
-// });
-//
-// afterAll(async () => {
-//     if (connection) await connection.close();
-// });
+describe('Koa application', () => {
+    it('is initiated', async () => {
+        expect(app).toBeDefined();
+    });
+
+    it('returns 200 on an existing route', async () => {
+        const { status } = await request(app.callback()).get('/');
+        expect(status).toBe(200);
+    });
+
+    it('returns 404 on a missing route', async () => {
+        const { status } = await request(app.callback()).get('/bad-url');
+        expect(status).toBe(404);
+    });
+});
+
+afterAll(async () => {
+    await stopTestApp();
+});
