@@ -18,7 +18,7 @@ module.exports = {
     },
     coverageReporters: ['text', 'text-summary'],
     testEnvironment: 'node',
-    testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)x?$',
+    testRegex: '((\\.|/)(test|spec))\\.(js|ts)x?$', // '(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)x?$',
     testPathIgnorePatterns: ['/node_modules/', '/build/', '/coverage/', '/scripts/'],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
         prefix: '<rootDir>/',

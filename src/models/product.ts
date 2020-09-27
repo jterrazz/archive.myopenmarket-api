@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { ShopInterface } from '@model';
+import { ShopInterface } from './shop';
 
 export enum ProductCategory {
     food = 'food',

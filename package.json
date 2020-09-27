@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
-    "test": "LOGS=0 NODE_ENV=development jest",
+    "test": "LOGS=0 NODE_ENV=development jest  --verbose",
     "coverage": "jest --coverage"
   },
   "devDependencies": {

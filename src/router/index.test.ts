@@ -7,8 +7,8 @@ beforeAll(async () => {
     app = await startTestApp();
 });
 
-describe('STATE ROUTES', () => {
-    it('GET / must return correct data', async () => {
+describe('Request GET /', () => {
+    it('returns application status', async () => {
         await request(app.callback())
             .get('/')
             .expect('Content-Type', /json/)

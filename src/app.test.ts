@@ -7,19 +7,19 @@ beforeAll(async () => {
     app = await startTestApp();
 });
 
-describe('APPLICATION INITIATION', () => {
-    it('must be initiated', async () => {
+describe('Koa application', () => {
+    it('is initiated', async () => {
         expect(app).toBeDefined();
     });
 
-    it('GET /bad-url must return 404', async () => {
-        const { status } = await request(app.callback()).get('/bad-url');
-        expect(status).toBe(404);
-    });
-
-    it('GET / must return 200', async () => {
+    it('returns 200 on an existing route', async () => {
         const { status } = await request(app.callback()).get('/');
         expect(status).toBe(200);
+    });
+
+    it('returns 404 on a missing route', async () => {
+        const { status } = await request(app.callback()).get('/bad-url');
+        expect(status).toBe(404);
     });
 });
 

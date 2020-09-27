@@ -9,6 +9,6 @@ const logger = new Logger(__filename);
 
 export const getShopDetqailsController: Middleware = async (ctx) => {
     ctx.tracker.track(EVENTS.routes.getUser);
-    const shopRecord = await
-    ctx.body = shopRecord.toPublicProps();
+    // const shopRecord = await
+    // ctx.body = shopRecord.toPublicProps();
 };
