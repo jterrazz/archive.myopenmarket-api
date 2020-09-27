@@ -3,7 +3,7 @@ import { servicesConfig } from '@config';
 import Logger from '@services/logger';
 
 const logger = new Logger(__filename);
-const mixpanelSecret = servicesConfig.mixpanel.secret;
+const mixpanelSecret = servicesConfig.mixpanel?.secret;
 
 export const EVENTS = {
     routes: {
