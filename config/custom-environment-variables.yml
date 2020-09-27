@@ -1,4 +1,5 @@
 api:
+  env: NODE_ENV
   http:
     port: PORT
   auth:
