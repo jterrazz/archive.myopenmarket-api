@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 
-import Tracker from '@services/tracker';
 import { ApiResolver } from './revolvers/api';
 
 export default async () => {
@@ -12,9 +11,8 @@ export default async () => {
 
     return new ApolloServer({
         schema,
-        context: ({ ctx }) => ({
-            ...ctx,
-            tracker: new Tracker(ctx),
-        }),
+        context: ({ ctx }) => {
+            return ctx;
+        },
     });
 };

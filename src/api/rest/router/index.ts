@@ -4,7 +4,7 @@ import authRouter from './authentication';
 import userRouter from './users';
 import meRouter from './me';
 import shopRouter from './shop';
-import { getStateController } from '~/controllers/state';
+import { getStateController } from '~/api/rest/controllers/state';
 
 const buildRouter = async () => {
     const router = new Router();
