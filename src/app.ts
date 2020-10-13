@@ -5,10 +5,11 @@ import session from 'koa-session';
 import cors from '@koa/cors';
 import passport from 'koa-passport';
 
+import buildGraphqlServer from '~/graphql/index';
 import Logger from '@services/logger';
 import { apiConfig, databaseConfig } from '@config';
 import { requestHandlerMiddleware } from '~/middlewares/request-handler';
-import router from './router';
+import buildRouter from './router';
 import { setupSentry } from '@services/error/sentry';
 import { populateCtxTracker } from '@middlewares/tracker';
 
@@ -34,6 +35,8 @@ export const createApp = async (): Promise<Koa> => {
     logger.info(`App is starting with ${process.env.NODE_ENV} environment`);
 
     const app = new Koa();
+    const router = await buildRouter();
+    const graphQLServer = await buildGraphqlServer();
 
     await connectToDatabase();
     setupSentry(app);
@@ -52,6 +55,7 @@ export const createApp = async (): Promise<Koa> => {
     app.use(populateCtxTracker);
     app.use(requestHandlerMiddleware);
     app.use(router.routes()).use(router.allowedMethods());
+    graphQLServer.applyMiddleware({ app });
 
     logger.info(`App is ready`);
     return app;
