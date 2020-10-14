@@ -9,7 +9,7 @@ import { Context } from 'koa';
 export class ApiResolver {
     @Query(() => ApiState)
     async state(@Ctx() ctx: Context) {
-        ctx.tracker.track(EVENTS.routes.getState);
+        ctx.tracker.track(EVENTS.routes.getApiState);
 
         return {
             version: apiConfig.version,

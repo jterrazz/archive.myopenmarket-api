@@ -9,11 +9,11 @@ export const EVENTS = {
     routes: {
         signIn: 'post-signin',
         signUp: 'post-signup',
-        getMe: 'get-me',
         getUser: 'get-user',
-        getState: 'get-state',
-        patchMe: 'patch-me',
-        deleteMe: 'delete-me',
+        getApiState: 'get-api-state',
+        getAuthenticatedUser: 'get-authenticated-user',
+        patchAuthenticatedUser: 'patch-authenticated-user',
+        deleteAuthenticatedUser: 'delete-authenticated-user',
     },
 };
 

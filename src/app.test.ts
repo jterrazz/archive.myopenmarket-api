@@ -17,6 +17,11 @@ describe('Koa application', () => {
         expect(status).toBe(200);
     });
 
+    it('returns 200 on the graphql endpoint', async () => {
+        const { status } = await request(app.callback()).post('/graphql');
+        expect(status).toBe(200);
+    });
+
     it('returns 404 on a missing route', async () => {
         const { status } = await request(app.callback()).get('/bad-url');
         expect(status).toBe(404);
