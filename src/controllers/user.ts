@@ -15,18 +15,21 @@ export const getUserController: Middleware = async (ctx) => {
 };
 
 export const getMeController: Middleware = async (ctx) => {
+    // TODO Asset is logged
     ctx.tracker.track(EVENTS.routes.getAuthenticatedUser);
     const userRecord = await retrieveUserSimple(ctx.state.user._id);
     ctx.body = userRecord.toPrivateProps();
 };
 
 export const deleteMeController: Middleware = async (ctx) => {
+    // TODO Asset is logged
     ctx.tracker.track(EVENTS.routes.deleteAuthenticatedUser);
     await new AuthenticationService().deleteUser(ctx.state.user._id, ctx.request.body.password);
     ctx.status = 200;
 };
 
 export const updateMeController: Middleware = async (ctx) => {
+    // TODO Asset is logged
     // TODO Validate body with shared schema !!!!
     ctx.tracker.track(EVENTS.routes.patchAuthenticatedUser);
     const userRecord = await retrieveUserSimple(ctx.state.user._id);

@@ -1,5 +1,5 @@
 import passport from 'koa-passport';
-import * as Joi from '@hapi/joi';
+import * as Joi from 'joi';
 import { Strategy as LocalStrategy } from 'passport-local';
 
 import AuthenticationService from '@services/authentication/index';

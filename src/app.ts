@@ -5,11 +5,10 @@ import session from 'koa-session';
 import cors from '@koa/cors';
 import passport from 'koa-passport';
 
-import buildGraphqlServer from '~/api/graphql/index';
 import Logger from '@services/logger';
 import { apiConfig, databaseConfig } from '@config';
 import { requestHandlerMiddleware } from '~/middlewares/request-handler';
-import buildRouter from './api/rest/router';
+import buildRouter from './router';
 import { setupSentry } from '@services/error/sentry';
 import { populateCtxWithTracker } from '@middlewares/tracker';
 
@@ -57,13 +56,11 @@ export const createApp = async (): Promise<Koa> => {
 
     const app = new Koa();
     const router = await buildRouter();
-    const graphQLServer = await buildGraphqlServer();
 
     await setupDatabase();
     setupSentry(app);
     await setupApp(app);
 
-    graphQLServer.applyMiddleware({ app });
     app.use(router.routes()).use(router.allowedMethods());
     logger.info(`App is ready`);
     return app;

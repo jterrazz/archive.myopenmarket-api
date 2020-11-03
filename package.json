@@ -32,17 +32,17 @@
     "ts-jest": "^26.0.0"
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "@koa/cors": "^3.1.0",
     "@sentry/node": "^5.21.1",
     "@types/mongoose": "^5.7.36",
     "@types/node": "^14.0.5",
-    "apollo-server-koa": "^2.18.2",
     "argon2": "^0.26.2",
     "assert": "^2.0.0",
     "class-validator": "^0.12.2",
     "config": "^3.3.1",
     "dotenv": "^8.2.0",
+    "joi": "^17.3.0",
+    "joi-extract-type": "^15.0.8",
     "js-yaml": "^3.14.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.12.0",
@@ -59,7 +59,6 @@
     "ts-loader": "^7.0.5",
     "ts-node": "^8.10.1",
     "tsconfig-paths": "^3.9.0",
-    "type-graphql": "^1.1.0",
     "typescript": "^3.9.3",
     "winston": "^3.3.3"
   }

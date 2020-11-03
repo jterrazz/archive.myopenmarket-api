@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { getUserController } from '~/api/rest/controllers/user';
+import { getUserController } from '@controllers/user';
 
 const userRouter = new Router();
 

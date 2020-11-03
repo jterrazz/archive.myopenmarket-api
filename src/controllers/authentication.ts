@@ -8,7 +8,7 @@ const logger = new Logger(__filename);
  * @param ctx
  */
 export const successAuthController: Middleware = async (ctx) => {
-    logger.http(`User <${ctx.state.user.email}> is logged in`);
+    logger.http(`<${ctx.state.user.email}> Authentication successful`);
     ctx.body = {
         message: 'Authentication successful',
         user: ctx.state.user.toPrivateProps(),
