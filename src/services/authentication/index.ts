@@ -49,7 +49,7 @@ class AuthenticationService {
 
             return {
                 user: user,
-                token: null, // AuthenticationService.generateJWT(user),
+                token: null, // AuthenticationService.generateJWT(user), // TODO Remove
             };
         } catch (err) {
             if (err.code == 11000 && err.keyPattern?.hasOwnProperty('email')) {
