@@ -11,7 +11,9 @@
     "dev": "nodemon",
     "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "test": "LOGS=0 NODE_ENV=development jest  --verbose",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "orm:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n user",
+    "orm:migrate": "ts-node ./node_modules/typeorm/cli.js migration:run"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
@@ -52,7 +54,6 @@
     "passport-local": "^1.0.0",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
-    "spm-agent-nodejs": "^4.0.2",
     "ts-loader": "^7.0.5",
     "ts-node": "^8.10.1",
     "tsconfig-paths": "^3.9.0",

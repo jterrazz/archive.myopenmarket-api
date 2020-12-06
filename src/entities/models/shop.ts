@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import _ from 'lodash';
-import { UserInterface } from '@models/user';
-import { ProductInterface } from '@models/product';
+import { UserInterface } from '~/entities/models/user';
+import { ProductInterface } from '~/entities/models/product';
 
 // Produit/store: Enseigne
 // Et disponible à distance

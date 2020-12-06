@@ -6,7 +6,7 @@ import AuthenticationService from '@services/authentication/index';
 
 passport.serializeUser(async (user, done) => {
     try {
-        await done(null, user._id);
+        await done(null, user.id);
     } catch (err) {
         done(err);
     }
@@ -14,7 +14,7 @@ passport.serializeUser(async (user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        await done(null, { _id: id });
+        await done(null, { id });
     } catch (err) {
         done(err);
     }

@@ -26,9 +26,4 @@ services:
     ports:
       - 3000:3000
     environment:
-      TYPEORM_CONNECTION: postgres
-      TYPEORM_HOST: database
-      TYPEORM_USERNAME: admin_user
-      TYPEORM_PASSWORD: admin_password
-      TYPEORM_DATABASE: api
-      TYPEORM_PORT: 5432
+      DATABASE_HOST: DATABASE_HOST

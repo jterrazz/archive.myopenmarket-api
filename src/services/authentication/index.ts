@@ -1,12 +1,13 @@
 import * as argon2 from 'argon2';
 import * as jwt from 'jsonwebtoken';
+import { getConnection } from 'typeorm';
 
-import User, { UserInterface, UserLanguage } from '@models/user';
+import { User, UserLanguage } from '~/entities/user.entity';
 import { apiConfig } from '@config';
 import { HttpError } from '@services/error';
 
 interface AuthenticationResult {
-    user: UserInterface;
+    user: User;
     token?: string;
 }
 
@@ -15,9 +16,9 @@ class AuthenticationService {
      * @todo Maybe delete this as we could use sessions
      * @param userRecord
      */
-    private static generateJWT(userRecord: UserInterface) {
+    private static generateJWT(userRecord: User) {
         const data = {
-            userId: userRecord._id,
+            userId: userRecord.id,
         };
         const signature = apiConfig.auth['jwt-signature'];
         const expiresIn = '24h';
@@ -37,15 +38,16 @@ class AuthenticationService {
     ): Promise<AuthenticationResult> {
         try {
             const passwordHashed = await argon2.hash(password);
-
-            const user = new User({
+            const userRepository = await getConnection().getRepository(User);
+            const user = userRepository.create({
                 email,
                 passwordHashed,
                 firstName,
                 lastName,
                 language,
             });
-            await user.save();
+
+            await userRepository.save(user);
 
             return {
                 user: user,
@@ -63,7 +65,9 @@ class AuthenticationService {
      * Authenticate a pair of credentials and returns the JWT / User data
      */
     async signIn(email: string, password: string): Promise<AuthenticationResult> {
-        const userRecord = await User.findOne({ email: email });
+        const userRepository = await getConnection().getRepository(User);
+        const userRecord = await userRepository.findOne({ email });
+
         if (!userRecord) {
             throw new HttpError(401, 'Authentication failed');
         }
@@ -83,7 +87,8 @@ class AuthenticationService {
      * Delete a user
      */
     async deleteUser(id: string, password: string) {
-        const userRecord = await User.findOne({ _id: id });
+        const userRepository = await getConnection().getRepository(User);
+        const userRecord = await userRepository.findOne({ id });
         if (!userRecord) {
             throw new HttpError(404, 'User not found');
         }
@@ -93,7 +98,7 @@ class AuthenticationService {
             throw new HttpError(402, 'Incorrect password');
         }
 
-        await userRecord.deleteOne();
+        await userRepository.delete(userRecord);
     }
 }
 

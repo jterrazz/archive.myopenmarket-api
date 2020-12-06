@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { UserInterface } from '@models/user';
+import { UserInterface } from '~/entities/models/user';
 
 export enum OrderStatus {
     cancelled = 'cancelled',

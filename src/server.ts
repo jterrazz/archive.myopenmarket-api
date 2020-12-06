@@ -1,7 +1,3 @@
-if (process.env.MONITORING_TOKEN) {
-    require('spm-agent-nodejs'); // Sematext automated tracking
-}
-
 import { apiConfig } from '@config';
 import { createApp } from './app';
 import Logger from '@services/logger';
