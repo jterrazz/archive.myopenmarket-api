@@ -36,7 +36,7 @@ export class User {
     // orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
     // shops: [{ type: Schema.Types.ObjectId, ref: 'Shop' }],
 
-    toPublicProps(): User {
+    toPublicProps() {
         return _.pick(this, PUBLIC_DATA_KEYS);
     }
 
