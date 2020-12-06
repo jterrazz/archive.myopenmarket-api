@@ -25,21 +25,6 @@ const _buildAndVerifyConfigFromYml = (
     return envValues;
 };
 
-// DATABASE
-
-const databaseConfigSchema = Joi.object({
-    mongo: Joi.object({
-        url: Joi.string(),
-    }).required(),
-}).required();
-
-export type DatabaseConfig = Joi.extractType<typeof databaseConfigSchema>;
-
-export const databaseConfig: Readonly<DatabaseConfig> = _buildAndVerifyConfigFromYml(
-    'database',
-    databaseConfigSchema,
-);
-
 // API
 
 const apiConfigSchema = Joi.object({

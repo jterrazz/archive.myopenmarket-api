@@ -9,6 +9,3 @@ api:
     distant: 6
   security:
     cors: 'http://localhost:8080'
-database:
-  mongo:
-    url: 'mongodb://dev_user:dev_password@localhost/tom'
