@@ -9,7 +9,7 @@ const connection = process.env.DATABASE_URL
           port: 5432,
           username: 'admin_user',
           password: 'admin_password',
-          database: 'api',
+          database: 'open_market_api',
       };
 
 const config = {

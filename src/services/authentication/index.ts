@@ -5,7 +5,7 @@ import { getConnection } from 'typeorm';
 import { User, UserLanguage } from '~/entities/user.entity';
 import { apiConfig } from '@config';
 import { HttpError } from '@services/error';
-import { UserRepository } from '~/entities/user.repository';
+import { createUser } from '~/entities/user.repository';
 
 interface AuthenticationResult {
     user: User;
@@ -23,7 +23,7 @@ class AuthenticationService {
         language: UserLanguage = UserLanguage.en,
     ): Promise<AuthenticationResult> {
         const passwordHashed = await argon2.hash(password);
-        const user = await UserRepository.createUser({
+        const user = await createUser({
             email,
             passwordHashed,
             firstName,
