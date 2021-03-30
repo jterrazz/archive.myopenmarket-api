@@ -1,8 +1,7 @@
 import Mixpanel from 'mixpanel';
 import { servicesConfig } from '@config';
-import Logger from '@services/logger';
+import logger from '@services/logger';
 
-const logger = new Logger(__filename);
 const mixpanelSecret = servicesConfig.mixpanel?.secret;
 
 export const EVENTS = {

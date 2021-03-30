@@ -2,13 +2,12 @@ import { getUser } from '../entities/user.repository';
 import { Middleware } from 'koa';
 import { getConnection } from 'typeorm';
 
-import Logger from '@services/logger';
 import AuthenticationService from '@services/authentication';
 import { EVENTS } from '@services/tracker';
 import { User } from '~/entities/user.entity';
 import { updateUser, getUserFollowedShops, addUserFollowedShop } from '~/entities/user.repository';
 
-const logger = new Logger(__filename);
+import logger from '@services/logger';
 
 // Controllers
 

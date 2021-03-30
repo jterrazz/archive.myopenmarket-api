@@ -1,18 +1,19 @@
 import { apiConfig } from '@config';
 import { createApp } from './app';
-import Logger from '@services/logger';
+import logger from '@services/logger';
 import { createConnection } from 'typeorm';
-
-const logger = new Logger(__filename);
+import { setupSentry } from '@services/error/sentry';
 
 const startServer = async () => {
+  logger.info('connecting to the database');
   await createConnection();
-  logger.info('App is connected to the database');
+  logger.info('connected to the database');
 
   const app = await createApp();
+  setupSentry(app);
 
   app.listen(apiConfig.http.port, () => {
-    logger.info(`Server is running on port ${apiConfig.http.port}`);
+    logger.info(`listening on port ${apiConfig.http.port}`);
   });
 };
 

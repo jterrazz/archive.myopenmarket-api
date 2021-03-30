@@ -1,9 +1,7 @@
 import * as argon2 from 'argon2';
-import * as jwt from 'jsonwebtoken';
 import { getConnection } from 'typeorm';
 
 import { User, UserLanguage } from '~/entities/user.entity';
-import { apiConfig } from '@config';
 import { HttpError } from '@services/error';
 import { createUser } from '~/entities/user.repository';
 

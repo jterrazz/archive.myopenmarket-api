@@ -1,11 +1,9 @@
 import { getShop } from '../entities/shop.repository';
 import { getUser } from '../entities/user.repository';
 import { Middleware } from 'koa';
+import logger from '@services/logger';
 
-import Logger from '@services/logger';
 import { EVENTS } from '@services/tracker';
-
-const logger = new Logger(__filename);
 
 // Controllers
 

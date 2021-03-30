@@ -1,7 +1,5 @@
 import Koa from 'koa';
-import Logger from '@services/logger';
-
-const logger = new Logger(__filename);
+import logger from '@services/logger';
 
 export const requestHandlerMiddleware: Koa.Middleware = async (ctx, next) => {
   try {

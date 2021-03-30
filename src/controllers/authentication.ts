@@ -1,7 +1,5 @@
 import { Middleware } from 'koa';
-import Logger from '@services/logger';
-
-const logger = new Logger(__filename);
+import logger from '@services/logger';
 
 /**
  * Requires that ctx.state.user is populated with the user model (Like in signin / signup)

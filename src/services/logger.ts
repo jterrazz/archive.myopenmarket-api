@@ -34,8 +34,26 @@ winstonLogger.add(
 class Logger {
   _prefix;
 
-  constructor(prefix) {
-    this._prefix = prefix.split(/[\\/]/).pop();
+  _getCallerFile() {
+    try {
+      const err = new Error();
+      let callerfile;
+
+      Error.prepareStackTrace = function (err, stack) {
+        return stack;
+      };
+
+      // @ts-ignore
+      const currentfile = err.stack.shift().getFileName();
+
+      while (err.stack.length) {
+        // @ts-ignore
+        callerfile = err.stack.shift().getFileName();
+
+        if (currentfile !== callerfile) return callerfile.split('/').pop().replace('.ts', '');
+      }
+    } catch (err) {}
+    return undefined;
   }
 
   _buildMessage(message) {
@@ -44,7 +62,7 @@ class Logger {
     }
     return {
       message: typeof message == 'string' ? message : JSON.stringify(message),
-      category: this._prefix,
+      category: this._getCallerFile(),
     };
   }
 
@@ -70,4 +88,4 @@ class Logger {
   }
 }
 
-export default Logger;
+export default new Logger();
