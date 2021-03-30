@@ -10,12 +10,12 @@ const logger = new Logger(__filename);
 // Controllers
 
 export const getShopController: Middleware = async (ctx) => {
-    // ctx.tracker.track(EVENTS.routes.getUser);
+  // ctx.tracker.track(EVENTS.routes.getUser);
 
-    const shopRecord = await getShop(ctx.params.shopHandle);
+  const shopRecord = await getShop(ctx.params.shopHandle);
 
-    console.log('shopRecord');
-    console.log(shopRecord);
+  console.log('shopRecord');
+  console.log(shopRecord);
 
-    ctx.body = shopRecord.toPublicProps();
+  ctx.body = shopRecord.toPublicProps();
 };

@@ -8,12 +8,12 @@ import { isAuthenticated } from '@middlewares/authentication';
 const authRouter = new Router();
 
 authRouter
-    .post('/logout', isAuthenticated, logoutController)
-    // .post('/reset-password-email', resetPasswordEmailController)
-    // .post('/reset-password', resetPasswordController)
+  .post('/logout', isAuthenticated, logoutController)
+  // .post('/reset-password-email', resetPasswordEmailController)
+  // .post('/reset-password', resetPasswordController)
 
-    // Local
-    .post('/signup', passport.authenticate('signup'), successAuthController)
-    .post('/signin', passport.authenticate('signin'), successAuthController);
+  // Local
+  .post('/signup', passport.authenticate('signup'), successAuthController)
+  .post('/signin', passport.authenticate('signin'), successAuthController);
 
 export default authRouter;

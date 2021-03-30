@@ -13,48 +13,48 @@ const logger = new Logger(__filename);
 // Controllers
 
 export const getUserController: Middleware = async (ctx) => {
-    ctx.tracker.track(EVENTS.routes.getUser);
+  ctx.tracker.track(EVENTS.routes.getUser);
 
-    const userRecord = await getUser(ctx.params.userId);
+  const userRecord = await getUser(ctx.params.userId);
 
-    ctx.body = userRecord.toPublicProps();
+  ctx.body = userRecord.toPublicProps();
 };
 
 export const getMeController: Middleware = async (ctx) => {
-    ctx.tracker.track(EVENTS.routes.getAuthenticatedUser);
+  ctx.tracker.track(EVENTS.routes.getAuthenticatedUser);
 
-    const userRecord = await getUser(ctx.state.user.id);
+  const userRecord = await getUser(ctx.state.user.id);
 
-    ctx.body = userRecord.toPrivateProps();
+  ctx.body = userRecord.toPrivateProps();
 };
 
 export const deleteMeController: Middleware = async (ctx) => {
-    ctx.tracker.track(EVENTS.routes.deleteAuthenticatedUser);
+  ctx.tracker.track(EVENTS.routes.deleteAuthenticatedUser);
 
-    await new AuthenticationService().deleteUser(ctx.state.user.id, ctx.request.body.password);
+  await new AuthenticationService().deleteUser(ctx.state.user.id, ctx.request.body.password);
 
-    ctx.status = 200;
+  ctx.status = 200;
 };
 
 export const updateMeController: Middleware = async (ctx) => {
-    // TODO Validate body with shared schema !!!!
-    ctx.tracker.track(EVENTS.routes.patchAuthenticatedUser);
+  // TODO Validate body with shared schema !!!!
+  ctx.tracker.track(EVENTS.routes.patchAuthenticatedUser);
 
-    const userRecord = await updateUser(ctx.state.user.id, ctx.request.body);
+  const userRecord = await updateUser(ctx.state.user.id, ctx.request.body);
 
-    ctx.body = userRecord.toPrivateProps();
+  ctx.body = userRecord.toPrivateProps();
 };
 
 // Followed shops
 
 export const getMyFollowedShopsController: Middleware = async (ctx) => {
-    // ctx.tracker.track(EVENTS.routes.getAuthenticatedUser);
+  // ctx.tracker.track(EVENTS.routes.getAuthenticatedUser);
 
-    ctx.body = await getUserFollowedShops(ctx.state.user.id);
+  ctx.body = await getUserFollowedShops(ctx.state.user.id);
 };
 
 export const followShopController: Middleware = async (ctx) => {
-    // ctx.tracker.track(EVENTS.routes.getAuthenticatedUser);
+  // ctx.tracker.track(EVENTS.routes.getAuthenticatedUser);
 
-    ctx.body = await addUserFollowedShop(ctx.state.user.id, ctx.query.shopId);
+  ctx.body = await addUserFollowedShop(ctx.state.user.id, ctx.query.shopId);
 };

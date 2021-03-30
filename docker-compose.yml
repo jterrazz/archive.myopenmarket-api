@@ -16,7 +16,7 @@ services:
 
   api:
     container_name: service-api
-    image: library/node:14-alpine
+    image: library/node:15-alpine
     links:
       - database
     volumes:

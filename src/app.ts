@@ -19,37 +19,38 @@ const logger = new Logger(__filename);
  * @description Middlewares are shared between graphql and rest requests
  */
 const setupApp = async (app) => {
-    const corsOptions = {
-        origin: apiConfig.security.cors,
-    };
+  const corsOptions = {
+    origin: apiConfig.security.cors,
+  };
 
-    app.use(cors(corsOptions));
-    app.proxy = true;
-    app.use(requestHandlerMiddleware);
-    app.use(bodyParser());
-    app.keys = [apiConfig.auth.sessionSecret];
-    app.use(session({}, app));
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.use(populateCtxWithTracker);
+  logger.info('yo');
+  app.use(cors(corsOptions));
+  app.proxy = true;
+  app.use(requestHandlerMiddleware);
+  app.use(bodyParser());
+  app.keys = [apiConfig.auth.sessionSecret];
+  app.use(session({}, app));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(populateCtxWithTracker);
 };
 
 export const createApp = async (): Promise<Koa> => {
-    logger.info(`App is starting with ${process.env.NODE_ENV} environment`);
+  logger.info(`App is starting with ${process.env.NODE_ENV} environment`);
 
-    const app = new Koa();
-    const router = await buildRouter();
+  const app = new Koa();
+  const router = await buildRouter();
 
-    await createConnection();
-    logger.info('App is connected to the database');
-    setupSentry(app);
-    await setupApp(app);
+  await createConnection();
+  logger.info('App is connected to the database');
+  setupSentry(app);
+  await setupApp(app);
 
-    app.use(router.routes()).use(router.allowedMethods());
-    logger.info(`App is ready`);
-    return app;
+  app.use(router.routes()).use(router.allowedMethods());
+  logger.info(`App is ready`);
+  return app;
 };
 
 export const destroyApp = async () => {
-    // await mongoose.connection.close();
+  // await mongoose.connection.close();
 };

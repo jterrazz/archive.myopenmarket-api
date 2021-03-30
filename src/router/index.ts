@@ -7,20 +7,20 @@ import shopsRouter from './shops';
 import { getStateController } from '@controllers/state';
 
 const buildRouter = async () => {
-    const router = new Router();
+  const router = new Router();
 
-    /*
-     * Route categories
-     */
+  /*
+   * Route categories
+   */
 
-    router.get('/', getStateController);
-    router
-        .use('/auth', authRouter.routes(), authRouter.allowedMethods())
-        .use('/users', usersRouter.routes(), usersRouter.allowedMethods())
-        .use('/shops', shopsRouter.routes(), shopsRouter.allowedMethods())
-        .use('/me', meRouter.routes(), meRouter.allowedMethods());
+  router.get('/', getStateController);
+  router
+    .use('/auth', authRouter.routes(), authRouter.allowedMethods())
+    .use('/users', usersRouter.routes(), usersRouter.allowedMethods())
+    .use('/shops', shopsRouter.routes(), shopsRouter.allowedMethods())
+    .use('/me', meRouter.routes(), meRouter.allowedMethods());
 
-    return router;
+  return router;
 };
 
 export default buildRouter;
