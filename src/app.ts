@@ -1,10 +1,10 @@
+import 'reflect-metadata';
+
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import session from 'koa-session';
 import cors from '@koa/cors';
 import passport from 'koa-passport';
-import 'reflect-metadata';
-import { createConnection } from 'typeorm';
 
 import Logger from '@services/logger';
 import { apiConfig } from '@config';
@@ -23,7 +23,6 @@ const setupApp = async (app) => {
     origin: apiConfig.security.cors,
   };
 
-  logger.info('yo');
   app.use(cors(corsOptions));
   app.proxy = true;
   app.use(requestHandlerMiddleware);
@@ -41,8 +40,6 @@ export const createApp = async (): Promise<Koa> => {
   const app = new Koa();
   const router = await buildRouter();
 
-  await createConnection();
-  logger.info('App is connected to the database');
   setupSentry(app);
   await setupApp(app);
 

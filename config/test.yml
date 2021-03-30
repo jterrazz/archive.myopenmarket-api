@@ -1,0 +1,11 @@
+api:
+  http:
+    port: 3000
+  auth:
+    jwtSecret: 'dev_secret'
+    sessionSecret: 'dev_secret'
+  logs:
+    local: 6
+    distant: 6
+  security:
+    cors: 'http://localhost:8080'

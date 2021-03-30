@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { startTestApp, stopTestApp } from '~/__test__/scripts/setup-app';
+import { startTestApp, stopTestApp } from '~/tests/setup/in-memory-app';
 
 let app;
 

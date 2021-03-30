@@ -1,10 +1,10 @@
 import request from 'supertest';
-import { startTestApp, stopTestApp } from '~/__test__/scripts/setup-app';
+import { startInMemoryApp, stopInMemoryApp } from '~/tests/setup/in-memory-app';
 
 let app;
 
 beforeAll(async () => {
-  app = await startTestApp();
+  app = await startInMemoryApp();
 });
 
 describe('app.test.ts', () => {
@@ -26,5 +26,5 @@ describe('app.test.ts', () => {
 });
 
 afterAll(async () => {
-  await stopTestApp();
+  await stopInMemoryApp();
 });

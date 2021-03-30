@@ -1,6 +1,6 @@
 api:
   logs:
-    local: 2
+    local: 6
     distant: 2
   security:
     cors:

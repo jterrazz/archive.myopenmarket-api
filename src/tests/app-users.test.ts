@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { startTestApp, stopTestApp } from '~/__test__/scripts/setup-app';
+import { startInMemoryApp, stopInMemoryApp } from '~/tests/setup/in-memory-app';
 
 let app;
 let testUserId: string;
@@ -32,13 +32,13 @@ export const patchMe = (
  */
 
 beforeAll(async () => {
-  app = await startTestApp();
+  app = await startInMemoryApp();
   const { body, header } = await postAuthSignup();
   testUserId = body.user._id;
   testUserCookies = header['set-cookie'];
 });
 
-describe('users.test.ts', () => {
+describe('app-users.test.ts', () => {
   describe('request GET /users/:userId', () => {
     test('returns public user data', async () => {
       await getUserId(testUserId)
@@ -75,5 +75,5 @@ describe('users.test.ts', () => {
 });
 
 afterAll(async () => {
-  app = await stopTestApp();
+  app = await stopInMemoryApp();
 });
