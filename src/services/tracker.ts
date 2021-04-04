@@ -4,15 +4,18 @@ import logger from '@services/logger';
 
 const mixpanelSecret = servicesConfig.mixpanel?.secret;
 
-export const EVENTS = {
-  routes: {
-    signIn: 'post-signin',
-    signUp: 'post-signup',
-    getUser: 'get-user',
+const EVENTS = {
+  request: {
     getApiState: 'get-api-state',
-    getAuthenticatedUser: 'get-authenticated-user',
-    patchAuthenticatedUser: 'patch-authenticated-user',
-    deleteAuthenticatedUser: 'delete-authenticated-user',
+    postSignIn: 'post-sign-in',
+    postSignUp: 'post-sign-up',
+    getShop: 'get-shop',
+    getUser: 'get-user',
+    getMe: 'get-me',
+    patchMe: 'patch-me',
+    deleteMe: 'delete-me',
+    getMyFollowedShops: 'get-my-followed-shops',
+    insertFollowedShops: 'insert-followed-shops',
   },
 };
 
@@ -35,7 +38,7 @@ class Tracker {
     if (ctx.request.ip) this._userProps.ip = ctx.request.ip;
   }
 
-  track(name: string, props: object = {}) {
+  _emit(name: string, props: object = {}) {
     let log = `New event ${name} - ${JSON.stringify(props)}`;
     if (!mixpanelSecret) log += ' (skipped)';
     logger.http(log);
@@ -46,6 +49,48 @@ class Tracker {
       ...this._userProps,
       ...props,
     });
+  }
+
+  // Trackers
+
+  requestGetApiState() {
+    this._emit(EVENTS.request.getApiState);
+  }
+
+  requestGetSignIn() {
+    this._emit(EVENTS.request.postSignIn);
+  }
+
+  requestGetSignUp() {
+    this._emit(EVENTS.request.postSignUp);
+  }
+
+  requestGetUser() {
+    this._emit(EVENTS.request.getUser);
+  }
+
+  requestGetMe() {
+    this._emit(EVENTS.request.getMe);
+  }
+
+  requestPatchMe() {
+    this._emit(EVENTS.request.patchMe);
+  }
+
+  requestDeleteMe() {
+    this._emit(EVENTS.request.deleteMe);
+  }
+
+  requestGetShop() {
+    this._emit(EVENTS.request.getShop);
+  }
+
+  requestGetMyFollowedShops() {
+    this._emit(EVENTS.request.getMyFollowedShops);
+  }
+
+  requestInsertFollowedShops() {
+    this._emit(EVENTS.request.insertFollowedShops);
   }
 }
 

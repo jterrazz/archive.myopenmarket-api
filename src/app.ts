@@ -9,7 +9,8 @@ import passport from 'koa-passport';
 import { apiConfig } from '@config';
 import logger from '@services/logger';
 import { requestHandlerMiddleware } from '@middlewares/request-handler';
-import { populateCtxWithTracker } from '@middlewares/tracker';
+import { trackerMiddleware } from '@middlewares/tracker';
+import { loggerMiddleware } from '@middlewares/logger';
 import buildRouter from './router';
 
 const _setupSecurity = (app) => {
@@ -33,11 +34,12 @@ const setupApp = async (app) => {
   _setupAuthentication(app);
   app.use(requestHandlerMiddleware);
   app.use(bodyParser());
-  app.use(populateCtxWithTracker);
+  app.use(loggerMiddleware);
+  app.use(trackerMiddleware);
 };
 
 export const createApp = async (): Promise<Koa> => {
-  logger.info(`starting setup with ${process.env.NODE_ENV} environment`);
+  logger.info(`starting with environment <${process.env.NODE_ENV}>`);
 
   const app = new Koa();
   await setupApp(app);

@@ -31,9 +31,7 @@ winstonLogger.add(
   }),
 );
 
-class Logger {
-  _prefix;
-
+export class Logger {
   _getCallerFile() {
     try {
       const err = new Error();
@@ -57,11 +55,8 @@ class Logger {
   }
 
   _buildMessage(message) {
-    if (message instanceof Error) {
-      message = message.stack;
-    }
     return {
-      message: typeof message == 'string' ? message : JSON.stringify(message),
+      message: message,
       category: this._getCallerFile(),
     };
   }

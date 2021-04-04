@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 
-import { getShopController } from './../controllers/shops';
+import { getShopController } from '@controllers/shops.controller';
 
 const shopRouter = new Router();
 

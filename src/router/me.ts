@@ -5,7 +5,7 @@ import {
   updateMeController,
   getMyFollowedShopsController,
   followShopController,
-} from '~/controllers/users';
+} from '@controllers/users.controller';
 import { isAuthenticated } from '@middlewares/authentication';
 
 export const meRouter = new Router();

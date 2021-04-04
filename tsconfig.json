@@ -8,10 +8,11 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "paths": {
+      "*": ["types/*.d.ts"],
       "~/*": ["./src/*"],
       "@middlewares/*": ["./src/middlewares/*"],
       "@model": ["./src/models"],
-      "@models/*": ["./src/models/*"],
+      "@entities/*": ["./src/entities/*"],
       "@config": ["./src/config"],
       "@controllers/*": ["./src/controllers/*"],
       "@services/*": ["./src/services/*"]

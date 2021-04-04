@@ -1,18 +1,53 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
-import _ from 'lodash';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+  OneToMany,
+  getConnection,
+} from 'typeorm';
 
+import { PropertyAccess } from './entity/property-access';
+import { Language } from './language.entity';
 import { Shop } from './shop.entity';
+import * as Joi from 'joi';
+import * as argon2 from 'argon2';
 
-const PUBLIC_DATA_KEYS = ['id', 'firstName', 'lastName', 'language'];
-const PRIVATE_DATA_KEYS = ['email', ...PUBLIC_DATA_KEYS];
+/**
+ * Schema
+ */
 
-export enum UserLanguage {
-  fr = 'fr-FR',
-  en = 'en-EN',
-}
+export const updateUserSchema = Joi.object()
+  .keys({
+    email: Joi.string().email(),
+    password: Joi.string().min(8).max(100),
+    firstName: Joi.string().max(42),
+    lastName: Joi.string().max(42),
+  })
+  .required();
+
+export const newUserSchema = Joi.object()
+  .keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).max(100).required(),
+    firstName: Joi.string().max(42).required(),
+    lastName: Joi.string().max(42).required(),
+  })
+  .required();
+
+/**
+ * Entity
+ */
 
 @Entity()
-export class User {
+export class User extends PropertyAccess {
+  constructor() {
+    super();
+    this.addPublicProperties(['id', 'firstName', 'lastName', 'language']);
+    this.addSelfProperties(['email']);
+  }
+
   @PrimaryGeneratedColumn()
   id: string;
 
@@ -28,7 +63,7 @@ export class User {
   @Column({ name: 'password_hashed', default: '' })
   passwordHashed: string;
 
-  @Column({ enum: UserLanguage })
+  @Column({ enum: Language })
   language: string;
 
   @OneToMany(() => Shop, (shop) => shop.owner)
@@ -51,11 +86,13 @@ export class User {
   // activity: [{ type: Schema.Types.ObjectId, ref: 'Activity' }],
   // orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
 
-  toPublicProps() {
-    return _.pick(this, PUBLIC_DATA_KEYS);
+  async updatePassword(password) {
+    this.passwordHashed = await argon2.hash(password);
   }
 
-  toPrivateProps() {
-    return _.pick(this, PRIVATE_DATA_KEYS);
+  async verifyPassword(password: string): Promise<boolean> {
+    return await argon2.verify(this.passwordHashed, password);
   }
 }
+
+export const getUserRepository = () => getConnection().getRepository(User);

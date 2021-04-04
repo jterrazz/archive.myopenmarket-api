@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { startInMemoryApp, stopInMemoryApp } from '~/tests/setup/in-memory-app';
+import { startInMemoryApp } from '~/tests/setup/in-memory-app';
 
 let app;
 
@@ -23,8 +23,4 @@ describe('app.test.ts', () => {
       expect(status).toBe(404);
     });
   });
-});
-
-afterAll(async () => {
-  await stopInMemoryApp();
 });

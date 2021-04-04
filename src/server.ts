@@ -1,13 +1,14 @@
-import { apiConfig } from '@config';
-import { createApp } from './app';
-import logger from '@services/logger';
 import { createConnection } from 'typeorm';
-import { setupSentry } from '@services/error/sentry';
+
+import { createApp } from './app';
+import { apiConfig } from '@config';
+import logger from '@services/logger';
+import { setupSentry } from '@services/sentry';
 
 const startServer = async () => {
-  logger.info('connecting to the database');
+  logger.info('connecting to database');
   await createConnection();
-  logger.info('connected to the database');
+  logger.info('connected to database');
 
   const app = await createApp();
   setupSentry(app);
@@ -17,4 +18,6 @@ const startServer = async () => {
   });
 };
 
-startServer().then();
+startServer()
+  .then()
+  .catch((e) => logger.error(e));

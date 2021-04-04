@@ -1,4 +1,4 @@
-import { createApp, destroyApp } from '~/app';
+import { createApp } from '~/app';
 import { createConnection } from 'typeorm';
 import databaseConfig from '../../../ormconfig';
 
@@ -12,9 +12,4 @@ export const startInMemoryApp = async () => {
   await connection.synchronize();
 
   return await createApp();
-};
-
-export const stopInMemoryApp = async () => {
-  // await mongod.stop();
-  await destroyApp();
 };

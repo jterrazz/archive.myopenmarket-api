@@ -1,10 +1,10 @@
 import request from 'supertest';
-import { startTestApp, stopTestApp } from '~/tests/setup/in-memory-app';
+import { startInMemoryApp } from '~/tests/setup/in-memory-app';
 
 let app;
 
 beforeAll(async () => {
-  app = await startTestApp();
+  app = await startInMemoryApp();
 });
 
 describe('Request GET /', () => {
@@ -17,8 +17,4 @@ describe('Request GET /', () => {
         expect(response.body.state).toBeDefined();
       });
   });
-});
-
-afterAll(async () => {
-  app = await stopTestApp();
 });

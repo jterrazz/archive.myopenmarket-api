@@ -2,7 +2,7 @@ version: "3.8"
 services:
 
   database:
-    container_name: service-database
+    container_name: service-entity
     image: postgres:12-alpine
     restart: always
     ports:
@@ -11,8 +11,6 @@ services:
       POSTGRES_DB: open_market_api
       POSTGRES_USER: admin_user
       POSTGRES_PASSWORD: admin_password
-    volumes:
-      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
   api:
     container_name: service-api
