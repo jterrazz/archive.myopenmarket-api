@@ -9,7 +9,7 @@
   "scripts": {
     "start:dev": "nodemon",
     "start:dev-database": "docker-compose up database",
-    "start": "ts-node --name='Open Market' -i max -- -r tsconfig-paths/register src/server.ts",
+    "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "test": "NODE_ENV=test jest --verbose",
     "coverage": "jest --coverage",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
