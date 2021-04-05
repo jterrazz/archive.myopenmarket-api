@@ -9,7 +9,7 @@
   "scripts": {
     "start:dev": "nodemon",
     "start:dev-database": "docker-compose up database",
-    "start": "pm2-runtime ts-node --name='Open Market' -i max -- -r tsconfig-paths/register src/server.ts",
+    "start": "ts-node --name='Open Market' -i max -- -r tsconfig-paths/register src/server.ts",
     "test": "NODE_ENV=test jest --verbose",
     "coverage": "jest --coverage",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
@@ -54,7 +54,6 @@
     "mixpanel": "^0.13.0",
     "passport-local": "^1.0.0",
     "pg": "^8.5.1",
-    "pm2": "^4.5.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",
     "ts-loader": "^7.0.5",
