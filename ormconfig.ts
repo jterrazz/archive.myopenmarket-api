@@ -20,7 +20,7 @@ const config = {
   entities: [__dirname + '/src/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/src/migrations/*.ts'],
   subscribers: [__dirname + '/src/subscribers/*.ts'],
-  ssl: { rejectUnauthorized: false },
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
   cli: {
     entitiesDir: 'src/entities',
     migrationsDir: 'src/migrations',

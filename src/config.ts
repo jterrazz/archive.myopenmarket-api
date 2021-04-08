@@ -1,5 +1,5 @@
-require('dotenv').config(); // loads environment variables from a .env file
-import config from 'config'; // gets data from the root config folder https://github.com/lorenwest/node-config/wiki
+require('dotenv').config(); // load environment variables from the .env file
+import config from 'config';
 import * as Joi from '@hapi/joi';
 import 'joi-extract-type';
 
@@ -25,7 +25,9 @@ const _buildAndVerifyConfigFromYml = (
   return envValues;
 };
 
-// API
+/**
+ * API config
+ */
 
 const apiConfigSchema = Joi.object({
   env: Joi.string().required(),
@@ -60,7 +62,9 @@ export const apiConfig: Readonly<ApiConfig> = _buildAndVerifyConfigFromYml(
   }),
 );
 
-// SERVICES
+/**
+ * External services
+ */
 
 const servicesConfigSchema = Joi.object({
   sentry: Joi.object({

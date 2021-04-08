@@ -1,50 +1,48 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
-  OneToMany,
-  getConnection,
-} from 'typeorm';
-
-import { PropertyAccess } from './entity/property-access';
-import { Language } from './language.entity';
-import { Shop } from './shop.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import * as Joi from 'joi';
 import * as argon2 from 'argon2';
+
+import { RoleFilter } from '@utils/role-filter';
+import { Language } from './language.entity';
+import { Shop } from './shop.entity';
+import { Activity } from './activity.entity';
 
 /**
  * Schema
  */
 
-export const updateUserSchema = Joi.object()
-  .keys({
-    email: Joi.string().email(),
-    password: Joi.string().min(8).max(100),
-    firstName: Joi.string().max(42),
-    lastName: Joi.string().max(42),
-  })
-  .required();
+export const userSchema = {
+  id: Joi.string().id().disallow(null),
+  email: Joi.string().email().disallow(null),
+  password: Joi.string().min(8).max(100).disallow(null),
+  firstName: Joi.string().max(42).disallow(null),
+  lastName: Joi.string().max(42).disallow(null),
+};
 
-export const newUserSchema = Joi.object()
-  .keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().min(8).max(100).required(),
-    firstName: Joi.string().max(42).required(),
-    lastName: Joi.string().max(42).required(),
-  })
-  .required();
+export const userEmailValidator = userSchema.email.required();
+export const userPasswordValidator = userSchema.password.required();
+export const updateUserValidator = Joi.object({
+  email: userSchema.email,
+  password: userSchema.password,
+  firstName: userSchema.firstName,
+  lastName: userSchema.lastName,
+}).required();
+export const newUserValidator = Joi.object({
+  email: userSchema.email.required(),
+  password: userSchema.password.required(),
+  firstName: userSchema.firstName.required(),
+  lastName: userSchema.lastName.required(),
+}).required();
 
 /**
  * Entity
  */
 
 @Entity()
-export class User extends PropertyAccess {
+export class User extends RoleFilter {
   constructor() {
     super();
-    this.addPublicProperties(['id', 'firstName', 'lastName', 'language']);
+    this.addPublicProperties(['id', 'firstName', 'lastName', 'language', 'activities']);
     this.addSelfProperties(['email']);
   }
 
@@ -63,11 +61,14 @@ export class User extends PropertyAccess {
   @Column({ name: 'password_hashed', default: '' })
   passwordHashed: string;
 
-  @Column({ enum: Language })
+  @Column({ enum: Language, nullable: true })
   language: string;
 
+  @OneToMany(() => Activity, (activity) => activity.user)
+  activities: Activity[];
+
   @OneToMany(() => Shop, (shop) => shop.owner)
-  ownedShops: Shop;
+  ownedShops: Shop[];
 
   @ManyToMany(() => Shop)
   @JoinTable({
@@ -94,5 +95,3 @@ export class User extends PropertyAccess {
     return await argon2.verify(this.passwordHashed, password);
   }
 }
-
-export const getUserRepository = () => getConnection().getRepository(User);

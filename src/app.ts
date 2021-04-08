@@ -8,7 +8,8 @@ import passport from 'koa-passport';
 
 import { apiConfig } from '@config';
 import logger from '@services/logger';
-import { requestHandlerMiddleware } from '@middlewares/request-handler';
+import { userSessionMiddleware } from '@middlewares/authentication';
+import { requestMiddleware } from '@middlewares/request';
 import { trackerMiddleware } from '@middlewares/tracker';
 import { loggerMiddleware } from '@middlewares/logger';
 import buildRouter from './router';
@@ -27,12 +28,13 @@ const _setupAuthentication = (app) => {
   app.use(session({}, app));
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(userSessionMiddleware);
 };
 
 const setupApp = async (app) => {
+  app.use(requestMiddleware);
   _setupSecurity(app);
   _setupAuthentication(app);
-  app.use(requestHandlerMiddleware);
   app.use(bodyParser());
   app.use(loggerMiddleware);
   app.use(trackerMiddleware);

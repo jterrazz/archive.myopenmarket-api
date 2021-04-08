@@ -14,7 +14,8 @@
     "coverage": "jest --coverage",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "db:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n ",
-    "db:migrate": "ts-node ./node_modules/typeorm/cli.js migration:run"
+    "db:migrate": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "db:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",

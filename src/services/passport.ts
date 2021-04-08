@@ -1,7 +1,7 @@
 import passport from 'koa-passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 
-import { signInWithPassword, signUp } from '@controllers/authentication.controller';
+import { signInWithPassword, signUpWithPassword } from '@controllers/authentication.controller';
 
 passport.serializeUser(async (user, done) => {
   try {
@@ -29,7 +29,7 @@ passport.use(
     { passReqToCallback: true, usernameField: 'email' },
     async (req, username, password, done) => {
       try {
-        const userRecord = await signUp(req.body);
+        const userRecord = await signUpWithPassword(req.body);
         await done(null, userRecord);
       } catch (err) {
         done(err);

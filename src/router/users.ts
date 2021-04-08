@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { getUserController } from '@controllers/users.controller';
+import { getUserController } from '@controllers/user.controller';
 
 const userRouter = new Router();
 

@@ -1,8 +1,14 @@
 import { Middleware } from 'koa';
+import { RawJson } from '@internal-types/koa';
 
-import { HttpError } from '@entities/errors/http-error';
-import { User, newUserSchema } from '@entities/user.entity';
-import { insertUser, getUserByEmail } from '@entities/user.repository';
+import {
+  User,
+  newUserValidator,
+  userEmailValidator,
+  userPasswordValidator,
+} from '@entities/user.entity';
+import { createUser, getUserByEmail } from '@repositories/user.repository';
+import { HttpError } from '@entities/errors/http.error';
 
 /**
  * Koa controllers
@@ -13,7 +19,7 @@ export const successAuthController: Middleware = async (ctx) => {
 
   ctx.body = {
     message: 'Authentication successful',
-    user: ctx.state.user.getSelfProperties(),
+    user: ctx.state.user.filterSelfProperties(),
   };
 };
 
@@ -28,18 +34,24 @@ export const logoutController: Middleware = async (ctx) => {
  * Controllers
  */
 
-export const signInWithPassword = async (email, password): Promise<User> => {
+export const signInWithPassword = async (
+  rawEmail: RawJson,
+  rawPassword: RawJson,
+): Promise<User> => {
+  const email = await userEmailValidator.validateAsync(rawEmail);
+  const password = await userPasswordValidator.validateAsync(rawPassword);
+
   const userRecord = await getUserByEmail(email);
 
   if (!userRecord || !(await userRecord.verifyPassword(password))) {
-    throw new HttpError(401, 'Authentication failed');
+    throw new HttpError(401, `Authentication for user <email:${rawEmail}> has failed`);
   }
 
   return userRecord;
 };
 
-export const signUp = async (user): Promise<User> => {
-  const parsedUser = await newUserSchema.validateAsync(user);
+export const signUpWithPassword = async (rawUser: RawJson): Promise<User> => {
+  const user = await newUserValidator.validateAsync(rawUser);
 
-  return await insertUser(parsedUser);
+  return await createUser(user);
 };

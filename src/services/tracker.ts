@@ -39,9 +39,9 @@ class Tracker {
   }
 
   _emit(name: string, props: object = {}) {
-    let log = `New event ${name} - ${JSON.stringify(props)}`;
-    if (!mixpanelSecret) log += ' (skipped)';
-    logger.http(log);
+    let log = `sending event <${name}> - <props:${JSON.stringify(props)}>`;
+    if (!mixpanelSecret) log += ' (stopped)';
+    logger.debug(log);
 
     if (!mixpanelSecret) return;
 

@@ -14,12 +14,13 @@ enum LevelColors {
   silly = '\x1b[37m',
 }
 
-// Logger
 const winstonLogger = winston.createLogger({
   level: WinstonLevels[apiConfig.logs.local],
 });
 
-// Formats
+/**
+ * Format
+ */
 
 const localFormat = winston.format.printf((info) => {
   return LevelColors[info.level] + `[${info.category}] ${info.message} \x1b[0m`;
@@ -30,6 +31,10 @@ winstonLogger.add(
     format: localFormat,
   }),
 );
+
+/**
+ * Logger
+ */
 
 export class Logger {
   _getCallerFile() {
@@ -61,7 +66,9 @@ export class Logger {
     };
   }
 
-  // Logger methods
+  /**
+   * Logging methods
+   */
 
   error(message) {
     winstonLogger.error(this._buildMessage(message));

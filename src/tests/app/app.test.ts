@@ -18,7 +18,7 @@ describe('app.test.ts', () => {
       expect(status).toBe(200);
     });
 
-    test('returns 404 on a nonexistent url', async () => {
+    test('returns 404 on a missing url', async () => {
       const { status } = await request(app.callback()).get('/bad-url');
       expect(status).toBe(404);
     });

@@ -11,8 +11,10 @@
       "*": ["types/*.d.ts"],
       "~/*": ["./src/*"],
       "@middlewares/*": ["./src/middlewares/*"],
-      "@model": ["./src/models"],
+      "@utils/*": ["./src/utils/*"],
+      "@internal-types/*": ["./src/types/*"],
       "@entities/*": ["./src/entities/*"],
+      "@repositories/*": ["./src/repositories/*"],
       "@config": ["./src/config"],
       "@controllers/*": ["./src/controllers/*"],
       "@services/*": ["./src/services/*"]

@@ -1,10 +1,31 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne } from 'typeorm';
+import * as Joi from 'joi';
 
-import { PropertyAccess } from './entity/property-access';
+import { RoleFilter } from '@utils/role-filter';
 import { User } from './user.entity';
 
+/**
+ * Schema
+ */
+
+export const shopSchema = {
+  id: Joi.string().id(),
+  handle: Joi.string().id(),
+  name: Joi.string().id(),
+  description: Joi.string().id(),
+};
+
+export const shopIdValidator = shopSchema.id.required();
+export const updateShopValidator = Joi.object({
+  name: shopSchema.name.disallow(null),
+}).required();
+
+/**
+ * Entity
+ */
+
 @Entity()
-export class Shop extends PropertyAccess {
+export class Shop extends RoleFilter {
   constructor() {
     super();
     this.addPublicProperties(['id', 'handle', 'name', 'description', 'owner']);
