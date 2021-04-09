@@ -1,78 +1,163 @@
-import request from 'supertest';
 import { startInMemoryApp } from '~/tests/setup/in-memory-app';
+import { authenticatorFactory } from './fixtures/authentication';
+import { userClientFactory } from './fixtures/user';
 
-let app;
-let testUserId: string;
-let testUserCookies;
-
-export const postAuthSignup = (
-  user = {
-    email: 'email@gmail.com',
-    password: 'password-123',
-    firstName: 'firstName',
-    lastName: 'lastName',
-  },
-) => {
-  return request(app.callback()).post('/auth/signup').send(user);
-};
-
-export const getUserId = (userId) => request(app.callback()).get(`/users/${userId}`);
-export const patchMe = (
-  cookies = [],
-  user = {
-    email: 'email2@gmail.com',
-    password: 'new-password-123',
-    firstName: 'newFirstName',
-    lastName: 'newLastName',
-  },
-) => request(app.callback()).patch(`/me`).send(user).set('Cookie', cookies);
+let authenticator;
+let userClient;
 
 /**
  * Tests
  */
 
 beforeAll(async () => {
-  // app = await startInMemoryApp();
-  // const { body, header } = await postAuthSignup();
-  // testUserId = body.user._id;
-  // testUserCookies = header['set-cookie'];
+  const app = await startInMemoryApp();
+  authenticator = authenticatorFactory(app);
+  userClient = userClientFactory(app);
 });
 
-describe('users.test.ts', () => {
-  test('yop', () => {
-    expect(1).toBeDefined();
+describe('users IT', () => {
+  describe('GET /:userId', () => {
+    test('it returns the public user data', async () => {
+      const userSession = await authenticator.createUser({
+        firstName: 'Jean-Baptiste',
+        lastName: 'Terrazzoni',
+      });
+
+      await userClient
+        .getUserById(userSession.body.user.id)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((response) => {
+          expect(response.body).toEqual({
+            id: 1,
+            firstName: 'Jean-Baptiste',
+            lastName: 'Terrazzoni',
+            language: null,
+          });
+        });
+    });
+
+    test('it returns 404 on a missing user', async () => {
+      await userClient.getUserById('yes').expect(404);
+    });
   });
-  // describe('request GET /users/:userId', () => {
-  //   test('returns public user data', async () => {
-  //     await getUserId(testUserId)
-  //       .expect('Content-Type', /json/)
-  //       .expect(200)
-  //       .then((response) => {
-  //         expect(response.body._id).toBeDefined(); // TODO Upgrade
-  //         expect(response.body.firstName).toBeDefined();
-  //         expect(response.body.lastName).toBeDefined();
-  //         expect(response.body.language).toBeDefined();
-  //         // TODO Check existing object
-  //       });
-  //   });
-  //
-  //   test("doesn't return public user data", async () => {
-  //     await getUserId(testUserId).then((response) => {
-  //       expect(response.body.passwordHashed).toBeUndefined();
-  //     });
-  //   });
-  //
-  //   test('PATCH /me must update user information and return it', async () => {
-  //     await patchMe(testUserCookies)
-  //       .expect('Content-Type', /json/)
-  //       .expect(200)
-  //       .then((response) => {
-  //         expect(response.body._id).toBeDefined();
-  //         expect(response.body.email).toBe('email2@gmail.com');
-  //         expect(response.body.firstName).toBe('newFirstName');
-  //         expect(response.body.lastName).toBe('newLastName');
-  //       });
-  //   });
-  //   // TODO Check old password doesn't work
-  // });
+
+  describe('DELETE /me', () => {
+    test('it deletes the user', async () => {
+      const userSession = await authenticator.createUser({
+        email: 'todelete@gmail.com',
+        password: 'ThePassword123',
+      });
+
+      await userClient
+        .deleteMe(userSession, {
+          password: 'ThePassword123',
+        })
+        .expect(200);
+
+      await authenticator
+        .login({
+          email: 'todelete@gmail.com',
+          password: 'ThePassword123',
+        })
+        .expect(401);
+    });
+
+    test('it returns 404 on a missing user', async () => {
+      await userClient.getUserById('yes').expect(404);
+    });
+  });
+
+  describe('PATCH /me', () => {
+    test('it fails if the user is not authenticated', async () => {
+      await userClient
+        .patchUser(null, {
+          lastName: 'Last',
+        })
+        .expect(401);
+    });
+
+    test('it updates the user profile', async () => {
+      const userSession = await authenticator.createUser();
+
+      await userClient
+        .patchUser(userSession, {
+          email: 'updateuseremail@gmail.com',
+          firstName: 'First',
+          lastName: 'Last',
+        })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((response) => {
+          expect(response.body).toEqual(
+            expect.objectContaining({
+              email: 'updateuseremail@gmail.com',
+              firstName: 'First',
+              lastName: 'Last',
+            }),
+          );
+        });
+
+      await userClient
+        .getUserById(userSession.body.user.id)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((response) => {
+          expect(response.body).toEqual(
+            expect.objectContaining({
+              firstName: 'First',
+              lastName: 'Last',
+            }),
+          );
+        });
+    });
+
+    test('it updates the user password', async () => {
+      const userSession = await authenticator.createUser({
+        email: 'users00004@gmail.com',
+        password: 'TheOldPassword123',
+      });
+
+      await userClient
+        .patchUser(userSession, {
+          password: 'ThePassword123',
+        })
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((response) => {
+          expect(response.body.password).not.toBeDefined();
+          expect(response.body.passwordHashed).not.toBeDefined();
+        });
+
+      await authenticator
+        .login({
+          email: 'users00004@gmail.com',
+          password: 'ThePassword123',
+        })
+        .expect(200);
+      await authenticator
+        .login({
+          email: 'users00004@gmail.com',
+          password: 'TheOldPassword123',
+        })
+        .expect(401);
+    });
+
+    describe('it fails when one field is baldy formatted', () => {
+      test('email', async () => {
+        const userSession = await authenticator.createUser();
+        await userClient.patchUser(userSession, { email: 'ok' }).expect(422);
+      });
+
+      test('password', async () => {
+        const userSession = await authenticator.createUser();
+        await userClient.patchUser(userSession, { password: '1234567' }).expect(422);
+      });
+
+      test('firstname', async () => {
+        const userSession = await authenticator.createUser();
+        await userClient.patchUser(userSession, { firstName: '1234567890'.repeat(5) }).expect(422);
+      });
+    });
+  });
 });

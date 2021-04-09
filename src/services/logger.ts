@@ -71,22 +71,28 @@ export class Logger {
    */
 
   error(message) {
-    winstonLogger.error(this._buildMessage(message));
+    console.log(message);
+    // winstonLogger.error(this._buildMessage(message));
   }
   warn(message) {
-    winstonLogger.warn(this._buildMessage(message));
+    console.log(message);
+    // winstonLogger.warn(this._buildMessage(message));
   }
   info(message) {
-    winstonLogger.info(this._buildMessage(message));
+    console.log(message);
+    // winstonLogger.info(this._buildMessage(message));
   }
   http(message) {
-    winstonLogger.http(this._buildMessage(message));
+    console.log(message);
+    // winstonLogger.http(this._buildMessage(message));
   }
   verbose(message) {
-    winstonLogger.verbose(this._buildMessage(message));
+    console.log(message);
+    // winstonLogger.verbose(this._buildMessage(message));
   }
   debug(message) {
-    winstonLogger.debug(this._buildMessage(message));
+    console.log(message);
+    // winstonLogger.debug(this._buildMessage(message));
   }
 }
 

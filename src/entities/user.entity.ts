@@ -15,8 +15,8 @@ export const userSchema = {
   id: Joi.string().id().disallow(null),
   email: Joi.string().email().disallow(null),
   password: Joi.string().min(8).max(100).disallow(null),
-  firstName: Joi.string().max(42).disallow(null),
-  lastName: Joi.string().max(42).disallow(null),
+  firstName: Joi.string().min(1).max(42).disallow(null),
+  lastName: Joi.string().min(1).max(42).disallow(null),
 };
 
 export const userEmailValidator = userSchema.email.required();

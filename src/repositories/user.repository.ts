@@ -1,4 +1,5 @@
 import { getConnection } from 'typeorm';
+import { StatusCodes } from 'http-status-codes';
 
 import { HttpError } from '@entities/errors/http.error';
 import { User } from '@entities/user.entity';
@@ -14,10 +15,10 @@ const getUserRepository = () => getConnection().getRepository(User);
  */
 
 export const getUserById = async (id: string): Promise<User> => {
-  const userRecord = getUserRepository().findOne(id);
+  const userRecord = getUserRepository().findOne({ id });
 
   if (!userRecord) {
-    throw new HttpError(404, `User <id:${id}> not found`);
+    throw new HttpError(StatusCodes.NOT_FOUND, `User <id:${id}> not found`);
   }
 
   return userRecord;
@@ -27,27 +28,27 @@ export const getUserByEmail = async (email: string): Promise<User> => {
   const userRecord = getUserRepository().findOne({ email });
 
   if (!userRecord) {
-    throw new HttpError(404, `Shop <email:${email}> not found`);
+    throw new HttpError(StatusCodes.NOT_FOUND, `Shop <email:${email}> not found`);
   }
 
   return userRecord;
 };
 
 export const getUserActivities = async (id: string): Promise<Activity[]> => {
-  const userRecord = await getUserRepository().findOne(id, { relations: ['activities'] });
+  const userRecord = await getUserRepository().findOne({ id }, { relations: ['activities'] });
 
   if (!userRecord) {
-    throw new HttpError(404, `User <id:${id}> not found`);
+    throw new HttpError(StatusCodes.NOT_FOUND, `User <id:${id}> not found`);
   }
 
   return userRecord.activities; // TODO To public props
 };
 
 export const getUserFollowedShops = async (id: string): Promise<Shop[]> => {
-  const userRecord = await getUserRepository().findOne(id, { relations: ['followedShops'] });
+  const userRecord = await getUserRepository().findOne({ id }, { relations: ['followedShops'] });
 
   if (!userRecord) {
-    throw new HttpError(404, `User <id:${id}> not found`);
+    throw new HttpError(StatusCodes.NOT_FOUND, `User <id:${id}> not found`);
   }
 
   return userRecord.followedShops; // TODO To public props
@@ -62,7 +63,7 @@ export const saveUser = async (user: User) => {
     await getUserRepository().save(user);
   } catch (e) {
     if (e.detail && e.detail.match(/email(.*)already exists/)) {
-      throw new HttpError(422, 'This email is already used');
+      throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY, 'This email is already used');
     }
     throw e;
   }
@@ -108,7 +109,7 @@ export const insertFollowedShop = async (userId: string, shopId: string): Promis
       .add(shopRecord);
   } catch (e) {
     if (e.message && e.message.match(/duplicate key value violates unique constraint/)) {
-      throw new HttpError(409, 'Entry already exist');
+      throw new HttpError(StatusCodes.CONFLICT, 'Entry already exist');
     }
     throw e;
   }
@@ -122,7 +123,7 @@ export const removeUser = async (id: string, password: string): Promise<void> =>
   const userRecord = await getUserById(id);
 
   if (!(await userRecord.verifyPassword(password))) {
-    throw new HttpError(401, 'Incorrect password');
+    throw new HttpError(StatusCodes.UNAUTHORIZED, 'Incorrect password');
   }
 
   await getUserRepository().remove(userRecord);

@@ -23,3 +23,6 @@ export const createActivity = async (
 
 export const createUpdateProfileActivity = (userSession: UserSession) =>
   createActivity(userSession, UserActivity.updateProfile);
+
+export const createUpdateShopActivity = (userSession: UserSession) =>
+  createActivity(userSession, UserActivity.updateShop);

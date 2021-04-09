@@ -1,13 +1,15 @@
 import { Middleware } from 'koa';
+import { StatusCodes } from 'http-status-codes';
+
 import { HttpError } from '@entities/errors/http.error';
 import { UserSession } from '@entities/user-session.entity';
 
 export const isAuthenticated: Middleware = async (ctx, next) => {
   if (ctx.isAuthenticated()) {
-    await next();
+    return await next();
   }
 
-  throw new HttpError(401, 'This request requires authentication');
+  throw new HttpError(StatusCodes.UNAUTHORIZED, 'This request requires authentication');
 };
 
 export const userSessionMiddleware: Middleware = async (ctx, next) => {

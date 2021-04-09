@@ -1,4 +1,5 @@
 import { Middleware } from 'koa';
+import { StatusCodes } from 'http-status-codes';
 
 import {
   getUserById,
@@ -33,17 +34,18 @@ export const deleteMeController: Middleware = async (ctx) => {
 
   await removeUser(userId, userPassword);
 
-  ctx.status = 200;
+  ctx.status = StatusCodes.OK;
 };
 
 export const patchMeController: Middleware = async (ctx) => {
   ctx.tracker.requestPatchMe();
 
-  const userId = ctx.state.user.id; // TODO Type loggedUser + add ip
+  const userId = ctx.state.user.id;
   const parsedUser = await updateUserValidator.validateAsync(ctx.request.body);
 
   const userRecord = await updateUser(userId, parsedUser);
   await createUpdateProfileActivity(ctx.state.userSession);
+
   ctx.body = userRecord.filterSelfProperties();
 };
 
@@ -70,5 +72,5 @@ export const postFollowShopController: Middleware = async (ctx) => {
   const shopId = await shopIdValidator.validateAsync(ctx.query.shopId);
 
   await insertFollowedShop(userId, shopId);
-  ctx.body = 200;
+  ctx.body = StatusCodes.OK;
 };

@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import logger from '@services/logger';
+import { StatusCodes } from 'http-status-codes';
 
 export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
   try {
@@ -11,7 +12,7 @@ export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       logger.debug(err);
-      ctx.status = 422;
+      ctx.status = StatusCodes.UNPROCESSABLE_ENTITY;
       ctx.body = err.details;
     } else if (err.expose) {
       logger.debug(err);
@@ -20,7 +21,7 @@ export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
     } else {
       logger.error(err);
       console.log(err);
-      ctx.status = 500;
+      ctx.status = StatusCodes.INTERNAL_SERVER_ERROR;
       ctx.body = 'Internal Server Error';
     }
 

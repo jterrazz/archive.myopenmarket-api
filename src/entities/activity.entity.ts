@@ -4,6 +4,7 @@ import { User } from '../entities/user.entity';
 
 export enum UserActivity {
   updateProfile = 'update-profile',
+  updateShop = 'update-shop',
 }
 
 /**

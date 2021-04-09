@@ -1,6 +1,7 @@
 import { Middleware } from 'koa';
-import { RawJson } from '@internal-types/koa';
+import { StatusCodes } from 'http-status-codes';
 
+import { RawJson } from '@internal-types/koa';
 import {
   User,
   newUserValidator,
@@ -27,7 +28,8 @@ export const logoutController: Middleware = async (ctx) => {
   ctx.logger.debug(`logout for user <${ctx.state.user.email}>`);
 
   ctx.logout();
-  ctx.status = 200;
+
+  ctx.status = StatusCodes.OK;
 };
 
 /**
@@ -44,7 +46,10 @@ export const signInWithPassword = async (
   const userRecord = await getUserByEmail(email);
 
   if (!userRecord || !(await userRecord.verifyPassword(password))) {
-    throw new HttpError(401, `Authentication for user <email:${rawEmail}> has failed`);
+    throw new HttpError(
+      StatusCodes.UNAUTHORIZED,
+      `Authentication for user <email:${rawEmail}> has failed`,
+    );
   }
 
   return userRecord;
