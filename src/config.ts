@@ -1,83 +1,49 @@
 require('dotenv').config(); // load environment variables from the .env file
 import config from 'config';
-import * as Joi from '@hapi/joi';
-import 'joi-extract-type';
-
-const _buildAndVerifyConfigFromYml = (
-  configKey: string,
-  joiSchema: Joi.Schema,
-  modifyFromValuesCallback?: (envValues: any) => object,
-) => {
-  const configFromYml = config.get(configKey);
-  const { error, value: envValues } = joiSchema.validate(configFromYml);
-
-  if (error) {
-    console.error(`[config] Environment variable error: ${error.message}`);
-    process.exit(1);
-  }
-  if (modifyFromValuesCallback) {
-    return {
-      ...envValues,
-      ...modifyFromValuesCallback(envValues),
-    };
-  }
-
-  return envValues;
-};
+import * as z from 'zod';
 
 /**
  * API config
  */
 
-const apiConfigSchema = Joi.object({
-  env: Joi.string().required(),
-  version: Joi.string().required(),
-  logs: Joi.object({
-    local: Joi.number().required(),
-    distant: Joi.number().required(),
-  }).required(),
-  http: Joi.object({
-    port: Joi.number().required(),
-  }).required(),
-  auth: Joi.object({
-    jwtSecret: Joi.string().required(),
-    sessionSecret: Joi.string().required(),
-  }).required(),
-  security: Joi.object({
-    cors: Joi.string(),
-  }).required(),
-}).required();
-
-type ApiConfigEnv = Joi.extractType<typeof apiConfigSchema>;
-
-export interface ApiConfig extends ApiConfigEnv {
-  isProd: boolean;
-}
-
-export const apiConfig: Readonly<ApiConfig> = _buildAndVerifyConfigFromYml(
-  'api',
-  apiConfigSchema,
-  (envVariables) => ({
-    isProd: envVariables.env === 'production',
+const apiConfigSchema = z.object({
+  env: z.string(),
+  version: z.string(),
+  logs: z.object({
+    local: z.number(),
+    distant: z.number(),
   }),
-);
+  http: z.object({
+    port: z.number(),
+  }),
+  auth: z.object({
+    jwtSecret: z.string(),
+    sessionSecret: z.string(),
+  }),
+  security: z.object({
+    cors: z.string(),
+  }),
+});
+
+export const apiConfig = apiConfigSchema.parse(config.get('api'));
 
 /**
  * External services
  */
 
-const servicesConfigSchema = Joi.object({
-  sentry: Joi.object({
-    dsn: Joi.string(),
-  }).allow(null),
-  mixpanel: Joi.object({
-    secret: Joi.string(),
-  }).allow(null),
-}).required();
+const servicesConfigSchema = z
+  .object({
+    sentry: z
+      .object({
+        dsn: z.string().optional(),
+      })
+      .optional(),
+    mixpanel: z
+      .object({
+        secret: z.string().optional(),
+      })
+      .optional(),
+  })
+  .nullable();
 
-export type ServicesConfig = Joi.extractType<typeof servicesConfigSchema>;
-
-export const servicesConfig: Readonly<ServicesConfig> = _buildAndVerifyConfigFromYml(
-  'services',
-  servicesConfigSchema,
-);
+export const servicesConfig = servicesConfigSchema.parse(config.get('services')) || {};

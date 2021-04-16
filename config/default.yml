@@ -5,5 +5,3 @@ api:
     local: 2
     distant: 5
 services:
-  mixpanel:
-  sentry:
