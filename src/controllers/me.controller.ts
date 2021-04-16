@@ -9,8 +9,8 @@ import {
   insertFollowedShop,
   getUserActivities,
 } from '@repositories/user.repository';
-import { updateUserValidator, userPasswordValidator } from '@entities/user.entity';
-import { shopIdValidator } from '@entities/shop.entity';
+import { updateUserRequestSchema, userPasswordSchema } from '@entities/user.entity';
+import { shopIdSchema } from '@entities/shop.entity';
 import { createUpdateProfileActivity } from '@repositories/activity.repository';
 
 /**
@@ -30,7 +30,7 @@ export const deleteMeController: Middleware = async (ctx) => {
   ctx.tracker.requestDeleteMe();
 
   const userId = ctx.state.user.id;
-  const userPassword = await userPasswordValidator.validateAsync(ctx.request.body.password);
+  const userPassword = await userPasswordSchema.parse(ctx.request.body.password); // TODO Be rawJSON
 
   await removeUser(userId, userPassword);
 
@@ -41,7 +41,7 @@ export const patchMeController: Middleware = async (ctx) => {
   ctx.tracker.requestPatchMe();
 
   const userId = ctx.state.user.id;
-  const parsedUser = await updateUserValidator.validateAsync(ctx.request.body);
+  const parsedUser = await updateUserRequestSchema.parse(ctx.request.body);
 
   const userRecord = await updateUser(userId, parsedUser);
   await createUpdateProfileActivity(ctx.state.userSession);
@@ -69,7 +69,7 @@ export const postFollowShopController: Middleware = async (ctx) => {
   ctx.tracker.requestInsertFollowedShops();
 
   const userId = ctx.state.user.id;
-  const shopId = await shopIdValidator.validateAsync(ctx.query.shopId);
+  const shopId = await shopIdSchema.parse(ctx.query.shopId);
 
   await insertFollowedShop(userId, shopId);
   ctx.body = StatusCodes.OK;

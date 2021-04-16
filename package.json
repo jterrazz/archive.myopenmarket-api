@@ -8,7 +8,7 @@
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
   "scripts": {
     "start:dev": "nodemon",
-    "start:dev-database": "docker-compose up database",
+    "start:dev-env": "docker-compose up database",
     "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "test": "NODE_ENV=test jest --verbose",
     "coverage": "jest --coverage",
@@ -63,6 +63,7 @@
     "tsconfig-paths": "^3.9.0",
     "typeorm": "^0.2.29",
     "typescript": "^3.9.3",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "zod": "^1.11.13"
   }
 }

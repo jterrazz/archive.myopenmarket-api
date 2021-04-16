@@ -4,9 +4,9 @@ import { StatusCodes } from 'http-status-codes';
 import { RawJson } from '@internal-types/koa';
 import {
   User,
-  newUserValidator,
-  userEmailValidator,
-  userPasswordValidator,
+  userPasswordSchema,
+  userEmailSchema,
+  createUserRequestSchema,
 } from '@entities/user.entity';
 import { createUser, getUserByEmail } from '@repositories/user.repository';
 import { HttpError } from '@entities/errors/http.error';
@@ -40,8 +40,8 @@ export const signInWithPassword = async (
   rawEmail: RawJson,
   rawPassword: RawJson,
 ): Promise<User> => {
-  const email = await userEmailValidator.validateAsync(rawEmail);
-  const password = await userPasswordValidator.validateAsync(rawPassword);
+  const email = await userEmailSchema.parse(rawEmail);
+  const password = await userPasswordSchema.parse(rawPassword);
 
   const userRecord = await getUserByEmail(email);
 
@@ -56,7 +56,7 @@ export const signInWithPassword = async (
 };
 
 export const signUpWithPassword = async (rawUser: RawJson): Promise<User> => {
-  const user = await newUserValidator.validateAsync(rawUser);
+  const user = await createUserRequestSchema.parse(rawUser);
 
   return await createUser(user);
 };

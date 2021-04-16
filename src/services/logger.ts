@@ -49,7 +49,7 @@ export class Logger {
       // @ts-ignore
       const currentfile = err.stack.shift().getFileName();
 
-      while (err.stack.length) {
+      while (err.stack?.length) {
         // @ts-ignore
         callerfile = err.stack.shift().getFileName();
 

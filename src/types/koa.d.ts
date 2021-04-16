@@ -5,12 +5,11 @@ import { User } from '@entities/user.entity';
 import { UserSession } from '@entities/user-session.entity';
 
 export interface RawJson {
-  [key: string]: RawJson | string | number | object;
+  [key: string]: RawJson;
 }
 
-export interface ParsedJson {
-  [key: string]: ParsedJson | string | number | object;
-}
+// ctx.request.body.password
+// ctx.request.query
 
 declare module 'koa' {
   interface ExtendableContext {

@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
 export class RoleFilter {
-  _publicProperties = [];
-  _selfProperties = [];
+  _publicProperties: string[] = [];
+  _selfProperties: string[] = [];
 
   addPublicProperties(properties: string[]) {
     this._publicProperties.push(...properties);

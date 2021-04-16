@@ -3,7 +3,6 @@ import { StatusCodes } from 'http-status-codes';
 
 import { HttpError } from '@entities/errors/http.error';
 import { Shop } from '@entities/shop.entity';
-import { ParsedJson } from '~/types/koa';
 
 export const getShopRepository = () => getConnection().getRepository(Shop);
 
@@ -52,8 +51,9 @@ export const saveShop = async (shopRecord: Shop) => {
  * Create
  */
 
-export const createShop = async (shop: ParsedJson): Promise<Shop> => {
-  const shopRecord = getShopRepository().create(shop);
+export const createShop = async (shop: object): Promise<Shop> => {
+  // TODO type input
+  const shopRecord = await getShopRepository().create(shop);
 
   await saveShop(shopRecord);
 
@@ -64,7 +64,8 @@ export const createShop = async (shop: ParsedJson): Promise<Shop> => {
  * Update
  */
 
-export const updateShop = async (shopId: string, shop: ParsedJson): Promise<Shop> => {
+export const updateShop = async (shopId: string, shop): Promise<Shop> => {
+  // TODO type input
   const shopRecord = await getShopById(shopId);
 
   Object.assign(shopRecord, shop);

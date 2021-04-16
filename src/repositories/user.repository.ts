@@ -2,10 +2,9 @@ import { getConnection } from 'typeorm';
 import { StatusCodes } from 'http-status-codes';
 
 import { HttpError } from '@entities/errors/http.error';
-import { User } from '@entities/user.entity';
+import { CreateUserRequest, UpdateUserRequest, User } from '@entities/user.entity';
 import { Shop } from '@entities/shop.entity';
 import { getShopById } from '@repositories/shop.repository';
-import { ParsedJson } from '~/types/koa';
 import { Activity } from '@entities/activity.entity';
 
 const getUserRepository = () => getConnection().getRepository(User);
@@ -15,7 +14,7 @@ const getUserRepository = () => getConnection().getRepository(User);
  */
 
 export const getUserById = async (id: string): Promise<User> => {
-  const userRecord = getUserRepository().findOne({ id });
+  const userRecord = await getUserRepository().findOne({ id });
 
   if (!userRecord) {
     throw new HttpError(StatusCodes.NOT_FOUND, `User <id:${id}> not found`);
@@ -25,7 +24,7 @@ export const getUserById = async (id: string): Promise<User> => {
 };
 
 export const getUserByEmail = async (email: string): Promise<User> => {
-  const userRecord = getUserRepository().findOne({ email });
+  const userRecord = await getUserRepository().findOne({ email });
 
   if (!userRecord) {
     throw new HttpError(StatusCodes.NOT_FOUND, `Shop <email:${email}> not found`);
@@ -39,7 +38,11 @@ export const getUserActivities = async (id: string): Promise<Activity[]> => {
     .createQueryBuilder(User, 'users')
     .leftJoinAndSelect('users.activities', 'activities')
     .orderBy('activities.id', 'DESC')
-    .getOne();
+    .getOne(); // TODO Find my user
+
+  if (!userRecord) {
+    throw new HttpError(StatusCodes.NOT_FOUND, `User <> not found`);
+  }
 
   return userRecord?.activities;
 };
@@ -73,7 +76,7 @@ export const saveUser = async (user: User) => {
  * Create
  */
 
-export const createUser = async (data: ParsedJson): Promise<User> => {
+export const createUser = async (data: CreateUserRequest): Promise<User> => {
   const userRecord = getUserRepository().create(data);
 
   await userRecord.updatePassword(data.password);
@@ -86,7 +89,7 @@ export const createUser = async (data: ParsedJson): Promise<User> => {
  * Update
  */
 
-export const updateUser = async (userId: string, data: ParsedJson): Promise<User> => {
+export const updateUser = async (userId: string, data: UpdateUserRequest): Promise<User> => {
   const userRecord = await getUserById(userId);
 
   Object.assign(userRecord, data);

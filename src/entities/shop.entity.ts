@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne } from 'typeorm';
-import * as Joi from 'joi';
+import * as z from 'zod';
 
 import { RoleFilter } from '@utils/role-filter';
 import { User } from './user.entity';
@@ -8,17 +8,19 @@ import { User } from './user.entity';
  * Schema
  */
 
+// TODO
 export const shopSchema = {
-  id: Joi.string().id(),
-  handle: Joi.string().id(),
-  name: Joi.string().id(),
-  description: Joi.string().id(),
+  id: z.string(), // TODO
+  handle: z.string(),
+  name: z.string(),
+  description: z.string(),
 };
 
-export const shopIdValidator = shopSchema.id.required();
-export const updateShopValidator = Joi.object({
-  name: shopSchema.name.disallow(null),
-}).required();
+export const shopIdSchema = shopSchema.id;
+export const updateShopRequestSchema = z.object({
+  name: shopSchema.name.optional(),
+});
+export type UpdateShopRequest = z.infer<typeof updateShopRequestSchema>;
 
 /**
  * Entity

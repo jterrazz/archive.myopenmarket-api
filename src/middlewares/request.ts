@@ -2,6 +2,7 @@ import Koa from 'koa';
 import logger from '@services/logger';
 import { StatusCodes } from 'http-status-codes';
 import { v4 } from 'uuid';
+import { ZodError } from 'zod';
 
 export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
   try {
@@ -13,19 +14,16 @@ export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
 
     logger.http(`${ctx.request.method} ${ctx.request.url} => ${ctx.status} - ${elapsedTime} ms`);
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      logger.debug(err);
+    if (err instanceof ZodError) {
       ctx.status = StatusCodes.UNPROCESSABLE_ENTITY;
-      ctx.body = err.details;
+      ctx.body = err.errors;
     } else if (err.expose) {
-      logger.debug(err);
       ctx.status = err.status;
       ctx.body = err.message;
     } else {
-      logger.error(err);
-      console.log(err);
       ctx.status = StatusCodes.INTERNAL_SERVER_ERROR;
       ctx.body = 'Internal Server Error';
+      logger.error(err);
     }
 
     logger.http(`${ctx.request.method} ${ctx.request.url} => ${ctx.status} ${ctx.body}`);

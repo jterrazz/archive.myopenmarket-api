@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
-import * as Joi from 'joi';
+import * as z from 'zod';
 import * as argon2 from 'argon2';
 
 import { RoleFilter } from '@utils/role-filter';
@@ -11,28 +11,31 @@ import { Activity } from './activity.entity';
  * Schema
  */
 
+// TODO RENAME WITH REQUEST
 export const userSchema = {
-  id: Joi.string().id().disallow(null),
-  email: Joi.string().email().disallow(null),
-  password: Joi.string().min(8).max(100).disallow(null),
-  firstName: Joi.string().min(1).max(42).disallow(null),
-  lastName: Joi.string().min(1).max(42).disallow(null),
+  id: z.string(), // TODO
+  email: z.string().email(),
+  password: z.string().min(8).max(100),
+  firstName: z.string().min(1).max(42),
+  lastName: z.string().min(1).max(42),
 };
 
-export const userEmailValidator = userSchema.email.required();
-export const userPasswordValidator = userSchema.password.required();
-export const updateUserValidator = Joi.object({
-  email: userSchema.email,
-  password: userSchema.password,
-  firstName: userSchema.firstName,
-  lastName: userSchema.lastName,
-}).required();
-export const newUserValidator = Joi.object({
-  email: userSchema.email.required(),
-  password: userSchema.password.required(),
-  firstName: userSchema.firstName.required(),
-  lastName: userSchema.lastName.required(),
-}).required();
+export const userEmailSchema = userSchema.email;
+export const userPasswordSchema = userSchema.password;
+export const updateUserRequestSchema = z.object({
+  email: userSchema.email.optional(),
+  password: userSchema.password.optional(),
+  firstName: userSchema.firstName.optional(),
+  lastName: userSchema.lastName.optional(),
+});
+export type UpdateUserRequest = z.infer<typeof updateUserRequestSchema>;
+export const createUserRequestSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+});
+export type CreateUserRequest = z.infer<typeof createUserRequestSchema>;
 
 /**
  * Entity
