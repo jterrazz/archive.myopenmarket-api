@@ -12,6 +12,7 @@ describe('role-filter', () => {
 
   class UserContainer extends RoleFilter {
     user = defaultUser;
+    users = [defaultUser];
   }
 
   describe('filterPublicProperties()', () => {
@@ -32,7 +33,7 @@ describe('role-filter', () => {
     it('filters nested public properties', () => {
       // Given
       const userContainer = new UserContainer();
-      userContainer.addPublicProperties(['user']);
+      userContainer.addPublicProperties(['user', 'users']);
 
       // When
       const publicProperties = userContainer.filterPublicProperties();
@@ -40,6 +41,7 @@ describe('role-filter', () => {
       // Then
       expect(publicProperties).toEqual({
         user: { publicProp: 'publicProp' },
+        users: [{ publicProp: 'publicProp' }],
       });
     });
   });
@@ -65,7 +67,7 @@ describe('role-filter', () => {
       // Given
 
       const userContainer = new UserContainer();
-      userContainer.addSelfProperties(['user']);
+      userContainer.addSelfProperties(['user', 'users']);
 
       // When
       const publicProperties = userContainer.filterSelfProperties(false);
@@ -73,6 +75,7 @@ describe('role-filter', () => {
       // Then
       expect(publicProperties).toEqual({
         user: { selfProp: 'selfProp' },
+        users: [{ selfProp: 'selfProp' }],
       });
     });
   });

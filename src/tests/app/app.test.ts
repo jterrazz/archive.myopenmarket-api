@@ -21,4 +21,9 @@ describe('application IT', () => {
     const { status } = await request(app.callback()).get('/bad-url');
     expect(status).toBe(404);
   });
+
+  test('it sends the custom headers with the request', async () => {
+    const { header } = await request(app.callback()).get('/');
+    expect(header['x-request-id']).toBeDefined();
+  });
 });

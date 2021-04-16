@@ -1,9 +1,12 @@
 import Koa from 'koa';
 import logger from '@services/logger';
 import { StatusCodes } from 'http-status-codes';
+import { v4 } from 'uuid';
 
 export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
   try {
+    ctx.set('X-Request-ID', v4());
+
     const startTime = new Date().getTime();
     await next();
     const elapsedTime = new Date().getTime() - startTime;

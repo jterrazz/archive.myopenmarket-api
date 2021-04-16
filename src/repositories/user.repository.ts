@@ -35,13 +35,13 @@ export const getUserByEmail = async (email: string): Promise<User> => {
 };
 
 export const getUserActivities = async (id: string): Promise<Activity[]> => {
-  const userRecord = await getUserRepository().findOne({ id }, { relations: ['activities'] });
+  const userRecord = await getConnection()
+    .createQueryBuilder(User, 'users')
+    .leftJoinAndSelect('users.activities', 'activities')
+    .orderBy('activities.id', 'DESC')
+    .getOne();
 
-  if (!userRecord) {
-    throw new HttpError(StatusCodes.NOT_FOUND, `User <id:${id}> not found`);
-  }
-
-  return userRecord.activities; // TODO To public props
+  return userRecord?.activities;
 };
 
 export const getUserFollowedShops = async (id: string): Promise<Shop[]> => {
@@ -51,7 +51,7 @@ export const getUserFollowedShops = async (id: string): Promise<Shop[]> => {
     throw new HttpError(StatusCodes.NOT_FOUND, `User <id:${id}> not found`);
   }
 
-  return userRecord.followedShops; // TODO To public props
+  return userRecord.followedShops;
 };
 
 /**

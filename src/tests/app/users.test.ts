@@ -71,7 +71,7 @@ describe('users IT', () => {
   describe('PATCH /me', () => {
     test('it fails if the user is not authenticated', async () => {
       await userClient
-        .patchUser(null, {
+        .patchMe(null, {
           lastName: 'Last',
         })
         .expect(401);
@@ -81,7 +81,7 @@ describe('users IT', () => {
       const userSession = await authenticator.createUser();
 
       await userClient
-        .patchUser(userSession, {
+        .patchMe(userSession, {
           email: 'updateuseremail@gmail.com',
           firstName: 'First',
           lastName: 'Last',
@@ -119,7 +119,7 @@ describe('users IT', () => {
       });
 
       await userClient
-        .patchUser(userSession, {
+        .patchMe(userSession, {
           password: 'ThePassword123',
         })
         .expect('Content-Type', /json/)
@@ -146,18 +146,66 @@ describe('users IT', () => {
     describe('it fails when one field is baldy formatted', () => {
       test('email', async () => {
         const userSession = await authenticator.createUser();
-        await userClient.patchUser(userSession, { email: 'ok' }).expect(422);
+        await userClient.patchMe(userSession, { email: 'ok' }).expect(422);
       });
 
       test('password', async () => {
         const userSession = await authenticator.createUser();
-        await userClient.patchUser(userSession, { password: '1234567' }).expect(422);
+        await userClient.patchMe(userSession, { password: '1234567' }).expect(422);
       });
 
       test('firstname', async () => {
         const userSession = await authenticator.createUser();
-        await userClient.patchUser(userSession, { firstName: '1234567890'.repeat(5) }).expect(422);
+        await userClient.patchMe(userSession, { firstName: '1234567890'.repeat(5) }).expect(422);
       });
     });
+  });
+
+  describe('GET /me/activities', () => {
+    test('it returns activities ordered by date', async () => {
+      const userSession = await authenticator.createUser();
+      await userClient.patchMe(userSession, { email: 'activity@gmail.com' }).expect(200);
+      await userClient.patchMe(userSession, { email: 'activity2@gmail.com' }).expect(200);
+      await userClient
+        .getMyActivities(userSession)
+        .expect(200)
+        .then((response) => {
+          expect(response.body.length).toEqual(2);
+          expect(response.body[0].ipAddress).toEqual('::ffff:127.0.0.1');
+          expect(response.body[0].type).toEqual('update-profile');
+          expect(response.body[1].ipAddress).toEqual('::ffff:127.0.0.1');
+          expect(response.body[1].type).toEqual('update-profile');
+        });
+    });
+  });
+
+  describe('POST /me/followed-shops', () => {
+    test('it fails when the shop doesnt exist', async () => {
+      const userSession = await authenticator.createUser();
+      await userClient.postMyFollowedShops(userSession, 1).expect(404);
+    });
+  });
+
+  describe('GET /me/followed-shops', () => {
+    test('it returns an empty followed shop list', async () => {
+      const userSession = await authenticator.createUser();
+      await userClient
+        .getMyFollowedShops(userSession)
+        .expect(200)
+        .then((response) => {
+          expect(response.body).toEqual([]);
+        });
+    });
+
+    // test('it returns the followed shop list', async () => {
+    //   const userSession = await authenticator.createUser();
+    //   await userClient.postMyFollowedShops(userSession, 1).expect(200);
+    //   await userClient
+    //     .getMyFollowedShops(userSession)
+    //     .expect(200)
+    //     .then((response) => {
+    //       expect(response.body).toEqual(['fff']);
+    //     });
+    // });
   });
 });

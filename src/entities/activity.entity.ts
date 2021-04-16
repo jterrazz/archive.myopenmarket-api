@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
 
 import { User } from '../entities/user.entity';
+import { RoleFilter } from '@utils/role-filter';
 
 export enum UserActivity {
   updateProfile = 'update-profile',
@@ -12,7 +13,12 @@ export enum UserActivity {
  */
 
 @Entity()
-export class Activity {
+export class Activity extends RoleFilter {
+  constructor() {
+    super();
+    this.addSelfProperties(['ipAddress', 'type', 'created']);
+  }
+
   @PrimaryGeneratedColumn()
   id: string;
 

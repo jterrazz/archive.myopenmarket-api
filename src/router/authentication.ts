@@ -9,7 +9,8 @@ const authRouter = new Router();
 
 authRouter
   .post('/logout', isAuthenticated, logoutController)
-  // .post('/reset-password-email', resetPasswordEmailController)
+  // .post('/password/reset/email', resetPasswordEmailController)
+  // .post('/password/reset/email', resetPasswordEmailController)
   // .post('/reset-password', resetPasswordController)
 
   // Local

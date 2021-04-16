@@ -9,15 +9,28 @@ export class RoleFilter {
   }
 
   filterPublicProperties() {
-    const filteredObject = _.pick(this, this._publicProperties);
+    const properties = this._publicProperties;
+    const filteredObject = _.pick(this, properties);
+
     Object.keys(filteredObject).map((filteredObjectKey) => {
-      if (filteredObject[filteredObjectKey] instanceof RoleFilter) {
-        filteredObject[filteredObjectKey] = filteredObject[
-          filteredObjectKey
-        ].filterPublicProperties();
+      if (Array.isArray(filteredObject[filteredObjectKey])) {
+        filteredObject[filteredObjectKey] = filteredObject[filteredObjectKey].map((t) => {
+          return this._getFilteredPublicProperty(t);
+        });
       }
+      filteredObject[filteredObjectKey] = this._getFilteredPublicProperty(
+        filteredObject[filteredObjectKey],
+      );
     });
     return filteredObject;
+  }
+
+  _getFilteredPublicProperty(property) {
+    if (property?.filterPublicProperties) {
+      return property.filterPublicProperties();
+    }
+
+    return property;
   }
 
   addSelfProperties(properties: string[]) {
@@ -30,13 +43,26 @@ export class RoleFilter {
       : this._selfProperties;
 
     const filteredObject = _.pick(this, properties);
+
     Object.keys(filteredObject).map((filteredObjectKey) => {
-      if (filteredObject[filteredObjectKey] instanceof RoleFilter) {
-        filteredObject[filteredObjectKey] = filteredObject[filteredObjectKey].filterSelfProperties(
-          withPublicProperties,
-        );
+      if (Array.isArray(filteredObject[filteredObjectKey])) {
+        filteredObject[filteredObjectKey] = filteredObject[filteredObjectKey].map((t) => {
+          return this._getFilteredSelfProperty(t, withPublicProperties);
+        });
       }
+      filteredObject[filteredObjectKey] = this._getFilteredSelfProperty(
+        filteredObject[filteredObjectKey],
+        withPublicProperties,
+      );
     });
     return filteredObject;
+  }
+
+  _getFilteredSelfProperty(property, withPublicProperties) {
+    if (property?.filterSelfProperties) {
+      return property.filterSelfProperties(withPublicProperties);
+    }
+
+    return property;
   }
 }

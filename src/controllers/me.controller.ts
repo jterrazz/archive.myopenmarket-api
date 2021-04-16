@@ -54,7 +54,7 @@ export const getMyActivitiesController: Middleware = async (ctx) => {
 
   const userId = ctx.state.user.id;
 
-  ctx.body = await getUserActivities(userId);
+  ctx.body = (await getUserActivities(userId))?.map((activity) => activity.filterSelfProperties());
 };
 
 export const getMyFollowedShopsController: Middleware = async (ctx) => {
@@ -62,7 +62,7 @@ export const getMyFollowedShopsController: Middleware = async (ctx) => {
 
   const userId = ctx.state.user.id;
 
-  ctx.body = await getUserFollowedShops(userId);
+  ctx.body = (await getUserFollowedShops(userId)).map((shop) => shop.filterPublicProperties());
 };
 
 export const postFollowShopController: Middleware = async (ctx) => {

@@ -13,5 +13,17 @@ export const userClientFactory = (app) => {
         .delete(`/me`)
         .send(user)
         .set('Cookie', userSession?.header['set-cookie'] || []),
+    getMyActivities: (userSession) =>
+      request(app.callback())
+        .get(`/me/activities`)
+        .set('Cookie', userSession?.header['set-cookie'] || []),
+    getMyFollowedShops: (userSession) =>
+      request(app.callback())
+        .get(`/me/followed-shops`)
+        .set('Cookie', userSession?.header['set-cookie'] || []),
+    postMyFollowedShops: (userSession, followedShop) =>
+      request(app.callback())
+        .post(`/me/followed-shops?shopId=` + followedShop)
+        .set('Cookie', userSession?.header['set-cookie'] || []),
   };
 };

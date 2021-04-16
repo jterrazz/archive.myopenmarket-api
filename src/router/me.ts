@@ -17,6 +17,7 @@ meRouter
   .patch('/', patchMeController)
   .delete('/', deleteMeController)
   .get('/activities', getMyActivitiesController)
+  // .get('/notifications', getMyActivitiesController)
   .get('/followed-shops', getMyFollowedShopsController)
   .post('/followed-shops', postFollowShopController);
 

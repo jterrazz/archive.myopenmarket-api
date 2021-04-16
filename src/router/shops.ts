@@ -4,7 +4,9 @@ import { getShopController, patchShopController } from '@controllers/shop.contro
 
 const shopRouter = new Router();
 
+// .get('/search);
 shopRouter.get('/:shopHandle', getShopController);
 shopRouter.patch('/:shopHandle', patchShopController);
+// shopRouter.delete('/:shopHandle', patchShopController);
 
 export default shopRouter;
