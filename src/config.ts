@@ -9,8 +9,8 @@ const apiConfigSchema = z.object({
   env: z.string(),
   version: z.string(),
   logs: z.object({
-    local: z.number(),
-    distant: z.number(),
+    internal: z.number(),
+    external: z.number(),
   }),
   http: z.object({
     port: z.number(),

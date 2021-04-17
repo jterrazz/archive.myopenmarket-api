@@ -15,7 +15,7 @@ enum LevelColors {
 }
 
 const winstonLogger = winston.createLogger({
-  level: WinstonLevels[apiConfig.logs.local],
+  level: WinstonLevels[apiConfig.logs.internal],
 });
 
 /**
@@ -40,22 +40,22 @@ export class Logger {
   _getCallerFile() {
     try {
       const err = new Error();
-      let callerfile;
 
       Error.prepareStackTrace = function (err, stack) {
         return stack;
       };
 
-      // @ts-ignore
-      const currentfile = err.stack.shift().getFileName();
+      const stack = (err?.stack as unknown) as NodeJS.CallSite[] | null;
+      const currentFile = stack?.shift()?.getFileName();
 
       while (err.stack?.length) {
-        // @ts-ignore
-        callerfile = err.stack.shift().getFileName();
+        const stack = (err?.stack as unknown) as NodeJS.CallSite[] | null;
+        const callerFile = stack?.shift()?.getFileName();
 
-        if (currentfile !== callerfile) return callerfile.split('/').pop().replace('.ts', '');
+        if (currentFile !== callerFile) return callerFile?.split('/').pop()?.replace('.ts', '');
       }
     } catch (err) {}
+
     return undefined;
   }
 
@@ -71,28 +71,22 @@ export class Logger {
    */
 
   error(message) {
-    console.log(message);
-    // winstonLogger.error(this._buildMessage(message));
+    winstonLogger.error(this._buildMessage(message));
   }
   warn(message) {
-    console.log(message);
-    // winstonLogger.warn(this._buildMessage(message));
+    winstonLogger.warn(this._buildMessage(message));
   }
   info(message) {
-    console.log(message);
-    // winstonLogger.info(this._buildMessage(message));
+    winstonLogger.info(this._buildMessage(message));
   }
   http(message) {
-    console.log(message);
-    // winstonLogger.http(this._buildMessage(message));
+    winstonLogger.http(this._buildMessage(message));
   }
   verbose(message) {
-    console.log(message);
-    // winstonLogger.verbose(this._buildMessage(message));
+    winstonLogger.verbose(this._buildMessage(message));
   }
   debug(message) {
-    console.log(message);
-    // winstonLogger.debug(this._buildMessage(message));
+    winstonLogger.debug(this._buildMessage(message));
   }
 }
 

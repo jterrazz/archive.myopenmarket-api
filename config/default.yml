@@ -2,8 +2,8 @@ api:
   env: "development"
   version: "0.0.1"
   logs:
-    local: 2
-    distant: 5
+    internal: 6
+    external: 6
 
 services:
 
