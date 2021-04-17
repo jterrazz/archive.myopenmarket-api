@@ -7,15 +7,16 @@
   "repository": "git@github.com:theopenmarket/tom-api.git",
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
   "scripts": {
-    "start:dev": "nodemon",
-    "start:local-environment": "docker-compose up database store",
     "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
-    "test": "NODE_ENV=test jest --silent",
-    "coverage": "jest --coverage",
-    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
+    "start:dev": "nodemon",
+    "start:dev-environment": "docker-compose up database store",
     "db:generate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:generate -n ",
     "db:migrate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:run",
-    "db:revert": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:revert"
+    "db:revert": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:revert",
+    "test": "NODE_ENV=test jest --silent",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
+    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",

@@ -6,7 +6,7 @@ import meRouter from './me';
 import shopsRouter from './shops';
 import { getStateController } from '@controllers/state.controller';
 
-const buildRouter = async () => {
+const buildRouter = (): Router => {
   const router = new Router();
 
   /*

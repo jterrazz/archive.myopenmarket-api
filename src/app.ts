@@ -31,7 +31,7 @@ const _setupAuthentication = (app) => {
   app.use(userSessionMiddleware);
 };
 
-const setupApp = async (app) => {
+const setupApp = (app) => {
   app.use(requestMiddleware);
   _setupSecurity(app);
   _setupAuthentication(app);
@@ -40,13 +40,13 @@ const setupApp = async (app) => {
   app.use(trackerMiddleware);
 };
 
-export const createApp = async (): Promise<Koa> => {
+export const createApp = (): Koa => {
   logger.info(`starting with environment <${process.env.NODE_ENV}>`);
 
   const app = new Koa();
-  await setupApp(app);
+  setupApp(app);
 
-  const router = await buildRouter();
+  const router = buildRouter();
   app.use(router.routes()).use(router.allowedMethods());
 
   return app;

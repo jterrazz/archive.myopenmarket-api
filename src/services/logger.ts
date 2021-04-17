@@ -37,7 +37,7 @@ winstonLogger.add(
  */
 
 export class Logger {
-  _getCallerFile() {
+  private static _getCallerFile(): string | undefined {
     try {
       const err = new Error();
 
@@ -59,10 +59,10 @@ export class Logger {
     return undefined;
   }
 
-  _buildMessage(message) {
+  private static _buildMessage(message) {
     return {
       message: message,
-      category: this._getCallerFile(),
+      category: Logger._getCallerFile(),
     };
   }
 
@@ -70,23 +70,23 @@ export class Logger {
    * Logging methods
    */
 
-  error(message) {
-    winstonLogger.error(this._buildMessage(message));
+  error(message: unknown): void {
+    winstonLogger.error(Logger._buildMessage(message));
   }
-  warn(message) {
-    winstonLogger.warn(this._buildMessage(message));
+  warn(message: unknown): void {
+    winstonLogger.warn(Logger._buildMessage(message));
   }
-  info(message) {
-    winstonLogger.info(this._buildMessage(message));
+  info(message: unknown): void {
+    winstonLogger.info(Logger._buildMessage(message));
   }
-  http(message) {
-    winstonLogger.http(this._buildMessage(message));
+  http(message: unknown): void {
+    winstonLogger.http(Logger._buildMessage(message));
   }
-  verbose(message) {
-    winstonLogger.verbose(this._buildMessage(message));
+  verbose(message: unknown): void {
+    winstonLogger.verbose(Logger._buildMessage(message));
   }
-  debug(message) {
-    winstonLogger.debug(this._buildMessage(message));
+  debug(message: unknown): void {
+    winstonLogger.debug(Logger._buildMessage(message));
   }
 }
 

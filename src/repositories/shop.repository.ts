@@ -1,10 +1,10 @@
-import { getConnection } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { StatusCodes } from 'http-status-codes';
 
 import { HttpError } from '@entities/errors/http.error';
-import { Shop } from '@entities/shop.entity';
+import { Shop, UpdateShopRequest } from '@entities/shop.entity';
 
-export const getShopRepository = () => getConnection().getRepository(Shop);
+export const getShopRepository = (): Repository<Shop> => getConnection().getRepository(Shop);
 
 /**
  * Get
@@ -35,7 +35,7 @@ export const getShopByHandle = async (handle: string): Promise<Shop> => {
  * Save
  */
 
-export const saveShop = async (shopRecord: Shop) => {
+export const saveShop = async (shopRecord: Shop): Promise<void> => {
   try {
     await getShopRepository().save(shopRecord);
   } catch (e) {
@@ -51,9 +51,10 @@ export const saveShop = async (shopRecord: Shop) => {
  * Create
  */
 
-export const createShop = async (shop: object): Promise<Shop> => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const createShop = async (shop: string): Promise<Shop> => {
   // TODO type input
-  const shopRecord = await getShopRepository().create(shop);
+  const shopRecord = await getShopRepository().create({});
 
   await saveShop(shopRecord);
 
@@ -64,7 +65,7 @@ export const createShop = async (shop: object): Promise<Shop> => {
  * Update
  */
 
-export const updateShop = async (shopId: string, shop): Promise<Shop> => {
+export const updateShop = async (shopId: string, shop: UpdateShopRequest): Promise<Shop> => {
   // TODO type input
   const shopRecord = await getShopById(shopId);
 

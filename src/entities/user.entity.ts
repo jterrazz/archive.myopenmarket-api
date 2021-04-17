@@ -88,7 +88,7 @@ export class User extends RoleFilter {
 
   // orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
 
-  async updatePassword(password) {
+  async updatePassword(password: string): Promise<void> {
     this.passwordHashed = await argon2.hash(password);
   }
 

@@ -62,7 +62,7 @@ export const getUserFollowedShops = async (id: string): Promise<Shop[]> => {
  * Save
  */
 
-export const saveUser = async (user: User) => {
+export const saveUser = async (user: User): Promise<void> => {
   try {
     await getUserRepository().save(user);
   } catch (e) {

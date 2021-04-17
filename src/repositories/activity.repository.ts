@@ -1,9 +1,9 @@
-import { getConnection } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 
 import { Activity, UserActivity } from '@entities/activity.entity';
 import { UserSession } from '@entities/user-session.entity';
 
-const getActivityRepository = () => getConnection().getRepository(Activity);
+const getActivityRepository = (): Repository<Activity> => getConnection().getRepository(Activity);
 
 /**
  * Create
@@ -21,8 +21,8 @@ export const createActivity = async (
   await getActivityRepository().save(activityRecord);
 };
 
-export const createUpdateProfileActivity = (userSession: UserSession) =>
+export const createUpdateProfileActivity = (userSession: UserSession): Promise<void> =>
   createActivity(userSession, UserActivity.updateProfile);
 
-export const createUpdateShopActivity = (userSession: UserSession) =>
+export const createUpdateShopActivity = (userSession: UserSession): Promise<void> =>
   createActivity(userSession, UserActivity.updateShop);

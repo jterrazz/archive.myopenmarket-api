@@ -1,7 +1,9 @@
+import Koa from 'koa';
+
 import * as Sentry from '@sentry/node';
 import { servicesConfig } from '@config';
 
-export const setupSentry = (app) => {
+export const setupSentry = (app: Koa): void => {
   if (!servicesConfig.sentry) {
     return;
   }

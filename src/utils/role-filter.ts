@@ -1,31 +1,33 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import _ from 'lodash';
 
 export class RoleFilter {
   _publicProperties: string[] = [];
   _selfProperties: string[] = [];
 
-  addPublicProperties(properties: string[]) {
+  addPublicProperties(properties: string[]): void {
     this._publicProperties.push(...properties);
   }
 
-  filterPublicProperties() {
+  filterPublicProperties(): any {
     const properties = this._publicProperties;
     const filteredObject = _.pick(this, properties);
 
     Object.keys(filteredObject).map((filteredObjectKey) => {
       if (Array.isArray(filteredObject[filteredObjectKey])) {
         filteredObject[filteredObjectKey] = filteredObject[filteredObjectKey].map((t) => {
-          return this._getFilteredPublicProperty(t);
+          return RoleFilter._getFilteredPublicProperty(t);
         });
       }
-      filteredObject[filteredObjectKey] = this._getFilteredPublicProperty(
+      filteredObject[filteredObjectKey] = RoleFilter._getFilteredPublicProperty(
         filteredObject[filteredObjectKey],
       );
     });
     return filteredObject;
   }
 
-  _getFilteredPublicProperty(property) {
+  private static _getFilteredPublicProperty(property) {
     if (property?.filterPublicProperties) {
       return property.filterPublicProperties();
     }
@@ -33,11 +35,11 @@ export class RoleFilter {
     return property;
   }
 
-  addSelfProperties(properties: string[]) {
+  addSelfProperties(properties: string[]): void {
     this._selfProperties.push(...properties);
   }
 
-  filterSelfProperties(withPublicProperties = true) {
+  filterSelfProperties(withPublicProperties = true): any {
     const properties = withPublicProperties
       ? [...this._selfProperties, ...this._publicProperties]
       : this._selfProperties;
@@ -47,10 +49,10 @@ export class RoleFilter {
     Object.keys(filteredObject).map((filteredObjectKey) => {
       if (Array.isArray(filteredObject[filteredObjectKey])) {
         filteredObject[filteredObjectKey] = filteredObject[filteredObjectKey].map((t) => {
-          return this._getFilteredSelfProperty(t, withPublicProperties);
+          return RoleFilter._getFilteredSelfProperty(t, withPublicProperties);
         });
       }
-      filteredObject[filteredObjectKey] = this._getFilteredSelfProperty(
+      filteredObject[filteredObjectKey] = RoleFilter._getFilteredSelfProperty(
         filteredObject[filteredObjectKey],
         withPublicProperties,
       );
@@ -58,7 +60,7 @@ export class RoleFilter {
     return filteredObject;
   }
 
-  _getFilteredSelfProperty(property, withPublicProperties) {
+  private static _getFilteredSelfProperty(property: any, withPublicProperties: boolean): any {
     if (property?.filterSelfProperties) {
       return property.filterSelfProperties(withPublicProperties);
     }

@@ -10,7 +10,7 @@ const startServer = async () => {
   await createConnection();
   logger.info('connected to database');
 
-  const app = await createApp();
+  const app = createApp();
   setupSentry(app);
 
   app.listen(apiConfig.http.port, () => {

@@ -1,6 +1,7 @@
 import Mixpanel from 'mixpanel';
 import { servicesConfig } from '@config';
 import logger from '@services/logger';
+import { ExtendableContext } from 'koa';
 
 const mixpanelSecret = servicesConfig.mixpanel?.secret;
 
@@ -21,31 +22,30 @@ const EVENTS = {
 
 class Tracker {
   private _tracker: Mixpanel.Mixpanel;
-  private readonly _userProps: any = {};
+  private readonly _userProps: Record<string, string> = {};
 
-  constructor(ctx) {
+  constructor(ctx: ExtendableContext) {
     if (!mixpanelSecret) return;
 
     this._tracker = Mixpanel.init(mixpanelSecret, {
       protocol: 'https',
     });
-    this.setUserPropsFromCtx(ctx);
+    this._setUserPropsFromCtx(ctx);
   }
 
-  setUserPropsFromCtx(ctx) {
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    if (ctx.user) this._userProps.distinct_id = ctx.user.id;
+  private _setUserPropsFromCtx(ctx: ExtendableContext): void {
+    if (ctx.state.user) this._userProps.distinct_id = ctx.state.user.id;
     if (ctx.request.ip) this._userProps.ip = ctx.request.ip;
   }
 
-  _emit(name: string, props: object = {}) {
+  private _emit(name: string, props?: Record<string, unknown>): void {
     let log = `sending event <${name}> - <props:${JSON.stringify(props)}>`;
     if (!mixpanelSecret) log += ' (stopped)';
     logger.debug(log);
 
     if (!mixpanelSecret) return;
 
-    return this._tracker.track(name, {
+    this._tracker.track(name, {
       ...this._userProps,
       ...props,
     });
@@ -53,43 +53,43 @@ class Tracker {
 
   // Trackers
 
-  requestGetApiState() {
+  requestGetApiState(): void {
     this._emit(EVENTS.request.getApiState);
   }
 
-  requestGetSignIn() {
+  requestGetSignIn(): void {
     this._emit(EVENTS.request.postSignIn);
   }
 
-  requestGetSignUp() {
+  requestGetSignUp(): void {
     this._emit(EVENTS.request.postSignUp);
   }
 
-  requestGetUser() {
+  requestGetUser(): void {
     this._emit(EVENTS.request.getUser);
   }
 
-  requestGetMe() {
+  requestGetMe(): void {
     this._emit(EVENTS.request.getMe);
   }
 
-  requestPatchMe() {
+  requestPatchMe(): void {
     this._emit(EVENTS.request.patchMe);
   }
 
-  requestDeleteMe() {
+  requestDeleteMe(): void {
     this._emit(EVENTS.request.deleteMe);
   }
 
-  requestGetShop() {
+  requestGetShop(): void {
     this._emit(EVENTS.request.getShop);
   }
 
-  requestGetMyFollowedShops() {
+  requestGetMyFollowedShops(): void {
     this._emit(EVENTS.request.getMyFollowedShops);
   }
 
-  requestInsertFollowedShops() {
+  requestInsertFollowedShops(): void {
     this._emit(EVENTS.request.insertFollowedShops);
   }
 }

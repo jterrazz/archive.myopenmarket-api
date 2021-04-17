@@ -1,8 +1,10 @@
+import Koa from 'koa';
+
 import { createApp } from '~/app';
 import { createConnection } from 'typeorm';
 import databaseConfig from '../../../ormconfig';
 
-export const startInMemoryApp = async () => {
+export const startInMemoryApp = async (): Promise<Koa> => {
   const connection = await createConnection({
     ...databaseConfig,
     type: 'sqlite',
@@ -11,5 +13,5 @@ export const startInMemoryApp = async () => {
   });
   await connection.synchronize();
 
-  return await createApp();
+  return createApp();
 };
