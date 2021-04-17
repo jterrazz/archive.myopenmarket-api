@@ -38,13 +38,14 @@ export const getUserActivities = async (id: string): Promise<Activity[]> => {
     .createQueryBuilder(User, 'users')
     .leftJoinAndSelect('users.activities', 'activities')
     .orderBy('activities.id', 'DESC')
-    .getOne(); // TODO Find my user
+    .where('users.id = :id', { id })
+    .getOne();
 
   if (!userRecord) {
-    throw new HttpError(StatusCodes.NOT_FOUND, `User <> not found`);
+    throw new HttpError(StatusCodes.NOT_FOUND, `User <${id}> not found`);
   }
 
-  return userRecord?.activities;
+  return userRecord.activities;
 };
 
 export const getUserFollowedShops = async (id: string): Promise<Shop[]> => {
