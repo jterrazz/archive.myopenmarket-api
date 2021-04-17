@@ -1,7 +1,6 @@
 // https://github.com/typeorm/typeorm/blob/master/docs/using-ormconfig.md#which-configuration-file-is-used-by-typeorm
-import config from 'config';
+import { databaseConfig } from '@config';
 
-const databaseConfig = config.get('database');
 const databaseConnection = databaseConfig.url
   ? { url: databaseConfig.url }
   : databaseConfig.connection;

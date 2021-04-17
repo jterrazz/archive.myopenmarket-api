@@ -8,10 +8,15 @@ api:
   logs:
     local: LOGS
     distant: LOGS_DISTANT
+
 services:
   mixpanel:
     secret: MIXPANEL_SECRET
   sentry:
     dsn: SENTRY_DSN
+
 database:
   url: DATABASE_URL
+
+store:
+  url: REDIS_URL

@@ -30,19 +30,48 @@ export const apiConfig = apiConfigSchema.parse(config.get('api'));
  * External services
  */
 
-const servicesConfigSchema = z
-  .object({
-    sentry: z
-      .object({
-        dsn: z.string().optional(),
-      })
-      .optional(),
-    mixpanel: z
-      .object({
-        secret: z.string().optional(),
-      })
-      .optional(),
-  })
-  .nullable();
+const servicesConfigSchema = z.object({
+  sentry: z
+    .object({
+      dsn: z.string().optional(),
+    })
+    .nullable(),
+  mixpanel: z
+    .object({
+      secret: z.string().optional(),
+    })
+    .nullable(),
+});
 
-export const servicesConfig = servicesConfigSchema.parse(config.get('services')) || {};
+export const servicesConfig = servicesConfigSchema.parse(config.get('services'));
+
+/**
+ * Database
+ */
+
+const databaseConfigSchema = z.object({
+  type: z.string(),
+  logging: z.boolean(),
+  url: z.string().optional(),
+  connection: z
+    .object({
+      host: z.string().optional(),
+      port: z.number().optional(),
+      username: z.string().optional(),
+      password: z.string().optional(),
+      database: z.string().optional(),
+    })
+    .optional(),
+});
+
+export const databaseConfig = databaseConfigSchema.parse(config.get('database'));
+
+/**
+ * Database
+ */
+
+const storeConfigSchema = z.object({
+  url: z.string(),
+});
+
+export const storeConfig = storeConfigSchema.parse(config.get('store'));

@@ -6,6 +6,8 @@ api:
     external: 6
 
 services:
+  mixpanel:
+  sentry:
 
 database:
   type: 'postgres'

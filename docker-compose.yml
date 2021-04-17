@@ -4,13 +4,16 @@ services:
   store:
     container_name: store
     image: redis:6.2-alpine
+    restart: always
+    ports:
+      - "6379:6379"
 
   database:
     container_name: database
     image: postgres:12-alpine
     restart: always
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_DB: open_market_api
       POSTGRES_USER: admin_user
@@ -19,13 +22,15 @@ services:
   api:
     container_name: service-api
     image: library/node:15-alpine
+    restart: always
     links:
       - database
+      - store
     volumes:
       - .:/home/service-api
     working_dir: /home/service-api
     command: sh -c "yarn && yarn dev"
     ports:
-      - 3000:3000
+      - "3000:3000"
     environment:
       DATABASE_HOST: DATABASE_HOST
