@@ -1,4 +1,3 @@
-require('dotenv').config(); // load environment variables from the .env file
 import config from 'config';
 import * as z from 'zod';
 

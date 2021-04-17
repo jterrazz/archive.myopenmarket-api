@@ -12,7 +12,7 @@ import { Activity } from './activity.entity';
  */
 
 export const userSchema = {
-  id: z.string(), // TODO
+  id: z.string(),
   email: z.string().email(),
   password: z.string().min(8).max(100),
   firstName: z.string().min(1).max(42),
@@ -86,7 +86,6 @@ export class User extends RoleFilter {
   })
   followedShops: Shop[];
 
-  // activity: [{ type: Schema.Types.ObjectId, ref: 'Activity' }],
   // orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
 
   async updatePassword(password) {

@@ -1,8 +1,12 @@
 version: "3.8"
 services:
 
+  store:
+    container_name: store
+    image: redis:6.2-alpine
+
   database:
-    container_name: service-entity
+    container_name: database
     image: postgres:12-alpine
     restart: always
     ports:

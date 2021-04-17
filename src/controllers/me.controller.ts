@@ -30,7 +30,7 @@ export const deleteMeController: Middleware = async (ctx) => {
   ctx.tracker.requestDeleteMe();
 
   const userId = ctx.state.user.id;
-  const userPassword = await userPasswordSchema.parse(ctx.request.body.password); // TODO Be rawJSON
+  const userPassword = userPasswordSchema.parse(ctx.request.body.password);
 
   await removeUser(userId, userPassword);
 
@@ -41,7 +41,7 @@ export const patchMeController: Middleware = async (ctx) => {
   ctx.tracker.requestPatchMe();
 
   const userId = ctx.state.user.id;
-  const parsedUser = await updateUserRequestSchema.parse(ctx.request.body);
+  const parsedUser = updateUserRequestSchema.parse(ctx.request.body);
 
   const userRecord = await updateUser(userId, parsedUser);
   await createUpdateProfileActivity(ctx.state.userSession);

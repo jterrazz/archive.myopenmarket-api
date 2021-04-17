@@ -8,9 +8,8 @@ import { User } from './user.entity';
  * Schema
  */
 
-// TODO
 export const shopSchema = {
-  id: z.string(), // TODO
+  id: z.string(),
   handle: z.string(),
   name: z.string(),
   description: z.string(),

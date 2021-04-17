@@ -9,3 +9,11 @@ api:
     distant: 6
   security:
     cors: 'http://localhost:8080'
+database:
+  url:
+  connection:
+    host: 'localhost'
+    port: 5432
+    username: 'admin_user'
+    password: 'admin_password'
+    database: 'open_market_api'

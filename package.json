@@ -8,14 +8,14 @@
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
   "scripts": {
     "start:dev": "nodemon",
-    "start:dev-env": "docker-compose up database",
+    "start:local-environment": "docker-compose up database store",
     "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "test": "NODE_ENV=test jest --silent",
     "coverage": "jest --coverage",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
-    "db:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n ",
-    "db:migrate": "ts-node ./node_modules/typeorm/cli.js migration:run",
-    "db:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert"
+    "db:generate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:generate -n ",
+    "db:migrate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:run",
+    "db:revert": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:revert"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
@@ -42,7 +42,6 @@
     "assert": "^2.0.0",
     "class-validator": "^0.12.2",
     "config": "^3.3.1",
-    "dotenv": "^8.2.0",
     "http-status-codes": "^2.1.4",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.12.0",

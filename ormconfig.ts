@@ -1,30 +1,24 @@
 // https://github.com/typeorm/typeorm/blob/master/docs/using-ormconfig.md#which-configuration-file-is-used-by-typeorm
+import config from 'config';
 
-const connection = process.env.DATABASE_URL
-  ? {
-      url: process.env.DATABASE_URL,
-    }
-  : {
-      host: process.env.DATABASE_HOST || 'localhost',
-      port: 5432,
-      username: 'admin_user',
-      password: 'admin_password',
-      database: 'open_market_api',
-    };
+const databaseConfig = config.get('database');
+const databaseConnection = databaseConfig.url
+  ? { url: databaseConfig.url }
+  : databaseConfig.connection;
 
-const config = {
-  ...connection,
-  type: 'postgres',
+const ormConfig = {
+  ...databaseConnection,
+  type: databaseConfig.type,
   synchronize: false,
-  logging: false,
+  logging: databaseConfig.logging,
   entities: [__dirname + '/src/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/src/migrations/*.ts'],
   subscribers: [__dirname + '/src/subscribers/*.ts'],
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  ssl: databaseConfig.url ? { rejectUnauthorized: false } : false,
   cli: {
     entitiesDir: 'src/entities',
     migrationsDir: 'src/migrations',
   },
 };
 
-export default config;
+export default ormConfig;

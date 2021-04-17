@@ -4,4 +4,9 @@ api:
   logs:
     local: 2
     distant: 5
+
 services:
+
+database:
+  type: 'postgres'
+  logging: false

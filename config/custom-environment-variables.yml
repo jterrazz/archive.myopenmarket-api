@@ -13,3 +13,5 @@ services:
     secret: MIXPANEL_SECRET
   sentry:
     dsn: SENTRY_DSN
+database:
+  url: DATABASE_URL
