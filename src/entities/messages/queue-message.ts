@@ -7,7 +7,3 @@ export abstract class QueueMessage {
     this.data = data;
   }
 }
-
-export abstract class QueueMessageHandler extends QueueMessage {
-  consumer: () => Promise<unknown>;
-}

@@ -1,21 +1,18 @@
 import { orderQueue } from '@services/queue';
 import logger from '@services/logger';
 import { OrderMessage } from '@entities/messages/order.message';
-import { QueueDispatcher } from '~/worker/queue-dispatcher';
-import { QueueMessageHandler } from '@entities/messages/queue-message';
+import { MessageDispatcher } from '~/worker/message-dispatcher';
 
-class OrderMessageHandler extends OrderMessage implements QueueMessageHandler {
-  async consumer() {
-    logger.info('handling orders');
-  }
-}
+const orderMessageConsumer = async (message: OrderMessage) => {
+  logger.info(JSON.stringify(message));
+};
 
 export const listenForOrderQueue = () => {
   logger.info('listening for order queue');
 
-  const dispatcher = new QueueDispatcher([OrderMessageHandler]);
+  const messageDispatcher = new MessageDispatcher([[OrderMessage, orderMessageConsumer]]);
 
   orderQueue.process(async (job) => {
-    dispatcher.fromJobData(job.data);
+    await messageDispatcher.fromJobData(job.data);
   });
 };
