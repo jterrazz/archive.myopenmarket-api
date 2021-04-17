@@ -2,11 +2,17 @@ import config from 'config';
 import * as z from 'zod';
 
 /**
+ * Environment
+ */
+
+const environmentSchema = z.string();
+export const environment = environmentSchema.parse(config.get('env'));
+
+/**
  * API config
  */
 
 const apiConfigSchema = z.object({
-  env: z.string(),
   version: z.string(),
   logs: z.object({
     internal: z.string(),

@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 
-import { apiConfig } from '@config';
+import { apiConfig, environment } from '@config';
 
 /**
  * Koa controllers
@@ -12,7 +12,7 @@ export const getStateController: Middleware = async (ctx) => {
   ctx.body = {
     version: apiConfig.version,
     state: 'OK',
-    env: apiConfig.env,
+    env: environment,
     time: new Date(),
   };
 };

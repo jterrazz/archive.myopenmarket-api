@@ -1,3 +1,5 @@
+env: development
+
 api:
   http:
     port: '3000'

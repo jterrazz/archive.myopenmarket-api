@@ -41,7 +41,7 @@ const setupApp = (app) => {
 };
 
 export const createApp = (): Koa => {
-  logger.info(`starting with environment <${process.env.NODE_ENV}>`);
+  logger.info(`starting app with environment <${process.env.NODE_ENV}>`);
 
   const app = new Koa();
   setupApp(app);

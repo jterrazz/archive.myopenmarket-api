@@ -1,3 +1,5 @@
+env: production
+
 api:
   logs:
     internal: '6'

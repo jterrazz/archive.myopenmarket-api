@@ -1,5 +1,4 @@
 api:
-  env: 'development'
   version: '0.0.1'
   logs:
     internal: '6'
