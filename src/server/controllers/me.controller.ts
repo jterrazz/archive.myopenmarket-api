@@ -30,7 +30,7 @@ export const deleteMeController: Middleware = async (ctx) => {
   ctx.tracker.requestDeleteMe();
 
   const userId = ctx.state.user.id;
-  const userPassword = userPasswordSchema.parse(ctx.request.body.password);
+  const userPassword = userPasswordSchema.parse(ctx.request.body?.password);
 
   await removeUser(userId, userPassword);
 
@@ -65,8 +65,8 @@ export const getMyFollowedShopsController: Middleware = async (ctx) => {
   ctx.body = (await getUserFollowedShops(userId)).map((shop) => shop.filterPublicProperties());
 };
 
-export const postFollowShopController: Middleware = async (ctx) => {
-  ctx.tracker.requestInsertFollowedShops();
+export const postNewFollowedShopController: Middleware = async (ctx) => {
+  ctx.tracker.requestPostNewFollowedShop();
 
   const userId = ctx.state.user.id;
   const shopId = await shopIdSchema.parse(ctx.query.shopId);

@@ -2,11 +2,8 @@ import Router from 'koa-router';
 
 import { getShopController, patchShopController } from '@controllers/shop.controller';
 
-const shopRouter = new Router();
+export const shopsRouter = new Router();
 
 // .get('/search);
-shopRouter.get('/:shopHandle', getShopController);
-shopRouter.patch('/:shopHandle', patchShopController);
+shopsRouter.get('/:shopHandle', getShopController).patch('/:shopHandle', patchShopController);
 // shopRouter.delete('/:shopHandle', patchShopController);
-
-export default shopRouter;

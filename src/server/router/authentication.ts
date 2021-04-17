@@ -5,7 +5,7 @@ import '@services/passport';
 import { logoutController, successAuthController } from '@controllers/authentication.controller';
 import { isAuthenticated } from '@middlewares/authentication';
 
-const authRouter = new Router();
+export const authRouter = new Router();
 
 authRouter
   .post('/logout', isAuthenticated, logoutController)
@@ -16,5 +16,3 @@ authRouter
   // Local
   .post('/signup', passport.authenticate('signup'), successAuthController)
   .post('/signin', passport.authenticate('signin'), successAuthController);
-
-export default authRouter;

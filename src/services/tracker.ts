@@ -16,7 +16,8 @@ const EVENTS = {
     patchMe: 'patch-me',
     deleteMe: 'delete-me',
     getMyFollowedShops: 'get-my-followed-shops',
-    insertFollowedShops: 'insert-followed-shops',
+    postNewFollowedShop: 'post-new-followed-shop',
+    postOrder: 'post-order',
   },
 };
 
@@ -89,8 +90,12 @@ class Tracker {
     this._emit(EVENTS.request.getMyFollowedShops);
   }
 
-  requestInsertFollowedShops(): void {
-    this._emit(EVENTS.request.insertFollowedShops);
+  requestPostNewFollowedShop(): void {
+    this._emit(EVENTS.request.postNewFollowedShop);
+  }
+
+  requestPostOrder(): void {
+    this._emit(EVENTS.request.postOrder);
   }
 }
 

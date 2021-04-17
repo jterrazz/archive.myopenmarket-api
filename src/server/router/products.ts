@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 // import { isAuthenticated } from '@middlewares/authentication';
 
-const productRouter = new Router();
+export const productRouter = new Router();
 
 // productRouter
 // .get('/search);
@@ -14,5 +14,3 @@ const productRouter = new Router();
 // .use(isAuthenticated).patch('/:productId', );
 // .use(isAuthenticated).delete('/:productId', );
 // .use(isAuthenticated).post('/', );
-
-export default productRouter;

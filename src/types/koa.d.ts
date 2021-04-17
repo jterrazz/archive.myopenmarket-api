@@ -18,4 +18,9 @@ declare module 'koa' {
       userSession: UserSession;
     };
   }
+
+  interface Request {
+    body?: RawJson;
+    rawBody: string;
+  }
 }

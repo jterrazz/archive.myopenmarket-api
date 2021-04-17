@@ -1,12 +1,11 @@
 import Router from 'koa-router';
 
-const orderRouter = new Router();
+import { postOrderController } from '@controllers/order.controller';
 
-// orderRouter
-// .post('/', ); // which contract
+export const ordersRouter = new Router();
+
+ordersRouter.post('/', postOrderController); // which contract
 // .get('/', );
 // .get('/:orderId', );
 // .patch('/:orderId', );
 // .delete('/:orderId', );
-
-export default orderRouter;

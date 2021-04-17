@@ -4,7 +4,7 @@ import {
   getMeController,
   patchMeController,
   getMyFollowedShopsController,
-  postFollowShopController,
+  postNewFollowedShopController,
   getMyActivitiesController,
 } from '@controllers/me.controller';
 import { isAuthenticated } from '@middlewares/authentication';
@@ -19,6 +19,4 @@ meRouter
   .get('/activities', getMyActivitiesController)
   // .get('/notifications', getMyActivitiesController)
   .get('/followed-shops', getMyFollowedShopsController)
-  .post('/followed-shops', postFollowShopController);
-
-export default meRouter;
+  .post('/followed-shops', postNewFollowedShopController);
