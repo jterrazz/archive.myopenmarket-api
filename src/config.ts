@@ -9,11 +9,11 @@ const apiConfigSchema = z.object({
   env: z.string(),
   version: z.string(),
   logs: z.object({
-    internal: z.number(),
-    external: z.number(),
+    internal: z.string(),
+    external: z.string(),
   }),
   http: z.object({
-    port: z.number(),
+    port: z.string(),
   }),
   auth: z.object({
     jwtSecret: z.string(),
@@ -56,7 +56,7 @@ const databaseConfigSchema = z.object({
   connection: z
     .object({
       host: z.string().optional(),
-      port: z.number().optional(),
+      port: z.string().optional(),
       username: z.string().optional(),
       password: z.string().optional(),
       database: z.string().optional(),

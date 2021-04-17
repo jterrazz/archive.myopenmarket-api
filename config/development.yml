@@ -1,6 +1,6 @@
 api:
   http:
-    port: 3000
+    port: '3000'
   auth:
     jwtSecret: 'dev_secret'
     sessionSecret: 'dev_secret'
@@ -10,7 +10,7 @@ api:
 database:
   connection:
     host: 'localhost'
-    port: 5432
+    port: '5432'
     username: 'admin_user'
     password: 'admin_password'
     database: 'open_market_api'

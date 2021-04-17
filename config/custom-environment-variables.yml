@@ -6,8 +6,8 @@ api:
     jwtSecret: JWT_SECRET
     sessionSecret: SESSION_SECRET
   logs:
-    local: LOGS
-    distant: LOGS_DISTANT
+    internal: INTERNAL_LOGS
+    external: EXTERNAL_LOGS
 
 services:
   mixpanel:

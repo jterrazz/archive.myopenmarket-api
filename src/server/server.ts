@@ -1,16 +1,14 @@
-import { createConnection } from 'typeorm';
-
 import { createApp } from './app';
 import { apiConfig } from '@config';
 import logger from '@services/logger';
 import { setupSentry } from '@services/sentry';
+import { connectToDatabase } from '@services/database';
 
 const startServer = async () => {
-  logger.info('connecting to database');
-  await createConnection();
-  logger.info('connected to database');
+  await connectToDatabase();
 
   const app = createApp();
+
   setupSentry(app);
 
   app.listen(apiConfig.http.port, () => {
@@ -18,6 +16,4 @@ const startServer = async () => {
   });
 };
 
-startServer()
-  .then()
-  .catch((e) => logger.error(e));
+startServer().then().catch(logger.error);

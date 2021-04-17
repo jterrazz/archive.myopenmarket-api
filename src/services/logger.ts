@@ -1,4 +1,4 @@
-// This is imported by a lot of files, avoid importing other code
+// This is imported by a lot of files, avoid importing other code here
 import winston from 'winston';
 import { apiConfig } from '@config';
 
@@ -14,7 +14,7 @@ enum LevelColors {
   silly = '\x1b[37m',
 }
 
-const winstonLogger = winston.createLogger({
+export const winstonLogger = winston.createLogger({
   level: WinstonLevels[apiConfig.logs.internal],
 });
 
@@ -37,26 +37,30 @@ winstonLogger.add(
  */
 
 export class Logger {
+  private static _getStack(): NodeJS.CallSite[] | null {
+    const originalPrepareStackTrace = Error.prepareStackTrace;
+
+    Error.prepareStackTrace = function (_, stack) {
+      return stack;
+    };
+
+    const err = new Error();
+    const stack = (err.stack as unknown) as NodeJS.CallSite[] | null;
+
+    Error.prepareStackTrace = originalPrepareStackTrace;
+
+    return stack;
+  }
+
   private static _getCallerFile(): string | undefined {
-    try {
-      const err = new Error();
+    const stack = Logger._getStack();
+    const currentFile = stack?.shift()?.getFileName();
 
-      Error.prepareStackTrace = function (err, stack) {
-        return stack;
-      };
+    while (stack?.length) {
+      const callerFile = stack?.shift()?.getFileName();
 
-      const stack = (err?.stack as unknown) as NodeJS.CallSite[] | null;
-      const currentFile = stack?.shift()?.getFileName();
-
-      while (err.stack?.length) {
-        const stack = (err?.stack as unknown) as NodeJS.CallSite[] | null;
-        const callerFile = stack?.shift()?.getFileName();
-
-        if (currentFile !== callerFile) return callerFile?.split('/').pop()?.replace('.ts', '');
-      }
-    } catch (err) {}
-
-    return undefined;
+      if (currentFile !== callerFile) return callerFile?.split('/').pop()?.replace('.ts', '');
+    }
   }
 
   private static _buildMessage(message) {

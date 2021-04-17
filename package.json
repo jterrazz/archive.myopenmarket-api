@@ -7,7 +7,7 @@
   "repository": "git@github.com:theopenmarket/tom-api.git",
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
   "scripts": {
-    "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
+    "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server/server.ts",
     "start:dev": "nodemon",
     "start:dev-environment": "docker-compose up database store",
     "db:generate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:generate -n ",
@@ -19,6 +19,7 @@
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."
   },
   "devDependencies": {
+    "@types/bull": "^3.15.0",
     "@types/jest": "^26.0.22",
     "@types/koa": "^2.13.1",
     "@types/koa-bodyparser": "^4.3.0",
@@ -41,6 +42,7 @@
     "@types/node": "^14.14.41",
     "argon2": "^0.27.2",
     "assert": "^2.0.0",
+    "bull": "^3.22.0",
     "class-validator": "^0.13.1",
     "config": "^3.3.6",
     "http-status-codes": "^2.1.4",

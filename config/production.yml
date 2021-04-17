@@ -1,7 +1,7 @@
 api:
   logs:
-    internal: 6
-    external: 2
+    internal: '6'
+    external: '2'
   security:
     cors:
       - 'https://theopen.market'
