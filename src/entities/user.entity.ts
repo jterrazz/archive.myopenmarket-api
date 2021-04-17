@@ -11,7 +11,6 @@ import { Activity } from './activity.entity';
  * Schema
  */
 
-// TODO RENAME WITH REQUEST
 export const userSchema = {
   id: z.string(), // TODO
   email: z.string().email(),

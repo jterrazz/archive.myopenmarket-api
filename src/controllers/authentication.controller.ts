@@ -10,6 +10,7 @@ import {
 } from '@entities/user.entity';
 import { createUser, getUserByEmail } from '@repositories/user.repository';
 import { HttpError } from '@entities/errors/http.error';
+import logger from '@services/logger';
 
 /**
  * Koa controllers
@@ -43,7 +44,7 @@ export const signInWithPassword = async (
   const email = await userEmailSchema.parse(rawEmail);
   const password = await userPasswordSchema.parse(rawPassword);
 
-  const userRecord = await getUserByEmail(email);
+  const userRecord = await getUserByEmail(email).catch(logger.debug);
 
   if (!userRecord || !(await userRecord.verifyPassword(password))) {
     throw new HttpError(

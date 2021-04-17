@@ -10,7 +10,7 @@
     "start:dev": "nodemon",
     "start:dev-env": "docker-compose up database",
     "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
-    "test": "NODE_ENV=test jest --verbose",
+    "test": "NODE_ENV=test jest --silent",
     "coverage": "jest --coverage",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "db:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n ",

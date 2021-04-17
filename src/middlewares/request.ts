@@ -23,9 +23,9 @@ export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
     } else {
       ctx.status = StatusCodes.INTERNAL_SERVER_ERROR;
       ctx.body = 'Internal Server Error';
-      logger.error(err);
     }
 
+    logger.error(err);
     logger.http(`${ctx.request.method} ${ctx.request.url} => ${ctx.status} ${ctx.body}`);
   }
 };
