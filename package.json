@@ -8,9 +8,9 @@
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
   "scripts": {
     "start:server": "node -r tsconfig-paths/register -r ts-node/register ./src/server/server.ts",
-    "start:server-dev": "NODE_ENV=development nodemon --config ./nodemon.server.json",
+    "start:server-dev": "LOCAL=true NODE_ENV=development nodemon --config ./nodemon.server.json",
     "start:worker": "node -r tsconfig-paths/register -r ts-node/register ./src/worker/worker.ts",
-    "start:worker-dev": "NODE_ENV=development nodemon --config ./nodemon.worker.json",
+    "start:worker-dev": "LOCAL=true NODE_ENV=development nodemon --config ./nodemon.worker.json",
     "start:environment-dev": "docker-compose up database store",
     "db:generate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:generate -n ",
     "db:migrate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:run",

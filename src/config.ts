@@ -8,6 +8,9 @@ import * as z from 'zod';
 const environmentSchema = z.string();
 export const environment = environmentSchema.parse(config.get('env'));
 
+const localSchema = z.boolean();
+export const local = localSchema.parse(Boolean(config.get('local')));
+
 /**
  * API config
  */
@@ -31,6 +34,15 @@ const apiConfigSchema = z.object({
 });
 
 export const apiConfig = apiConfigSchema.parse(config.get('api'));
+
+/**
+ * Environment
+ */
+
+const workerSchema = z.object({
+  concurrency: z.string(),
+});
+export const workerConfig = workerSchema.parse(config.get('worker'));
 
 /**
  * External services

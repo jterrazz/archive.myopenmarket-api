@@ -1,8 +1,13 @@
+local: false
+
 api:
   version: '0.0.1'
   logs:
     internal: '6'
     external: '6'
+
+worker:
+  concurrency: '2'
 
 services:
   mixpanel:

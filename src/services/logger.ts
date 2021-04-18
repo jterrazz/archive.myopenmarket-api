@@ -1,6 +1,6 @@
 // This is imported by a lot of files, avoid importing other code here
 import winston from 'winston';
-import { apiConfig } from '@config';
+import { apiConfig, local } from '@config';
 
 const WinstonLevels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'];
 
@@ -28,7 +28,7 @@ const localFormat = winston.format.printf((info) => {
 
 winstonLogger.add(
   new winston.transports.Console({
-    format: localFormat,
+    format: local ? localFormat : winston.format.json(),
   }),
 );
 

@@ -1,9 +1,8 @@
 export abstract class QueueMessage {
-  identifier: string;
-  version: number;
+  static identifier: string;
   data: unknown;
 
-  constructor(data: unknown) {
+  protected constructor(data: unknown) {
     this.data = data;
   }
 }

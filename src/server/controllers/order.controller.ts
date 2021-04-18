@@ -11,7 +11,7 @@ export const postOrderController: Middleware = async (ctx) => {
   ctx.tracker.requestPostOrder();
 
   const order = new OrderMessage([]);
-  orderQueue.add(order);
+  orderQueue.add(OrderMessage.identifier, order);
 
   ctx.status = StatusCodes.OK;
 };
