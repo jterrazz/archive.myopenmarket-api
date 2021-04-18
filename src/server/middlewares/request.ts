@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { ZodError } from 'zod';
 import { v4 } from 'uuid';
 import Koa from 'koa';
+
 import logger from '@services/logger';
 
 export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
@@ -12,7 +13,7 @@ export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
     await next();
     const elapsedTime = new Date().getTime() - startTime;
 
-    logger.http(`${ctx.request.method} ${ctx.request.url} => ${ctx.status} - ${elapsedTime} ms`);
+    logger.verbose(`${ctx.request.method} ${ctx.request.url} => ${ctx.status} - ${elapsedTime} ms`);
   } catch (err) {
     if (err instanceof ZodError) {
       ctx.status = StatusCodes.UNPROCESSABLE_ENTITY;
@@ -26,6 +27,6 @@ export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
     }
 
     logger.error(err);
-    logger.http(`${ctx.request.method} ${ctx.request.url} => ${ctx.status} ${ctx.body}`);
+    logger.verbose(`${ctx.request.method} ${ctx.request.url} => ${ctx.status} ${ctx.body}`);
   }
 };
