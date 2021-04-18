@@ -6,4 +6,4 @@ api:
     external: '4'
   security:
     cors:
-      - 'https://theopen.market'
+      - 'https://myopen.market'

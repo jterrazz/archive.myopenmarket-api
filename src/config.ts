@@ -85,7 +85,7 @@ const databaseConfigSchema = z.object({
 export const databaseConfig = databaseConfigSchema.parse(config.get('database'));
 
 /**
- * Database
+ * Store
  */
 
 const storeConfigSchema = z.object({
