@@ -1,3 +1,4 @@
+env: 'default'
 local: false
 
 api:
