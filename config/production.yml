@@ -1,4 +1,4 @@
-env: production
+env: 'production'
 
 api:
   logs:
