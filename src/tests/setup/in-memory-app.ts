@@ -4,8 +4,10 @@ import { createApp } from '~/server/app';
 import { createConnection } from 'typeorm';
 import databaseConfig from '../../../ormconfig';
 
+let connection;
+
 export const startInMemoryApp = async (): Promise<Koa> => {
-  const connection = await createConnection({
+  connection = await createConnection({
     ...databaseConfig,
     database: ':memory:',
     logging: true,
@@ -14,4 +16,8 @@ export const startInMemoryApp = async (): Promise<Koa> => {
   await connection.synchronize();
 
   return createApp();
+};
+
+export const stopInMemoryApp = async (): Promise<void> => {
+  await connection.close();
 };

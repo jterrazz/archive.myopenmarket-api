@@ -16,6 +16,7 @@
     "db:migrate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:run",
     "db:revert": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:revert",
     "test": "NODE_ENV=test jest --silent",
+    "test:debug": "NODE_ENV=test jest --runInBand --detectOpenHandles",
     "test:coverage": "jest --coverage",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."

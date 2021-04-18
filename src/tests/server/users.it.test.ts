@@ -1,5 +1,5 @@
 import { authenticatorFactory } from './fixtures/authentication';
-import { startInMemoryApp } from '~/tests/setup/in-memory-app';
+import { startInMemoryApp, stopInMemoryApp } from '~/tests/setup/in-memory-app';
 import { userClientFactory } from './fixtures/user';
 
 let authenticator;
@@ -222,4 +222,8 @@ describe('users IT', () => {
     //     });
     // });
   });
+});
+
+afterAll(async () => {
+  await stopInMemoryApp();
 });

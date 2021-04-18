@@ -1,4 +1,4 @@
-import { startInMemoryApp } from '~/tests/setup/in-memory-app';
+import { startInMemoryApp, stopInMemoryApp } from '~/tests/setup/in-memory-app';
 import request from 'supertest';
 
 let app;
@@ -17,4 +17,8 @@ describe('status IT', () => {
         .then((response) => expect(response.body.state).toBeDefined());
     });
   });
+});
+
+afterAll(async () => {
+  await stopInMemoryApp();
 });

@@ -1,4 +1,4 @@
-import { startInMemoryApp } from '~/tests/setup/in-memory-app';
+import { startInMemoryApp, stopInMemoryApp } from '~/tests/setup/in-memory-app';
 import request from 'supertest';
 
 let app;
@@ -26,4 +26,8 @@ describe('application IT', () => {
     const { header } = await request(app.callback()).get('/');
     expect(header['x-request-id']).toBeDefined();
   });
+});
+
+afterAll(async () => {
+  await stopInMemoryApp();
 });
