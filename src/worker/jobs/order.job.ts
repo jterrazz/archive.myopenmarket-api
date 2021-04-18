@@ -1,7 +1,7 @@
-import { orderQueue } from '@services/queue';
-import logger from '@services/logger';
 import { OrderMessage } from '@entities/messages/order.message';
 import { dispatchJobsToQueue } from '~/worker/dispatcher';
+import { orderQueue } from '@services/queue';
+import logger from '@services/logger';
 
 const orderMessageConsumer = async (message: OrderMessage) => {
   logger.info(JSON.stringify(message));

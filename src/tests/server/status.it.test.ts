@@ -1,5 +1,5 @@
-import request from 'supertest';
 import { startInMemoryApp } from '~/tests/setup/in-memory-app';
+import request from 'supertest';
 
 let app;
 

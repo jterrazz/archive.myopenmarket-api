@@ -10,9 +10,9 @@ export const getStateController: Middleware = async (ctx) => {
   ctx.tracker.requestGetApiState();
 
   ctx.body = {
-    version: apiConfig.version,
-    state: 'OK',
     env: environment,
+    state: 'OK',
     time: new Date(),
+    version: apiConfig.version,
   };
 };

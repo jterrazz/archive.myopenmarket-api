@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne } from 'typeorm';
 import * as z from 'zod';
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { RoleFilter } from '@utils/role-filter';
 import { User } from './user.entity';
@@ -9,10 +9,10 @@ import { User } from './user.entity';
  */
 
 export const shopSchema = {
-  id: z.string(),
-  handle: z.string(),
-  name: z.string(),
   description: z.string(),
+  handle: z.string(),
+  id: z.string(),
+  name: z.string(),
 };
 
 export const shopIdSchema = shopSchema.id;

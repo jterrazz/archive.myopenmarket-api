@@ -1,4 +1,4 @@
-import { getConnection, Repository } from 'typeorm';
+import { Repository, getConnection } from 'typeorm';
 
 import { Activity, UserActivity } from '@entities/activity.entity';
 import { UserSession } from '@entities/user-session.entity';

@@ -1,6 +1,6 @@
 // This is imported by a lot of files, avoid importing other code here
-import winston from 'winston';
 import { apiConfig, local } from '@config';
+import winston from 'winston';
 
 const WinstonLevels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'];
 
@@ -65,8 +65,8 @@ export class Logger {
 
   private static _buildMessage(message) {
     return {
-      message: message,
       category: Logger._getCallerFile(),
+      message: message,
     };
   }
 

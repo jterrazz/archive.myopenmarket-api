@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 
-import { getShopByHandle, updateShop } from '@repositories/shop.repository';
 import { createUpdateShopActivity } from '@repositories/activity.repository';
+import { getShopByHandle, updateShop } from '@repositories/shop.repository';
 import { shopIdSchema, updateShopRequestSchema } from '@entities/shop.entity';
 
 /**

@@ -1,8 +1,8 @@
-import { createApp } from './app';
 import { apiConfig } from '@config';
-import logger from '@services/logger';
-import { setupSentry } from '@services/sentry';
 import { connectToDatabase } from '@services/database';
+import { createApp } from './app';
+import { setupSentry } from '@services/sentry';
+import logger from '@services/logger';
 
 const startServer = async () => {
   await connectToDatabase();

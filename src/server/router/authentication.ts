@@ -1,9 +1,9 @@
-import passport from 'koa-passport';
 import Router from 'koa-router';
+import passport from 'koa-passport';
 
 import '@services/passport';
-import { logoutController, successAuthController } from '@controllers/authentication.controller';
 import { isAuthenticated } from '@middlewares/authentication';
+import { logoutController, successAuthController } from '@controllers/authentication.controller';
 
 export const authRouter = new Router();
 

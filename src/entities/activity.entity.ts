@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { User } from '../entities/user.entity';
 import { RoleFilter } from '@utils/role-filter';
+import { User } from '../entities/user.entity';
 
 export enum UserActivity {
   updateProfile = 'update-profile',

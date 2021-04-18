@@ -1,5 +1,5 @@
-import { startInMemoryApp } from '~/tests/setup/in-memory-app';
 import { authenticatorFactory } from './fixtures/authentication';
+import { startInMemoryApp } from '~/tests/setup/in-memory-app';
 import { userClientFactory } from './fixtures/user';
 
 let authenticator;
@@ -32,10 +32,10 @@ describe('users IT', () => {
         .expect(200)
         .then((response) => {
           expect(response.body).toEqual({
-            id: 3,
             firstName: 'Jean-Baptiste',
-            lastName: 'Terrazzoni',
+            id: 3,
             language: null,
+            lastName: 'Terrazzoni',
           });
         });
     });

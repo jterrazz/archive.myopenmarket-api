@@ -6,11 +6,8 @@ const { compilerOptions } = require('./tsconfig.json');
 delete compilerOptions.paths['*'];
 
 module.exports = {
-  moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
   collectCoverageFrom: ['src/**/*.{ts,js}'],
-  transform: {
-    '\\.ts$': 'ts-jest',
-  },
+  coverageReporters: ['text', 'text-summary'],
   coverageThreshold: {
     global: {
       branches: 0,
@@ -19,12 +16,15 @@ module.exports = {
       statements: 0,
     },
   },
-  coverageReporters: ['text', 'text-summary'],
-  testEnvironment: 'node',
-  testRegex: '((\\.|/)(test|spec))\\.(js|ts)x?$',
-  testPathIgnorePatterns: ['/node_modules/', '/build/', '/coverage/', '/scripts/'],
+  moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),
   setupFiles: ['<rootDir>/src/tests/setup/setup.ts'],
+  testEnvironment: 'node',
+  testPathIgnorePatterns: ['/node_modules/', '/build/', '/coverage/', '/scripts/'],
+  testRegex: '((\\.|/)(test|spec))\\.(js|ts)x?$',
+  transform: {
+    '\\.ts$': 'ts-jest',
+  },
 };

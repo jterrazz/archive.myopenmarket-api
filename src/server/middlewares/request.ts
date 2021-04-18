@@ -1,8 +1,8 @@
+import { StatusCodes } from 'http-status-codes';
+import { ZodError } from 'zod';
+import { v4 } from 'uuid';
 import Koa from 'koa';
 import logger from '@services/logger';
-import { StatusCodes } from 'http-status-codes';
-import { v4 } from 'uuid';
-import { ZodError } from 'zod';
 
 export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
   try {

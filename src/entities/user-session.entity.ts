@@ -1,5 +1,5 @@
-import { User } from './user.entity';
 import { Context } from 'koa';
+import { User } from './user.entity';
 
 export class UserSession {
   _ctx: Context;

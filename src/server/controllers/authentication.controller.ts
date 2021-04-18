@@ -1,15 +1,15 @@
 import { Middleware } from 'koa';
 import { StatusCodes } from 'http-status-codes';
 
+import { HttpError } from '@entities/errors/http.error';
 import { RawJson } from '@internal-types/koa';
 import {
   User,
-  userPasswordSchema,
-  userEmailSchema,
   createUserRequestSchema,
+  userEmailSchema,
+  userPasswordSchema,
 } from '@entities/user.entity';
 import { createUser, getUserByEmail } from '@repositories/user.repository';
-import { HttpError } from '@entities/errors/http.error';
 import logger from '@services/logger';
 
 /**

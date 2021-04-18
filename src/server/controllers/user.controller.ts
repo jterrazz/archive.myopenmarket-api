@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 
-import { getUserById } from '@repositories/user.repository';
 import { StatusCodes } from 'http-status-codes';
+import { getUserById } from '@repositories/user.repository';
 
 /**
  * Koa controllers

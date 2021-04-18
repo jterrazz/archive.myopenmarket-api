@@ -7,17 +7,17 @@ const databaseConnection = databaseConfig.url
 
 const ormConfig = {
   ...databaseConnection,
-  type: databaseConfig.type,
-  synchronize: false,
-  logging: databaseConfig.logging,
-  entities: [__dirname + '/src/**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/src/migrations/*.ts'],
-  subscribers: [__dirname + '/src/subscribers/*.ts'],
-  ssl: databaseConfig.url ? { rejectUnauthorized: false } : false,
   cli: {
     entitiesDir: 'src/entities',
     migrationsDir: 'src/migrations',
   },
+  entities: [__dirname + '/src/**/*.entity{.ts,.js}'],
+  logging: databaseConfig.logging,
+  migrations: [__dirname + '/src/migrations/*.ts'],
+  ssl: databaseConfig.url ? { rejectUnauthorized: false } : false,
+  subscribers: [__dirname + '/src/subscribers/*.ts'],
+  synchronize: false,
+  type: databaseConfig.type,
 };
 
 export default ormConfig;

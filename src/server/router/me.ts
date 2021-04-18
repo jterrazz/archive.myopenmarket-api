@@ -1,13 +1,13 @@
-import Router from 'koa-router';
 import {
   deleteMeController,
   getMeController,
-  patchMeController,
-  getMyFollowedShopsController,
-  postNewFollowedShopController,
   getMyActivitiesController,
+  getMyFollowedShopsController,
+  patchMeController,
+  postNewFollowedShopController,
 } from '@controllers/me.controller';
 import { isAuthenticated } from '@middlewares/authentication';
+import Router from 'koa-router';
 
 export const meRouter = new Router();
 

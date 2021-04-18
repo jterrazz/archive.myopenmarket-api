@@ -1,11 +1,11 @@
 import Router from 'koa-router';
 
 import { authRouter } from './authentication';
-import { usersRouter } from './users';
-import { meRouter } from './me';
-import { shopsRouter } from './shops';
-import { ordersRouter } from './orders';
 import { getStateController } from '@controllers/state.controller';
+import { meRouter } from './me';
+import { ordersRouter } from './orders';
+import { shopsRouter } from './shops';
+import { usersRouter } from './users';
 
 const buildRouter = (): Router => {
   const router = new Router();

@@ -2,17 +2,17 @@ import 'reflect-metadata';
 
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-import session from 'koa-session';
 import cors from '@koa/cors';
 import passport from 'koa-passport';
+import session from 'koa-session';
 
 import { apiConfig } from '@config';
-import logger from '@services/logger';
-import { userSessionMiddleware } from '@middlewares/authentication';
+import { loggerMiddleware } from '@middlewares/logger';
 import { requestMiddleware } from '@middlewares/request';
 import { trackerMiddleware } from '@middlewares/tracker';
-import { loggerMiddleware } from '@middlewares/logger';
+import { userSessionMiddleware } from '@middlewares/authentication';
 import buildRouter from './router';
+import logger from '@services/logger';
 
 const _setupSecurity = (app) => {
   const corsOptions = {

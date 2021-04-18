@@ -1,4 +1,4 @@
-import { getConnection, Repository } from 'typeorm';
+import { Repository, getConnection } from 'typeorm';
 import { StatusCodes } from 'http-status-codes';
 
 import { HttpError } from '@entities/errors/http.error';

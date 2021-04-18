@@ -1,13 +1,7 @@
-import request from 'supertest';
 import Koa from 'koa';
+import request from 'supertest';
 
 export const userClientFactory = (app: Koa): unknown => ({
-  getUserById: (userId) => request(app.callback()).get(`/users/${userId}`),
-  patchMe: (userSession, user) =>
-    request(app.callback())
-      .patch(`/me`)
-      .send(user)
-      .set('Cookie', userSession?.header['set-cookie'] || []),
   deleteMe: (userSession, user) =>
     request(app.callback())
       .delete(`/me`)
@@ -20,6 +14,12 @@ export const userClientFactory = (app: Koa): unknown => ({
   getMyFollowedShops: (userSession) =>
     request(app.callback())
       .get(`/me/followed-shops`)
+      .set('Cookie', userSession?.header['set-cookie'] || []),
+  getUserById: (userId) => request(app.callback()).get(`/users/${userId}`),
+  patchMe: (userSession, user) =>
+    request(app.callback())
+      .patch(`/me`)
+      .send(user)
       .set('Cookie', userSession?.header['set-cookie'] || []),
   postMyFollowedShops: (userSession, followedShop) =>
     request(app.callback())

@@ -1,17 +1,17 @@
 import { Middleware } from 'koa';
 import { StatusCodes } from 'http-status-codes';
 
+import { createUpdateProfileActivity } from '@repositories/activity.repository';
 import {
+  getUserActivities,
   getUserById,
-  updateUser,
-  removeUser,
   getUserFollowedShops,
   insertFollowedShop,
-  getUserActivities,
+  removeUser,
+  updateUser,
 } from '@repositories/user.repository';
-import { updateUserRequestSchema, userPasswordSchema } from '@entities/user.entity';
 import { shopIdSchema } from '@entities/shop.entity';
-import { createUpdateProfileActivity } from '@repositories/activity.repository';
+import { updateUserRequestSchema, userPasswordSchema } from '@entities/user.entity';
 
 /**
  * Koa controllers

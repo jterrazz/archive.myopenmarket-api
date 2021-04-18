@@ -1,38 +1,38 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
-import * as z from 'zod';
 import * as argon2 from 'argon2';
+import * as z from 'zod';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { RoleFilter } from '@utils/role-filter';
-import { Language } from './language.entity';
-import { Shop } from './shop.entity';
 import { Activity } from './activity.entity';
+import { Language } from './language.entity';
+import { RoleFilter } from '@utils/role-filter';
+import { Shop } from './shop.entity';
 
 /**
  * Schema
  */
 
 export const userSchema = {
-  id: z.string(),
   email: z.string().email(),
-  password: z.string().min(8).max(100),
   firstName: z.string().min(1).max(42),
+  id: z.string(),
   lastName: z.string().min(1).max(42),
+  password: z.string().min(8).max(100),
 };
 
 export const userEmailSchema = userSchema.email;
 export const userPasswordSchema = userSchema.password;
 export const updateUserRequestSchema = z.object({
   email: userSchema.email.optional(),
-  password: userSchema.password.optional(),
   firstName: userSchema.firstName.optional(),
   lastName: userSchema.lastName.optional(),
+  password: userSchema.password.optional(),
 });
 export type UpdateUserRequest = z.infer<typeof updateUserRequestSchema>;
 export const createUserRequestSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
   firstName: z.string(),
   lastName: z.string(),
+  password: z.string(),
 });
 export type CreateUserRequest = z.infer<typeof createUserRequestSchema>;
 
@@ -60,7 +60,7 @@ export class User extends RoleFilter {
   @Column({ name: 'last_name' })
   lastName: string;
 
-  @Column({ name: 'password_hashed', default: '' })
+  @Column({ default: '', name: 'password_hashed' })
   passwordHashed: string;
 
   @Column({ enum: Language, nullable: true })
@@ -74,15 +74,15 @@ export class User extends RoleFilter {
 
   @ManyToMany(() => Shop)
   @JoinTable({
-    name: 'user_followed_shops',
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
     inverseJoinColumn: {
       name: 'shop_id',
       referencedColumnName: 'id',
     },
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    name: 'user_followed_shops',
   })
   followedShops: Shop[];
 

@@ -24,8 +24,8 @@ const queueOptions = {
  */
 
 const QueueIdentifier = {
-  order: 'order',
   email: 'email',
+  order: 'order',
 };
 
 export const orderQueue = new Queue(QueueIdentifier.order, queueOptions);

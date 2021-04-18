@@ -1,11 +1,11 @@
-import { getConnection } from 'typeorm';
 import { StatusCodes } from 'http-status-codes';
+import { getConnection } from 'typeorm';
 
-import { HttpError } from '@entities/errors/http.error';
+import { Activity } from '@entities/activity.entity';
 import { CreateUserRequest, UpdateUserRequest, User } from '@entities/user.entity';
+import { HttpError } from '@entities/errors/http.error';
 import { Shop } from '@entities/shop.entity';
 import { getShopById } from '@repositories/shop.repository';
-import { Activity } from '@entities/activity.entity';
 
 const getUserRepository = () => getConnection().getRepository(User);
 

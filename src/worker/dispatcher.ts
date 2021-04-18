@@ -1,5 +1,5 @@
-import Queue from 'bull';
 import { QueueMessage } from '@entities/messages/queue-message';
+import Queue from 'bull';
 
 export const dispatchJobsToQueue = async (
   queue: Queue.Queue,

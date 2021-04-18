@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
-import { orderQueue } from '@services/queue';
 import { OrderMessage } from '@entities/messages/order.message';
 import { StatusCodes } from 'http-status-codes';
+import { orderQueue } from '@services/queue';
 
 /**
  * Koa controllers

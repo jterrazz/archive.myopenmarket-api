@@ -9,8 +9,8 @@ export const setupSentry = (app: Koa): void => {
   }
 
   Sentry.init({
-    release: 'service-website@' + process.env.npm_package_version,
     dsn: servicesConfig.sentry.dsn,
+    release: 'service-website@' + process.env.npm_package_version,
   });
 
   app.on('error', (err, ctx) => {

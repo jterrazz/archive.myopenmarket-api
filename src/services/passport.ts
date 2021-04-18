@@ -1,5 +1,5 @@
-import passport from 'koa-passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import passport from 'koa-passport';
 
 import { signInWithPassword, signUpWithPassword } from '@controllers/authentication.controller';
 

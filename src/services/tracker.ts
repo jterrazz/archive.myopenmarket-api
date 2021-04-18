@@ -1,23 +1,23 @@
-import Mixpanel from 'mixpanel';
-import { servicesConfig } from '@config';
-import logger from '@services/logger';
 import { ExtendableContext } from 'koa';
+import { servicesConfig } from '@config';
+import Mixpanel from 'mixpanel';
+import logger from '@services/logger';
 
 const mixpanelSecret = servicesConfig.mixpanel?.secret;
 
 const EVENTS = {
   request: {
+    deleteMe: 'delete-me',
     getApiState: 'get-api-state',
-    postSignIn: 'post-sign-in',
-    postSignUp: 'post-sign-up',
+    getMe: 'get-me',
+    getMyFollowedShops: 'get-my-followed-shops',
     getShop: 'get-shop',
     getUser: 'get-user',
-    getMe: 'get-me',
     patchMe: 'patch-me',
-    deleteMe: 'delete-me',
-    getMyFollowedShops: 'get-my-followed-shops',
     postNewFollowedShop: 'post-new-followed-shop',
     postOrder: 'post-order',
+    postSignIn: 'post-sign-in',
+    postSignUp: 'post-sign-up',
   },
 };
 

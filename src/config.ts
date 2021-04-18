@@ -1,5 +1,5 @@
-import config from 'config';
 import * as z from 'zod';
+import config from 'config';
 
 /**
  * Environment
@@ -16,21 +16,21 @@ export const local = localSchema.parse(Boolean(config.get('local')));
  */
 
 const apiConfigSchema = z.object({
-  version: z.string(),
-  logs: z.object({
-    internal: z.string(),
-    external: z.string(),
-  }),
-  http: z.object({
-    port: z.string(),
-  }),
   auth: z.object({
     jwtSecret: z.string(),
     sessionSecret: z.string(),
   }),
+  http: z.object({
+    port: z.string(),
+  }),
+  logs: z.object({
+    external: z.string(),
+    internal: z.string(),
+  }),
   security: z.object({
     cors: z.string(),
   }),
+  version: z.string(),
 });
 
 export const apiConfig = apiConfigSchema.parse(config.get('api'));
@@ -49,14 +49,14 @@ export const workerConfig = workerSchema.parse(config.get('worker'));
  */
 
 const servicesConfigSchema = z.object({
-  sentry: z
-    .object({
-      dsn: z.string().optional(),
-    })
-    .nullable(),
   mixpanel: z
     .object({
       secret: z.string().optional(),
+    })
+    .nullable(),
+  sentry: z
+    .object({
+      dsn: z.string().optional(),
     })
     .nullable(),
 });
@@ -68,18 +68,18 @@ export const servicesConfig = servicesConfigSchema.parse(config.get('services'))
  */
 
 const databaseConfigSchema = z.object({
-  type: z.string(),
-  logging: z.boolean(),
-  url: z.string().optional(),
   connection: z
     .object({
+      database: z.string().optional(),
       host: z.string().optional(),
+      password: z.string().optional(),
       port: z.string().optional(),
       username: z.string().optional(),
-      password: z.string().optional(),
-      database: z.string().optional(),
     })
     .optional(),
+  logging: z.boolean(),
+  type: z.string(),
+  url: z.string().optional(),
 });
 
 export const databaseConfig = databaseConfigSchema.parse(config.get('database'));
