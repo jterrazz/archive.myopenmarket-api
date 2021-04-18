@@ -28,7 +28,7 @@ const apiConfigSchema = z.object({
     internal: z.string(),
   }),
   security: z.object({
-    cors: z.string(),
+    cors: z.array(z.string()),
   }),
   version: z.string(),
 });

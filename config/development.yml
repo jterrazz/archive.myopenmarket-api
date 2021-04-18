@@ -7,7 +7,8 @@ api:
     jwtSecret: 'dev_secret'
     sessionSecret: 'dev_secret'
   security:
-    cors: 'http://localhost:8080'
+    cors:
+    - 'http://localhost:8080'
 
 database:
   connection:
