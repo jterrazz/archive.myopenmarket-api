@@ -1,0 +1,9 @@
+env: 'production'
+
+api:
+  logs:
+    internal: '4'
+    external: '4'
+  security:
+    cors:
+      - 'https://myopen.market'

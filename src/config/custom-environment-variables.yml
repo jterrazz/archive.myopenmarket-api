@@ -1,0 +1,30 @@
+env: NODE_ENV
+local: LOCAL
+
+api:
+  http:
+    port: PORT
+  auth:
+    jwtSecret: JWT_SECRET
+    sessionSecret: SESSION_SECRET
+  logs:
+    internal: INTERNAL_LOGS
+    external: EXTERNAL_LOGS
+
+worker:
+  concurrency: WEB_CONCURRENCY
+
+services:
+  mixpanel:
+    secret: MIXPANEL_SECRET
+  sentry:
+    dsn: SENTRY_DSN
+
+database:
+  url: DATABASE_URL
+  connection:
+    host: DATABASE_HOST
+    port: DATABASE_PORT
+
+store:
+  url: REDIS_URL

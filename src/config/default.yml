@@ -1,0 +1,19 @@
+env: 'default'
+local: false
+
+api:
+  version: '0.0.1'
+  logs:
+    internal: '4'
+    external: '4'
+
+worker:
+  concurrency: '2'
+
+services:
+  mixpanel:
+  sentry:
+
+database:
+  type: 'postgres'
+  logging: false

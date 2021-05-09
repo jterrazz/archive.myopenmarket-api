@@ -1,0 +1,14 @@
+env: 'test'
+
+api:
+  http:
+    port: '3000'
+  auth:
+    jwtSecret: 'dev_secret'
+    sessionSecret: 'dev_secret'
+  security:
+    cors:
+    - 'http://localhost:8080'
+
+store:
+  url: ''

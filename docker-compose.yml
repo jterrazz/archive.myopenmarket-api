@@ -1,27 +1,54 @@
-version: "3.8"
+version: "3.9"
 services:
 
-  database:
-    container_name: service-database
-    image: library/mongo:4.2-bionic
+  store:
+    container_name: store
+    image: redis:6.2-alpine
+    restart: always
     ports:
-      - 27017:27017
+      - "6379:6379"
+
+  database:
+    container_name: database
+    image: postgres:12-alpine
+    restart: always
+    ports:
+      - "5432:5432"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin_user
-      MONGO_INITDB_ROOT_PASSWORD: admin_password
-    volumes:
-      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      POSTGRES_DB: open_market_api
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: admin_password
 
   api:
     container_name: service-api
-    image: library/node:14-alpine
+    build: .
     links:
       - database
+      - store
     volumes:
-      - .:/home/service-api
-    working_dir: /home/service-api
-    command: sh -c "yarn && yarn dev"
+      - ./src:/app/src
+    command: sh -c "yarn start:server-dev"
     ports:
-      - 3000:3000
+      - "3000:3000"
     environment:
-      DATABASE_URL: mongodb://dev_user:dev_password@database/tom
+      PORT: 3000
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      REDIS_URL: 'redis://store:6379'
+
+  worker:
+    container_name: worker-api
+    build: .
+    links:
+      - database
+      - store
+    volumes:
+      - ./src:/app/src
+    command: sh -c "yarn start:server-dev"
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      REDIS_URL: 'redis://store:6379'

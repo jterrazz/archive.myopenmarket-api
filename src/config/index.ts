@@ -1,59 +1,96 @@
-require('dotenv').config(); // loads environment variables from a .env file
-import config from 'config'; // gets data from the root config folder https://github.com/lorenwest/node-config/wiki
-import * as Joi from '@hapi/joi';
+process.env['NODE_CONFIG_DIR'] = __dirname + '/';
+import * as z from 'zod';
+import config from 'config';
 
-const _buildAndVerifyConfigFromYml = (ymlSection, joiSchema) => {
-    const configFromYml = config.get(ymlSection);
-    const { error, value: envValues } = joiSchema.validate(configFromYml);
-    if (error) {
-        console.error(`[config] Environment variable error: ${error.message}`);
-        process.exit(1);
-    }
-    return envValues;
-};
+/**
+ * Environment
+ */
 
-// Config objects
+const environmentSchema = z.string();
+export const environment = environmentSchema.parse(config.get('env'));
 
-export const databaseConfig = _buildAndVerifyConfigFromYml(
-    'database',
-    Joi.object({
-        mongo: Joi.object({
-            url: Joi.string(),
-        }).required(),
-    }).required(),
-);
+const localSchema = z.boolean();
+export const local = localSchema.parse(Boolean(config.get('local')));
 
-export const apiConfig = _buildAndVerifyConfigFromYml(
-    'api',
-    Joi.object({
-        env: Joi.string().required(),
-        version: Joi.string().required(),
-        logs: Joi.object({
-            local: Joi.number().required(),
-            distant: Joi.number().required(),
-        }).required(),
-        http: Joi.object({
-            port: Joi.number().required(),
-        }).required(),
-        auth: Joi.object({
-            jwtSecret: Joi.string().required(),
-            sessionSecret: Joi.string().required(),
-        }).required(),
-        security: Joi.object({
-            cors: Joi.array().items(Joi.string()),
-        }).required(),
-    }).required(),
-);
-apiConfig.isProd = apiConfig.env === 'production';
+/**
+ * API config
+ */
 
-export const servicesConfig = _buildAndVerifyConfigFromYml(
-    'services',
-    Joi.object({
-        sentry: Joi.object({
-            dsn: Joi.string(),
-        }).allow(null),
-        mixpanel: Joi.object({
-            secret: Joi.string(),
-        }).allow(null),
-    }).required(),
-);
+const apiConfigSchema = z.object({
+  auth: z.object({
+    jwtSecret: z.string(),
+    sessionSecret: z.string(),
+  }),
+  http: z.object({
+    port: z.string(),
+  }),
+  logs: z.object({
+    external: z.string(),
+    internal: z.string(),
+  }),
+  security: z.object({
+    cors: z.array(z.string()),
+  }),
+  version: z.string(),
+});
+
+export const apiConfig = apiConfigSchema.parse(config.get('api'));
+
+/**
+ * Environment
+ */
+
+const workerSchema = z.object({
+  concurrency: z.string(),
+});
+export const workerConfig = workerSchema.parse(config.get('worker'));
+
+/**
+ * External services
+ */
+
+const servicesConfigSchema = z.object({
+  mixpanel: z
+    .object({
+      secret: z.string().optional(),
+    })
+    .nullable(),
+  sentry: z
+    .object({
+      dsn: z.string().optional(),
+    })
+    .nullable(),
+});
+
+export const servicesConfig = servicesConfigSchema.parse(config.get('services'));
+
+/**
+ * Database
+ */
+
+const databaseConfigSchema = z.object({
+  connection: z
+    .object({
+      database: z.string().optional(),
+      host: z.string().optional(),
+      password: z.string().optional(),
+      port: z.string().optional(),
+      username: z.string().optional(),
+    })
+    .optional(),
+  logging: z.boolean(),
+  type: z.string(),
+  url: z.string().optional(),
+});
+
+export const databaseConfig = databaseConfigSchema.parse(config.get('database'));
+
+/**
+ * Store
+ */
+
+const storeConfigSchema = z.object({
+  url: z.string(),
+});
+
+export const storeConfig = storeConfigSchema.parse(config.get('store'));

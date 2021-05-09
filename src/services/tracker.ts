@@ -1,53 +1,102 @@
-import Mixpanel from 'mixpanel';
+import { ExtendableContext } from 'koa';
 import { servicesConfig } from '@config';
-import Logger from '@services/logger';
+import Mixpanel from 'mixpanel';
+import logger from '@services/logger';
 
-const logger = new Logger(__filename);
 const mixpanelSecret = servicesConfig.mixpanel?.secret;
 
-export const EVENTS = {
-    routes: {
-        signIn: 'post-signin',
-        signUp: 'post-signup',
-        getMe: 'get-me',
-        getUser: 'get-user',
-        getState: 'get-state',
-        patchMe: 'patch-me',
-        deleteMe: 'delete-me',
-    },
+const EVENTS = {
+  request: {
+    deleteMe: 'delete-me',
+    getApiState: 'get-api-state',
+    getMe: 'get-me',
+    getMyFollowedShops: 'get-my-followed-shops',
+    getShop: 'get-shop',
+    getUser: 'get-user',
+    patchMe: 'patch-me',
+    postNewFollowedShop: 'post-new-followed-shop',
+    postOrder: 'post-order',
+    postSignIn: 'post-sign-in',
+    postSignUp: 'post-sign-up',
+  },
 };
 
 class Tracker {
-    private _tracker: Mixpanel.Mixpanel;
-    private readonly _userProps: any = {};
+  private _tracker: Mixpanel.Mixpanel;
+  private readonly _userProps: Record<string, string> = {};
 
-    constructor(ctx) {
-        if (!mixpanelSecret) return;
+  constructor(ctx: ExtendableContext) {
+    if (!mixpanelSecret) return;
 
-        this._tracker = Mixpanel.init(mixpanelSecret, {
-            protocol: 'https',
-        });
-        this.setUserPropsFromCtx(ctx);
-    }
+    this._tracker = Mixpanel.init(mixpanelSecret, {
+      protocol: 'https',
+    });
+    this._setUserPropsFromCtx(ctx);
+  }
 
-    setUserPropsFromCtx(ctx) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        if (ctx.user) this._userProps.distinct_id = ctx.user.id;
-        if (ctx.request.ip) this._userProps.ip = ctx.request.ip;
-    }
+  private _setUserPropsFromCtx(ctx: ExtendableContext): void {
+    if (ctx.state.user) this._userProps.distinct_id = ctx.state.user.id;
+    if (ctx.request.ip) this._userProps.ip = ctx.request.ip;
+  }
 
-    track(name: string, props: object = {}) {
-        let log = `New event ${name} - ${JSON.stringify(props)}`;
-        if (!mixpanelSecret) log += ' (skipped)';
-        logger.http(log);
+  private _emit(name: string, props?: Record<string, unknown>): void {
+    let log = `sending event <${name}> - <props:${JSON.stringify(props)}>`;
+    if (!mixpanelSecret) log += ' (stopped)';
+    logger.debug(log);
 
-        if (!mixpanelSecret) return;
+    if (!mixpanelSecret) return;
 
-        return this._tracker.track(name, {
-            ...this._userProps,
-            ...props,
-        });
-    }
+    this._tracker.track(name, {
+      ...this._userProps,
+      ...props,
+    });
+  }
+
+  // Trackers
+
+  requestGetApiState(): void {
+    this._emit(EVENTS.request.getApiState);
+  }
+
+  requestGetSignIn(): void {
+    this._emit(EVENTS.request.postSignIn);
+  }
+
+  requestGetSignUp(): void {
+    this._emit(EVENTS.request.postSignUp);
+  }
+
+  requestGetUser(): void {
+    this._emit(EVENTS.request.getUser);
+  }
+
+  requestGetMe(): void {
+    this._emit(EVENTS.request.getMe);
+  }
+
+  requestPatchMe(): void {
+    this._emit(EVENTS.request.patchMe);
+  }
+
+  requestDeleteMe(): void {
+    this._emit(EVENTS.request.deleteMe);
+  }
+
+  requestGetShop(): void {
+    this._emit(EVENTS.request.getShop);
+  }
+
+  requestGetMyFollowedShops(): void {
+    this._emit(EVENTS.request.getMyFollowedShops);
+  }
+
+  requestPostNewFollowedShop(): void {
+    this._emit(EVENTS.request.postNewFollowedShop);
+  }
+
+  requestPostOrder(): void {
+    this._emit(EVENTS.request.postOrder);
+  }
 }
 
 export default Tracker;

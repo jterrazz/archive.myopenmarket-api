@@ -8,16 +8,20 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "paths": {
+      "*": ["types/*.d.ts"],
       "~/*": ["./src/*"],
-      "@middlewares/*": ["./src/middlewares/*"],
-      "@model": ["./src/models"],
-      "@models/*": ["./src/models/*"],
+      "@middlewares/*": ["./src/server/middlewares/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@internal-types/*": ["./src/types/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@repositories/*": ["./src/repositories/*"],
       "@config": ["./src/config"],
-      "@controllers/*": ["./src/controllers/*"],
+      "@controllers/*": ["./src/server/controllers/*"],
       "@services/*": ["./src/services/*"]
     },
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "strictNullChecks": true
   },
   "exclude": [
     "node_modules"

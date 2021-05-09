@@ -1,8 +1,10 @@
-# myshop.eth-api
+# The Open Market - API
 
-> Handle the centralized data needed by the myshop.eth marketplace.
+> Handles the application backend logic
 
 ## Requirements
 
 TODO
-- Remove env from tclass and test script + run script
+- Remove env from tclass and tes t script + run script
+
+Architecture
