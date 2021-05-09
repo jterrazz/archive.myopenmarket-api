@@ -22,6 +22,9 @@ services:
 
 database:
   url: DATABASE_URL
+  connection:
+    host: DATABASE_HOST
+    port: DATABASE_PORT
 
 store:
   url: REDIS_URL

@@ -1,5 +1,6 @@
 import { authenticatorFactory } from './fixtures/authentication';
 import { startInMemoryApp, stopInMemoryApp } from '~/tests/setup/in-memory-app';
+import { startWorker } from '~/worker/start-worker';
 import { userClientFactory } from './fixtures/user';
 
 let authenticator;
@@ -10,6 +11,7 @@ let userClient;
  */
 
 beforeAll(async () => {
+  await startWorker();
   const app = await startInMemoryApp();
   authenticator = authenticatorFactory(app);
   userClient = userClientFactory(app);

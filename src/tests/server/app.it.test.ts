@@ -22,7 +22,7 @@ describe('application IT', () => {
     expect(status).toBe(404);
   });
 
-  test('it sends the custom headers with the request', async () => {
+  test('it sends custom headers with the request', async () => {
     const { header } = await request(app.callback()).get('/');
     expect(header['x-request-id']).toBeDefined();
   });

@@ -2,7 +2,7 @@
   "name": "theopenmarket-api",
   "version": "1.0.0",
   "engines": {
-    "node": "15.x"
+    "node": "14.x"
   },
   "repository": "git@github.com:theopenmarket/tom-api.git",
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
@@ -11,7 +11,8 @@
     "start:server-dev": "LOCAL=true NODE_ENV=development nodemon --config ./nodemon.server.json",
     "start:worker": "node -r tsconfig-paths/register -r ts-node/register ./src/worker/worker.ts",
     "start:worker-dev": "LOCAL=true NODE_ENV=development nodemon --config ./nodemon.worker.json",
-    "start:environment-dev": "docker-compose up database store",
+    "start:dev": "docker-compose up",
+    "start:services-dev": "docker-compose up database store",
     "db:generate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:generate -n ",
     "db:migrate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:run",
     "db:revert": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:revert",
@@ -43,13 +44,14 @@
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
-    "@sentry/node": "^6.2.5",
     "@types/node": "^14.14.41",
     "argon2": "^0.27.2",
     "assert": "^2.0.0",
     "bull": "^3.22.0",
     "class-validator": "^0.13.1",
     "config": "^3.3.6",
+    "domain": "^0.0.1",
+    "elastic-apm-node": "^3.14.0",
     "http-status-codes": "^2.1.4",
     "ioredis": "^4.26.0",
     "js-yaml": "^4.1.0",

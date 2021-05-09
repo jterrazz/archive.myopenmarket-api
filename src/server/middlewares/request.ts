@@ -3,6 +3,7 @@ import { ZodError } from 'zod';
 import { v4 } from 'uuid';
 import Koa from 'koa';
 
+import { apm } from '@services/apm';
 import logger from '@services/logger';
 
 export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
@@ -22,6 +23,7 @@ export const requestMiddleware: Koa.Middleware = async (ctx, next) => {
       ctx.status = err.status;
       ctx.body = err.message;
     } else {
+      apm.captureError(err);
       ctx.status = StatusCodes.INTERNAL_SERVER_ERROR;
       ctx.body = 'Internal Server Error';
     }

@@ -1,3 +1,4 @@
+process.env['NODE_CONFIG_DIR'] = __dirname + '/';
 import * as z from 'zod';
 import config from 'config';
 
