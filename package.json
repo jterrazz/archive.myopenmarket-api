@@ -7,10 +7,10 @@
   "repository": "git@github.com:theopenmarket/tom-api.git",
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
   "scripts": {
-    "start:server": "node -r tsconfig-paths/register -r ts-node/register ./src/server/server.ts",
-    "start:server-dev": "LOCAL=true NODE_ENV=development nodemon --config ./nodemon.server.json",
-    "start:worker": "node -r tsconfig-paths/register -r ts-node/register ./src/worker/worker.ts",
-    "start:worker-dev": "LOCAL=true NODE_ENV=development nodemon --config ./nodemon.worker.json",
+    "start:api": "node -r tsconfig-paths/register -r ts-node/register ./src/api/start-api.ts",
+    "start:api-dev": "nodemon --config ./nodemon.api.json",
+    "start:worker": "node -r tsconfig-paths/register -r ts-node/register ./src/worker/start-worker.ts",
+    "start:worker-dev": "nodemon --config ./nodemon.worker.json",
     "start:dev": "docker-compose up",
     "start:services-dev": "docker-compose up database store",
     "db:generate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:generate -n ",
@@ -39,6 +39,7 @@
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
+    "prisma": "^2.22.1",
     "supertest": "^6.1.3",
     "ts-jest": "^26.5.5"
   },

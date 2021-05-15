@@ -1,18 +1,21 @@
 export default class Queue {
   name: string;
   processFn: any;
+
   constructor(name) {
     this.name = name;
     this.processFn = {};
   }
 
   process = (identifier, fn) => {
-    console.log(`Registered function ${this.name}`);
+    console.log(`registered function ${this.name}`);
     this.processFn[identifier] = fn;
   };
 
   add = (identifier, data) => {
-    console.log(`Running ${this.name}`);
+    if (!identifier || !data) {
+      throw new Error('an identifier or data parameter is missing when creating the job');
+    }
     return this.processFn[identifier]({ data });
   };
 }

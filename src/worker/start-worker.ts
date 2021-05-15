@@ -1,9 +1,5 @@
-import { consumeOrderJobs } from '~/worker/jobs/order.consumer';
-import { environment } from '@config';
-import logger from '@services/logger';
+import { startWorker } from './app';
+import { workerConfig } from '@config';
+import throng from 'throng';
 
-export const startWorker = async (): Promise<void> => {
-  logger.info(`starting worker with environment <${environment}>`);
-
-  await consumeOrderJobs();
-};
+throng({ start: startWorker, workers: workerConfig.concurrency });

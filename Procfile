@@ -1,4 +1,4 @@
 release: yarn db:migrate
 
-web: yarn start:server
+web: yarn start:api
 worker: yarn start:worker

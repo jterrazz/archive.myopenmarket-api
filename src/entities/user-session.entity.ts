@@ -2,7 +2,7 @@ import { Context } from 'koa';
 import { User } from './user.entity';
 
 export class UserSession {
-  _ctx: Context;
+  private _ctx: Context;
 
   constructor(ctx: Context) {
     this._ctx = ctx;

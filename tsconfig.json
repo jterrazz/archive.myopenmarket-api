@@ -10,13 +10,13 @@
     "paths": {
       "*": ["types/*.d.ts"],
       "~/*": ["./src/*"],
-      "@middlewares/*": ["./src/server/middlewares/*"],
+      "@middlewares/*": ["./src/api/middlewares/*"],
       "@utils/*": ["./src/utils/*"],
       "@internal-types/*": ["./src/types/*"],
       "@entities/*": ["./src/entities/*"],
       "@repositories/*": ["./src/repositories/*"],
       "@config": ["./src/config"],
-      "@controllers/*": ["./src/server/controllers/*"],
+      "@controllers/*": ["./src/api/controllers/*"],
       "@services/*": ["./src/services/*"]
     },
     "emitDecoratorMetadata": true,

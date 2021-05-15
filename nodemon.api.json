@@ -2,5 +2,5 @@
     "watch": ["src", "config"],
     "ext": "ts",
     "ignore": ["**/*.spec.ts"],
-    "exec": "LOCAL=true NODE_ENV=development yarn start:worker"
+    "exec": "LOCAL=true NODE_ENV=development yarn start:api"
 }

@@ -1,6 +1,7 @@
 import Queue from 'bull';
 import Redis from 'ioredis';
 
+import { OrderMessage } from '@entities/messages/orders/order.message';
 import { storeConfig } from '@config';
 
 const client = new Redis(storeConfig.url);

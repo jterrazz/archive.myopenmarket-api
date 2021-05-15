@@ -1,6 +1,6 @@
 import Koa from 'koa';
 
-import { createApp } from '~/server/app';
+import { createApp } from '~/api/app';
 import { createConnection } from 'typeorm';
 import databaseConfig from '../../../ormconfig';
 
