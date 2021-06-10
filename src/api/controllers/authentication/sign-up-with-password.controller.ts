@@ -1,6 +1,6 @@
 import { RawJson } from '~/types/koa';
-import { RegistrationEmailMessage } from '@entities/messages/emails/registration-email.message';
-import { User, createUserRequestSchema } from '@entities/user.entity';
+import { RegistrationEmailMessage } from '~/models/messages/emails/registration-email.message';
+import { User, createUserRequestSchema } from '~/models/user.entity';
 import { createEmailJob } from '@services/jobs';
 import { createUser } from '@repositories/user.repository';
 

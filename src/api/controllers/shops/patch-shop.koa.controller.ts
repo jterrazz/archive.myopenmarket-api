@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 import { createUpdateShopActivity } from '@repositories/activity.repository';
-import { shopIdSchema, updateShopRequestSchema } from '@entities/shop.entity';
+import { shopIdSchema, updateShopRequestSchema } from '~/models/shop.entity';
 import { updateShop } from '@repositories/shop.repository';
 
 export const patchShopController: Middleware = async (ctx) => {

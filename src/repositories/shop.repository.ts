@@ -1,8 +1,8 @@
 import { Repository, getConnection } from 'typeorm';
 import { StatusCodes } from 'http-status-codes';
 
-import { HttpError } from '@entities/errors/http.error';
-import { Shop, UpdateShopRequest } from '@entities/shop.entity';
+import { HttpError } from '~/models/errors/http.error';
+import { Shop, UpdateShopRequest } from '~/models/shop.entity';
 
 export const getShopRepository = (): Repository<Shop> => getConnection().getRepository(Shop);
 

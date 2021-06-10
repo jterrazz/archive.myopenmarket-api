@@ -1,7 +1,8 @@
 import { Repository, getConnection } from 'typeorm';
 
-import { Activity, UserActivity } from '@entities/activity.entity';
-import { UserSession } from '@entities/user-session.entity';
+import { Activity, UserActivity } from '~/models/activity.entity';
+import { UserSession } from '~/models/user-session';
+import { prismaClient } from '@services/database';
 
 const getActivityRepository = (): Repository<Activity> => getConnection().getRepository(Activity);
 

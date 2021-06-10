@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 import { createUpdateProfileActivity } from '@repositories/activity.repository';
 import { updateUser } from '@repositories/user.repository';
-import { updateUserRequestSchema } from '@entities/user.entity';
+import { updateUserRequestSchema } from '~/models/user.entity';
 
 export const patchMeController: Middleware = async (ctx) => {
   ctx.tracker.requestPatchMe();

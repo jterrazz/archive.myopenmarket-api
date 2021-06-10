@@ -1,4 +1,4 @@
-import { RegistrationEmailMessage } from '@entities/messages/emails/registration-email.message';
+import { RegistrationEmailMessage } from '~/models/messages/emails/registration-email.message';
 import logger from '@services/logger';
 
 export const registrationEmailMessageConsumer = async (message: RegistrationEmailMessage) => {

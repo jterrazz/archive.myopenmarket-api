@@ -1,5 +1,5 @@
-import { EmailMessage } from '@entities/messages/emails/email.message';
-import { OrderMessage } from '@entities/messages/orders/order.message';
+import { EmailMessage } from '~/models/messages/emails/email.message';
+import { OrderMessage } from '~/models/messages/orders/order.message';
 import { emailQueue, orderQueue } from '@services/queue';
 
 export const createOrderJob = (message: OrderMessage): Promise<void> =>

@@ -1,7 +1,7 @@
-import { HttpError } from '@entities/errors/http.error';
+import { HttpError } from '~/models/errors/http.error';
 import { RawJson } from '~/types/koa';
 import { StatusCodes } from 'http-status-codes';
-import { User, userEmailSchema, userPasswordSchema } from '@entities/user.entity';
+import { User, userEmailSchema, userPasswordSchema } from '~/models/user.entity';
 import { getUserByEmail } from '@repositories/user.repository';
 import logger from '@services/logger';
 

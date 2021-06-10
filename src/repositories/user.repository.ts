@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 import { getConnection } from 'typeorm';
 
-import { Activity } from '@entities/activity.entity';
-import { CreateUserRequest, UpdateUserRequest, User } from '@entities/user.entity';
-import { HttpError } from '@entities/errors/http.error';
-import { Shop } from '@entities/shop.entity';
+import { Activity } from '~/models/activity.entity';
+import { CreateUserRequest, UpdateUserRequest, User } from '~/models/user.entity';
+import { HttpError } from '~/models/errors/http.error';
+import { Shop } from '~/models/shop.entity';
 import { getShopById } from '@repositories/shop.repository';
 
 const getUserRepository = () => getConnection().getRepository(User);

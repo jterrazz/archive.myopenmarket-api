@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import { OrderMessage } from '@entities/messages/orders/order.message';
+import { OrderMessage } from '~/models/messages/orders/order.message';
 import { StatusCodes } from 'http-status-codes';
 import { createOrderJob } from '@services/jobs';
 

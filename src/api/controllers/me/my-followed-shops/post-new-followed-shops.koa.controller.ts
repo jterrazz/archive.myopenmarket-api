@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 import { StatusCodes } from 'http-status-codes';
 import { insertFollowedShop } from '@repositories/user.repository';
-import { shopIdSchema } from '@entities/shop.entity';
+import { shopIdSchema } from '~/models/shop.entity';
 
 export const postNewFollowedShopController: Middleware = async (ctx) => {
   ctx.tracker.requestPostNewFollowedShop();

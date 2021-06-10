@@ -3,7 +3,6 @@ import { apiConfig, environment } from '@config';
 
 export const getStateController: Middleware = async (ctx) => {
   ctx.tracker.requestGetApiState();
-
   ctx.body = {
     env: environment,
     state: 'OK',

@@ -2,7 +2,7 @@
   "name": "theopenmarket-api",
   "version": "1.0.0",
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "repository": "git@github.com:theopenmarket/tom-api.git",
   "author": "Jean-Baptiste Terrazzoni <jterrazz@icloud.com>",
@@ -13,8 +13,7 @@
     "start:worker-dev": "nodemon --config ./nodemon.worker.json",
     "start:dev": "docker-compose up",
     "start:services-dev": "docker-compose up database store",
-    "db:generate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:generate -n ",
-    "db:migrate": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:run",
+    "db:migrate": "npx prisma migrate dev --name",
     "db:revert": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js migration:revert",
     "test": "NODE_ENV=test jest --silent",
     "test:debug": "NODE_ENV=test jest --runInBand --detectOpenHandles",
@@ -45,6 +44,7 @@
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
+    "@prisma/client": "^2.22.1",
     "@types/node": "^14.14.41",
     "argon2": "^0.27.2",
     "assert": "^2.0.0",
@@ -72,7 +72,6 @@
     "ts-loader": "^8.1.0",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
-    "typeorm": "^0.2.32",
     "typescript": "^4.2.4",
     "winston": "^3.3.3",
     "zod": "^1.11.13"

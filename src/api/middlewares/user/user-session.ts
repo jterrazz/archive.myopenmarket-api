@@ -1,5 +1,5 @@
 import { Middleware } from 'koa';
-import { UserSession } from '@entities/user-session.entity';
+import { UserSession } from '~/models/user-session';
 
 export const userSessionMiddleware: Middleware = async (ctx, next) => {
   ctx.state.userSession = new UserSession(ctx);

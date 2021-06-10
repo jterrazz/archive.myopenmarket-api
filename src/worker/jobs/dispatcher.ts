@@ -1,4 +1,4 @@
-import { QueueMessage } from '@entities/messages/queue.message';
+import { QueueMessage } from '~/models/messages/queue.message';
 import Queue from 'bull';
 
 export const dispatchJobsToConsumers = async (

@@ -1,7 +1,7 @@
 import { Middleware } from 'koa';
 import { StatusCodes } from 'http-status-codes';
 import { removeUser } from '@repositories/user.repository';
-import { userPasswordSchema } from '@entities/user.entity';
+import { userPasswordSchema } from '~/models/user.entity';
 
 export const deleteMeController: Middleware = async (ctx) => {
   ctx.tracker.requestDeleteMe();
