@@ -1,6 +1,6 @@
 # My Open Market - Services - API
 
-## The project
+---
 
 My Open Market is a social platform that enable open, direct and trustless interactions to merchants.
 
